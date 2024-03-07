@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
@@ -11,11 +13,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: appProviders,
-      child: MaterialApp.router(
-        title: 'Student Hub',
-        routerConfig: routerConfig,
-      ),
-    );
+        providers: appProviders,
+        child: MaterialApp.router(
+          title: 'Student Hub',
+          routerConfig: routerConfig,
+        ));
   }
 }

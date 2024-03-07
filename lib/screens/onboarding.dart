@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:studenthub/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../app_routes.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
@@ -47,7 +48,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   toPage: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
                     );
                   },
                 ),
@@ -62,7 +63,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   toPage: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
                     );
                   },
                 ),
@@ -100,11 +101,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           final prefs = await SharedPreferences.getInstance();
                           prefs.setBool("showHome", true);
 
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => LoginPage(),
-                            ),
-                          );
+                          routerConfig.pushReplacement('/login');
                         },
                         child: const Text(
                           'Get started',
