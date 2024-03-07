@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+// import 'package:studenthub/screens/login.dart';
+// import 'package:studenthub/screens/onboarding.dart';
+import 'package:studenthub/screens/welcome.dart';
+// import 'package:studenthub/screens/studentProfile.dart';
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final bool showHome;
+
+  const MainApp({super.key, required this.showHome});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      // home: showHome ? LoginPage() : OnBoardingPage(),
+      // home: StudentProfilePage(),
+      home: WelcomePage(),
     );
   }
 }
