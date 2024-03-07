@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:studenthub/components/app_bar.dart';
-import 'package:studenthub/components/navigation_menu.dart';
+import 'package:studenthub/components/search_bar.dart';
 
-class DashBoardPage extends StatelessWidget {
-  const DashBoardPage({Key? key}) : super(key: key);
+class DashBoardScreen extends StatelessWidget {
+  const DashBoardScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class DashBoardPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: SearchBar(),
+                    child: MySearchBar(),
                   ),
                   const SizedBox(width: 10),
                   ElevatedButton(
@@ -87,52 +86,5 @@ class DashBoardPage extends StatelessWidget {
         onPressed: () {},
       ),
     );
-  }
-}
-
-class SearchBar extends StatefulWidget {
-  @override
-  _SearchBarState createState() => _SearchBarState();
-}
-
-class _SearchBarState extends State<SearchBar> {
-  TextEditingController _searchController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.08,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(99),
-        border: Border.all(color: const Color.fromARGB(255, 243, 243, 243)),
-        color: const Color.fromARGB(255, 243, 243, 243),
-      ),
-      child: Row(
-        children: [
-          IconButton(
-            icon: const Icon(Icons.search, color: Colors.grey),
-            onPressed: () {},
-          ),
-          Expanded(
-            child: TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                hintText: 'Search...',
-                border: InputBorder.none,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              ),
-              onChanged: (value) {},
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
   }
 }
