@@ -2,7 +2,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:studenthub/components/navigation_menu.dart';
 import 'package:studenthub/screens/dash_board_screen.dart';
-import 'package:studenthub/screens/profile/profile_setting_screen.dart';
+import 'package:studenthub/screens/profile_settings/profile_setting_screen.dart';
 import 'package:studenthub/screens/login.dart';
 import 'package:studenthub/screens/signup_options.dart';
 import 'package:studenthub/screens/signup.dart';
@@ -12,18 +12,12 @@ import 'package:studenthub/screens/welcome_screen.dart';
 
 GoRouter routerConfig = GoRouter(
   routes: [
-    // GoRoute(
-    //   path: '/',
-    //   builder: (context, state) => const OnBoardingPage(),
-    // ),
     GoRoute(
-      path: '/choose-user',
+      path: '/',
+      // builder: (context, state) => const OnBoardingPage(),
       builder: (context, state) => const ChooseUserScreen(),
     ),
-    GoRoute(
-      path: '/profile-setting',
-      builder: (context, state) => const ProfileSettingScreen(),
-    ),
+    //Authentication
     GoRoute(
       path: '/login',
       builder: (context, state) => LoginScreen(),
@@ -41,10 +35,20 @@ GoRouter routerConfig = GoRouter(
         );
       },
     ),
+    // User and Profile settings
     GoRoute(
-      path: '/',
+      path: '/choose-user',
+      builder: (context, state) => const ChooseUserScreen(),
+    ),
+    GoRoute(
+      path: '/profile-setting',
+      builder: (context, state) => const ProfileSettingScreen(),
+    ),
+    GoRoute(
+      path: '/welcome',
       builder: (context, state) => const WelcomePage(),
     ),
+    //
     GoRoute(
       path: '/dashboard',
       builder: (context, state) => const NavigationMenu(),

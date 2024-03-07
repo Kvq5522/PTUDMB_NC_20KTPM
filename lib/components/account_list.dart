@@ -68,7 +68,7 @@ class _AccountListState extends State<AccountList> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
+          border: Border.all(color: const Color(0xFF008ABD)),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(

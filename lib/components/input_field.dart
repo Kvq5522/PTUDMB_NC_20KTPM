@@ -30,16 +30,16 @@ class InputField extends StatelessWidget {
         maxLines: bigField ? null : 3,
         keyboardType: bigField ? TextInputType.multiline : TextInputType.text,
         decoration: InputDecoration(
-          // enabledBorder: OutlineInputBorder(
-          //   borderSide: BorderSide(
-          //     color: Theme.of(context).colorScheme.tertiary,
-          //   ),
-          // ),
-          // focusedBorder: OutlineInputBorder(
-          //   borderSide: BorderSide(
-          //     color: Theme.of(context).colorScheme.primary,
-          //   ),
-          // ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
           filled: true,
           // fillColor: Theme.of(context).colorScheme.secondary,
           hintText: hintText != "" ? hintText : "Type here...",

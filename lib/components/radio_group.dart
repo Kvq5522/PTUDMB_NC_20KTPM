@@ -19,21 +19,23 @@ class _RadioGroupState extends State<RadioGroup> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: widget.companySize.keys.map((String key) {
-        return RadioListTile(
-          title: Text(key),
-          value: widget.companySize[key]!,
-          groupValue: _selectedSize,
-          onChanged: (value) {
-            setState(() {
-              _selectedSize = value!;
-            });
-            widget.onChanged(value!);
-          },
-        );
-      }).toList(),
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: widget.companySize.keys.map((String key) {
+          return RadioListTile(
+            title: Text(key),
+            value: widget.companySize[key]!,
+            groupValue: _selectedSize,
+            onChanged: (value) {
+              setState(() {
+                _selectedSize = value!;
+              });
+              widget.onChanged(value!);
+            },
+          );
+        }).toList(),
+      ),
     );
   }
 }

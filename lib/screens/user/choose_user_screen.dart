@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/account_list.dart';
 import 'package:studenthub/app_routes.dart';
+import 'package:studenthub/components/app_bar.dart';
 
 class ChooseUserScreen extends StatelessWidget {
   const ChooseUserScreen({super.key});
@@ -8,9 +9,7 @@ class ChooseUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Choose User"),
-        ),
+        appBar: const MyAppBar(),
         body: SingleChildScrollView(
           child: Row(
             children: [
@@ -79,7 +78,7 @@ class ChooseUserScreen extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
+          border: Border.all(color: const Color(0xFF008ABD)),
           borderRadius: BorderRadius.circular(10),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

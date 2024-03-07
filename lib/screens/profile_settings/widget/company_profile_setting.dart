@@ -47,9 +47,12 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Welcome to Student Hub",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            const Center(
+              child: Text(
+                "Welcome to Student Hub",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
             ),
             const SizedBox(height: 20),
             const Text(
@@ -65,12 +68,16 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
               },
             ),
             const SizedBox(height: 20),
+
+            //Input company name
             const Text("Company Name"),
             InputField(
               controller: companyNameController,
               hintText: "Input your company name here",
             ),
             const SizedBox(height: 20),
+
+            //Input company website
             const Text(
               "Company Website",
               textAlign: TextAlign.left,
@@ -80,6 +87,8 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
               hintText: "Input your company website here",
             ),
             const SizedBox(height: 20),
+
+            //Input company description
             const Text("Company Description"),
             InputField(
               controller: companyDescriptionController,

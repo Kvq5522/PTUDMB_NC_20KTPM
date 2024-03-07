@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studenthub/app_routes.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({super.key});
@@ -19,7 +20,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       // shadowColor: Colors.black,
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            routerConfig.push('/choose-user');
+          },
           icon: const Icon(
             Icons.person,
             size: 30,
