@@ -4,7 +4,9 @@ import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/app_providers.dart';
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final bool showHome;
+
+  const MainApp({super.key, required this.showHome});
 
   @override
   Widget build(BuildContext context) {
