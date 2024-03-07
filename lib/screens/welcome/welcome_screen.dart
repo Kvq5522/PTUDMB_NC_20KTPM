@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/app_bar.dart';
-import 'package:studenthub/components/navigation_menu.dart';
 import 'package:studenthub/app_routes.dart';
 
-class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
+class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

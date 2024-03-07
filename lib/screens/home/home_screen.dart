@@ -3,14 +3,14 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class OnBoardingPage extends StatefulWidget {
-  const OnBoardingPage({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<OnBoardingPage> createState() => _OnBoardingPageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _OnBoardingPageState extends State<OnBoardingPage> {
+class _HomeScreenState extends State<HomeScreen> {
   final controller = PageController();
   bool isLastPage = false;
 

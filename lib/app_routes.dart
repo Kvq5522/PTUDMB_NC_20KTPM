@@ -1,21 +1,20 @@
 // import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:studenthub/components/navigation_menu.dart';
-import 'package:studenthub/screens/dash_board_screen.dart';
+import 'package:studenthub/screens/layout.dart';
+import 'package:studenthub/screens/home/home_screen.dart';
 import 'package:studenthub/screens/profile/profile_setting_screen.dart';
 import 'package:studenthub/screens/login.dart';
 import 'package:studenthub/screens/signup_options.dart';
 import 'package:studenthub/screens/signup.dart';
 import 'package:studenthub/screens/user/choose_user_screen.dart';
-import 'package:studenthub/screens/onboarding_screen.dart';
-import 'package:studenthub/screens/welcome_screen.dart';
+import 'package:studenthub/screens/welcome/welcome_screen.dart';
 
 GoRouter routerConfig = GoRouter(
   routes: [
-    // GoRoute(
-    //   path: '/',
-    //   builder: (context, state) => const OnBoardingPage(),
-    // ),
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const HomeScreen(),
+    ),
     GoRoute(
       path: '/choose-user',
       builder: (context, state) => const ChooseUserScreen(),
@@ -42,12 +41,12 @@ GoRouter routerConfig = GoRouter(
       },
     ),
     GoRoute(
-      path: '/',
-      builder: (context, state) => const WelcomePage(),
+      path: '/welcome',
+      builder: (context, state) => const WelcomeScreen(),
     ),
     GoRoute(
       path: '/dashboard',
-      builder: (context, state) => const NavigationMenu(),
+      builder: (context, state) => const Layout(),
     ),
   ],
 );

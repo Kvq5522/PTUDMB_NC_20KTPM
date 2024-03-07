@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:studenthub/components/app_bar.dart';
-import 'package:studenthub/components/navigation_menu.dart';
 
-class DashBoardPage extends StatelessWidget {
-  const DashBoardPage({Key? key}) : super(key: key);
+class DashBoardScreen extends StatelessWidget {
+  const DashBoardScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
