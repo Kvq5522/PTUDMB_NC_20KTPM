@@ -1,22 +1,16 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:studenthub/app_routes.dart';
-import 'package:studenthub/app_providers.dart';
 
 class MainApp extends StatelessWidget {
-  final bool showHome;
-
-  const MainApp({super.key, required this.showHome});
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: appProviders,
-        child: MaterialApp.router(
-          title: 'Student Hub',
-          routerConfig: routerConfig,
-        ));
+    return const MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text('Hello World!'),
+        ),
+      ),
+    );
   }
 }
