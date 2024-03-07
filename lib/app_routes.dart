@@ -1,13 +1,16 @@
 // import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+// import 'package:studenthub/screens/dashboard/dashboard_screen.dart';
 import 'package:studenthub/screens/layout.dart';
 import 'package:studenthub/screens/home/home_screen.dart';
 import 'package:studenthub/screens/profile/profile_setting_screen.dart';
 import 'package:studenthub/screens/login.dart';
+// import 'package:studenthub/screens/project/project_screen.dart';
 import 'package:studenthub/screens/signup_options.dart';
 import 'package:studenthub/screens/signup.dart';
 import 'package:studenthub/screens/user/choose_user_screen.dart';
 import 'package:studenthub/screens/welcome/welcome_screen.dart';
+// import 'package:studenthub/screens/project/project_screen.dart';
 
 GoRouter routerConfig = GoRouter(
   routes: [
@@ -46,7 +49,11 @@ GoRouter routerConfig = GoRouter(
     ),
     GoRoute(
       path: '/dashboard',
-      builder: (context, state) => const Layout(),
+      builder: (context, state) => const Layout(page: 1),
+    ),
+    GoRoute(
+      path: '/project',
+      builder: (context, state) => const Layout(page: 0),
     ),
   ],
 );

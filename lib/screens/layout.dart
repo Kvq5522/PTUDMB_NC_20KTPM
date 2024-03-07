@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/app_bar.dart';
 import 'package:studenthub/screens/dashboard/dashboard_screen.dart';
-import 'package:studenthub/components/bottom_bar.dart'; // Import the file
+import 'package:studenthub/components/bottom_bar.dart';
+import 'package:studenthub/screens/project/project_screen.dart'; // Import the file
 
 class Layout extends StatefulWidget {
-  const Layout({Key? key}) : super(key: key);
+  final int page;
+
+  const Layout({Key? key, required this.page}) : super(key: key);
 
   @override
-  State<Layout> createState() => _LayoutState();
+  State<Layout> createState() => _LayoutState(page: page);
 }
 
 class _LayoutState extends State<Layout> {
-  int index = 1;
-  final PageController _pageController = PageController(initialPage: 1);
+  late int _currentPage;
+  late PageController _pageController;
+
+  _LayoutState({required int page}) {
+    _currentPage = page;
+    _pageController = PageController(initialPage: page);
+  }
+
   final screens = [
-    Center(child: Text("Projects")),
+    ProjectScreen(),
     DashBoardScreen(),
     Center(child: Text("Message")),
     Center(child: Text("Alerts")),
@@ -28,17 +37,16 @@ class _LayoutState extends State<Layout> {
         controller: _pageController,
         onPageChanged: (int newIndex) {
           setState(() {
-            index = newIndex;
+            _currentPage = newIndex;
           });
         },
         children: screens,
       ),
       bottomNavigationBar: MyBottomBar(
-        // Use the custom component here
-        currentIndex: index,
+        currentIndex: _currentPage,
         onTap: (int newIndex) {
           setState(() {
-            index = newIndex;
+            _currentPage = newIndex;
             _pageController.animateToPage(
               newIndex,
               duration: const Duration(milliseconds: 300),
