@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:studenthub/components/appBar.dart';
-import 'package:studenthub/components/navigationMenu.dart';
+import 'package:studenthub/components/app_bar.dart';
+import 'package:studenthub/components/navigation_menu.dart';
+import 'package:studenthub/app_routes.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -66,19 +67,20 @@ class WelcomePage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: Duration(milliseconds: 500),
-                      pageBuilder: (_, __, ___) => NavigationMenu(),
-                      transitionsBuilder: (_, animation, __, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   PageRouteBuilder(
+                  //     transitionDuration: Duration(milliseconds: 500),
+                  //     pageBuilder: (_, __, ___) => NavigationMenu(),
+                  //     transitionsBuilder: (_, animation, __, child) {
+                  //       return FadeTransition(
+                  //         opacity: animation,
+                  //         child: child,
+                  //       );
+                  //     },
+                  //   ),
+                  // );
+                  routerConfig.pushReplacement('/dashboard');
                 },
                 style: ElevatedButton.styleFrom(
                   padding:

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:studenthub/components/appBar.dart';
-import 'package:studenthub/screens/dashBoard.dart';
+import 'package:studenthub/components/app_bar.dart';
+import 'package:studenthub/screens/dash_board_screen.dart';
 
 class NavigationMenu extends StatefulWidget {
   const NavigationMenu({Key? key}) : super(key: key);

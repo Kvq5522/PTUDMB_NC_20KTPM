@@ -1,18 +1,21 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:studenthub/components/navigation_menu.dart';
+import 'package:studenthub/screens/dash_board_screen.dart';
 import 'package:studenthub/screens/profile/profile_setting_screen.dart';
 import 'package:studenthub/screens/login.dart';
 import 'package:studenthub/screens/signup_options.dart';
 import 'package:studenthub/screens/signup.dart';
 import 'package:studenthub/screens/user/choose_user_screen.dart';
-import 'package:studenthub/screens/onboarding.dart';
+import 'package:studenthub/screens/onboarding_screen.dart';
+import 'package:studenthub/screens/welcome_screen.dart';
 
 GoRouter routerConfig = GoRouter(
   routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const OnBoardingPage(),
-    ),
+    // GoRoute(
+    //   path: '/',
+    //   builder: (context, state) => const OnBoardingPage(),
+    // ),
     GoRoute(
       path: '/choose-user',
       builder: (context, state) => const ChooseUserScreen(),
@@ -37,6 +40,14 @@ GoRouter routerConfig = GoRouter(
           selectedOption: selectedOption,
         );
       },
+    ),
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const WelcomePage(),
+    ),
+    GoRoute(
+      path: '/dashboard',
+      builder: (context, state) => const NavigationMenu(),
     ),
   ],
 );

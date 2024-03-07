@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:studenthub/screens/login.dart';
+import 'package:studenthub/app_routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../app_routes.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
@@ -46,9 +45,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   titleRole: "Join",
                   isLastPage: false,
                   toPage: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    String selectedOption = 'student';
+                    routerConfig.push(
+                      '/signup',
+                      extra: selectedOption,
                     );
                   },
                 ),
@@ -61,9 +61,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   titleRole: "Join",
                   isLastPage: false,
                   toPage: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    String selectedOption = 'company';
+                    routerConfig.push(
+                      '/signup',
+                      extra: selectedOption,
                     );
                   },
                 ),

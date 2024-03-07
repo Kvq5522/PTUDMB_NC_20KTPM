@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:studenthub/screens/onboarding.dart';
+// import 'package:studenthub/screens/onboarding.dart';
 import '../app_routes.dart';
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
@@ -66,7 +66,7 @@ class LoginScreen extends StatelessWidget {
             final prefs = await SharedPreferences.getInstance();
             prefs.setBool('showHome', false);
 
-            routerConfig.push('/');
+            routerConfig.pushReplacement('/');
           },
           icon: const Icon(
             Icons.arrow_forward_ios_rounded,
