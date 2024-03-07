@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../app_routes.dart';
+import '../../app_routes.dart';
+import '../../components/appbar_auth.dart';
 
 class SignUpScreen extends StatelessWidget {
   final String selectedOption;
@@ -11,7 +12,7 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: bar(),
+      appBar: Auth_AppBar(),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -63,13 +64,13 @@ class SignUpScreen extends StatelessWidget {
           SizedBox(height: 10.0),
           ElevatedButton(
             onPressed: () {
-              routerConfig.push(
+              routerConfig.pushReplacement(
                 '/signup',
                 extra: selectedOption == 'student' ? 'company' : 'student',
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
+              backgroundColor: const Color(0xFF008ABD),
             ),
             child: Text(
               selectedOption == "student"
@@ -116,14 +117,14 @@ class _SignUpFormState extends State<SignUpForm> {
                 labelText: 'Full Name',
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue),
+                  borderSide: BorderSide(color: const Color(0xFF008ABD)),
                 ),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                 ),
               ),
               style: TextStyle(color: Colors.black),
-              cursorColor: Colors.blue,
+              cursorColor: const Color(0xFF008ABD),
             ),
             SizedBox(height: 20.0),
             TextFormField(
@@ -132,14 +133,14 @@ class _SignUpFormState extends State<SignUpForm> {
                 labelText: 'Email',
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue),
+                  borderSide: BorderSide(color: const Color(0xFF008ABD)),
                 ),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                 ),
               ),
               style: TextStyle(color: Colors.black),
-              cursorColor: Colors.blue,
+              cursorColor: const Color(0xFF008ABD),
             ),
             SizedBox(height: 20.0),
             TextFormField(
@@ -148,7 +149,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 labelText: 'Password',
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue),
+                  borderSide: BorderSide(color: const Color(0xFF008ABD)),
                 ),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
@@ -156,7 +157,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
               obscureText: true,
               style: TextStyle(color: Colors.black),
-              cursorColor: Colors.blue,
+              cursorColor: const Color(0xFF008ABD),
             ),
             SizedBox(height: 20.0),
             Row(
@@ -168,7 +169,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       _agreeToTerms = newValue!;
                     });
                   },
-                  activeColor: Colors.blue,
+                  activeColor: const Color(0xFF008ABD),
                 ),
                 Flexible(
                   child: Text(
@@ -189,7 +190,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: const Color(0xFF008ABD),
               ),
               child: Text('Sign Up',
                   style: TextStyle(fontSize: 18.0, color: Colors.white)),

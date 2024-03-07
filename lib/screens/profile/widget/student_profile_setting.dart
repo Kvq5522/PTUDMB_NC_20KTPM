@@ -3,6 +3,10 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/app_routes.dart';
+import '../../../constants/techstack_mock.dart';
+import '../../../constants/skillset_mock.dart';
+import '../../../constants/education_mock.dart';
+import '../../../constants/language_mock.dart';
 
 import 'dart:io';
 
@@ -14,7 +18,9 @@ class StudentProfileSetting extends StatefulWidget {
 }
 
 class _StudentProfileSettingState extends State<StudentProfileSetting> {
-  final int step = 3;
+  final int step = 1;
+  String? _selectedTechstack;
+  final List<String> _selectedSkills = [];
 
   String? cvFileName; // Biến lưu tên của CV đã tải lên
   String? transcriptFileName; // Biến lưu tên của Transcript đã tải lên
@@ -57,7 +63,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
   Widget buildInputStep() {
     switch (step) {
       case 1:
-        return const SizedBox();
+        return inputStep1();
       case 2:
         return const SizedBox();
       case 3:
@@ -65,6 +71,305 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
       default:
         return const SizedBox();
     }
+  }
+
+  Widget inputStep1() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //title text
+          const Center(
+            child: Text(
+              'Welcome to Student Hub',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 16.0),
+          const Text(
+            'Tell us about yourself and we will be on your way to connect with the real world',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16.0),
+          ),
+          const SizedBox(height: 16.0),
+          const Text('Techstack'),
+          const SizedBox(height: 16.0),
+          //dropdown
+          Container(
+            constraints: const BoxConstraints(maxWidth: double.infinity),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              border: Border.all(color: Colors.grey),
+            ),
+            child: DropdownButton<String>(
+              hint: const Padding(
+                padding: EdgeInsets.only(left: 20.0),
+                child: Text(
+                  "Choose a tech stack",
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              isExpanded: true,
+              underline: const SizedBox(),
+              icon: const Icon(Icons.arrow_drop_down),
+              style: const TextStyle(color: Colors.black, fontSize: 16.0),
+              value: _selectedTechstack,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedTechstack = newValue;
+                });
+              },
+              items: TechStackMockData.techStackItems.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    child: Text(value),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          const SizedBox(height: 16.0),
+          const Text('Skillset'),
+
+          //skillset selection
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            width: double.infinity,
+            padding: const EdgeInsets.all(8.0),
+            child: Wrap(
+              spacing: 8.0,
+              children: SkillsMockData.skillsList.map((String skill) {
+                return FilterChip(
+                  label: Text(skill),
+                  selected: _selectedSkills.contains(skill),
+                  onSelected: (bool selected) {
+                    setState(() {
+                      if (selected) {
+                        _selectedSkills.add(skill);
+                      } else {
+                        _selectedSkills.remove(skill);
+                      }
+                    });
+                  },
+                  selectedColor: const Color(0xFF008ABD),
+                );
+              }).toList(),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Language section
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Languages',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Add Language'),
+                            content: TextFormField(
+                              decoration: InputDecoration(
+                                hintText: 'Enter language',
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  // Close the dialog
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Cancel'),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Handle adding the language
+                                  // Close the dialog
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Add'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: languageData.length,
+                itemBuilder: (context, index) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(languageData[index]),
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              // Handle onPressed for editing language
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              // Handle onPressed for deleting language
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              ),
+
+              // Education section
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Education',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Add Education'),
+                            content: TextFormField(
+                              decoration: InputDecoration(
+                                hintText: 'Enter education',
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  // Close the dialog
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Cancel'),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Handle adding the language
+                                  // Close the dialog
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Add'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: educationData.length,
+                itemBuilder: (context, index) {
+                  final education = educationData[index];
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(education.title),
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () {
+                                  // Handle onPressed for editing education
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  // Handle onPressed for deleting education
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.grey,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: education.period,
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.grey[400],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16.0),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
+
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  //navigate
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  textStyle: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                child: const Text('Next'),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget inputStep3() {

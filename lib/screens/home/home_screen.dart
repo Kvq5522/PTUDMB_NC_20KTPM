@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
             bottom: 0,
             child: isLastPage
                 ? Container(
-                    color: const Color(0xFFa9e1e9), // Màu nền của PageView
+                    color: const Color(0xFFa9e1e9),
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.12,
                       child: TextButton(

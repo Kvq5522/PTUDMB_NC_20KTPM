@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import '../app_routes.dart';
+import '../../app_routes.dart';
+import '../../components/appbar_auth.dart';
 
 class SignUpOptions extends StatefulWidget {
   const SignUpOptions({super.key});
@@ -17,7 +18,7 @@ class _SignUpOptionsState extends State<SignUpOptions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: bar(),
+      appBar: Auth_AppBar(),
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -56,11 +57,11 @@ class _SignUpOptionsState extends State<SignUpOptions> {
                     selected: selectedOption == 'company',
                     controlAffinity: ListTileControlAffinity.trailing,
                     tileColor: selectedOption == 'company'
-                        ? Colors.blue.withOpacity(0.1)
+                        ? const Color(0xFF008ABD).withOpacity(0.1)
                         : null,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    activeColor: Colors.blue,
+                    activeColor: const Color(0xFF008ABD),
                   ),
                 ),
               ),
@@ -90,11 +91,11 @@ class _SignUpOptionsState extends State<SignUpOptions> {
                     selected: selectedOption == 'student',
                     controlAffinity: ListTileControlAffinity.trailing,
                     tileColor: selectedOption == 'student'
-                        ? Colors.blue.withOpacity(0.1)
+                        ? const Color(0xFF008ABD).withOpacity(0.1)
                         : null,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    activeColor: Colors.blue,
+                    activeColor: const Color(0xFF008ABD),
                   ),
                 ),
               ),
@@ -107,7 +108,7 @@ class _SignUpOptionsState extends State<SignUpOptions> {
                     //   '/signup',
                     //   arguments: selectedOption,
                     // );
-                    routerConfig.push(
+                    routerConfig.pushReplacement(
                       '/signup',
                       extra: selectedOption,
                     );
@@ -121,7 +122,7 @@ class _SignUpOptionsState extends State<SignUpOptions> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: const Color(0xFF008ABD),
                   padding:
                       EdgeInsets.symmetric(vertical: 15.0, horizontal: 100.0),
                 ),
@@ -155,10 +156,10 @@ class _SignUpOptionsState extends State<SignUpOptions> {
             SizedBox(height: 10.0),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/');
+                routerConfig.pushReplacement('/login');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: const Color(0xFF008ABD),
               ),
               child: Text('Log In', style: TextStyle(color: Colors.white)),
             ),

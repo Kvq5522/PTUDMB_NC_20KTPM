@@ -1,14 +1,15 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:studenthub/screens/onboarding.dart';
-import '../app_routes.dart';
+import '../../app_routes.dart';
+import '../../components/appbar_auth.dart';
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: bar(context),
+      appBar: Auth_AppBar(),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -37,43 +38,16 @@ class LoginScreen extends StatelessWidget {
             SizedBox(height: 10.0),
             ElevatedButton(
               onPressed: () {
-                routerConfig.push('/signup_options');
+                routerConfig.pushReplacement('/signup_options');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: const Color(0xFF008ABD),
               ),
               child: Text('Sign Up', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  AppBar bar(BuildContext context) {
-    return AppBar(
-      title: Container(
-        width: 160,
-        height: MediaQuery.of(context).size.width * 0.2,
-        child: Image.asset('assets/images/logo.png'),
-      ),
-      backgroundColor: const Color(0xFF008ABD),
-      elevation: 2,
-      shadowColor: Colors.black,
-      actions: [
-        IconButton(
-          onPressed: () async {
-            final prefs = await SharedPreferences.getInstance();
-            prefs.setBool('showHome', false);
-
-            routerConfig.pushReplacement('/');
-          },
-          icon: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: Colors.white,
-          ),
-        ),
-      ],
     );
   }
 }
@@ -106,14 +80,14 @@ class _LoginFormState extends State<LoginForm> {
                 labelText: 'Email',
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue),
+                  borderSide: BorderSide(color: const Color(0xFF008ABD)),
                 ),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                 ),
               ),
               style: TextStyle(color: Colors.black),
-              cursorColor: Colors.blue,
+              cursorColor: const Color(0xFF008ABD),
             ),
             SizedBox(height: 20.0),
             TextFormField(
@@ -122,7 +96,7 @@ class _LoginFormState extends State<LoginForm> {
                 labelText: 'Password',
                 labelStyle: TextStyle(color: Colors.black),
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue),
+                  borderSide: BorderSide(color: const Color(0xFF008ABD)),
                 ),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
@@ -130,7 +104,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               obscureText: true,
               style: TextStyle(color: Colors.black),
-              cursorColor: Colors.blue,
+              cursorColor: const Color(0xFF008ABD),
             ),
             SizedBox(height: 20.0),
             ElevatedButton(
@@ -141,7 +115,7 @@ class _LoginFormState extends State<LoginForm> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: const Color(0xFF008ABD),
               ),
               child: Text('Sign In',
                   style: TextStyle(fontSize: 18.0, color: Colors.white)),
