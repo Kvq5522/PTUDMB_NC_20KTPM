@@ -109,10 +109,11 @@ class _LoginFormState extends State<LoginForm> {
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  // Form is validated, process login
-                  // Your login logic here
-                }
+                // if (_formKey.currentState!.validate()) {
+                //   // Form is validated, process login
+                //   // Your login logic here
+                // }
+                routerConfig.pushReplacement('/dashboard');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF008ABD),
