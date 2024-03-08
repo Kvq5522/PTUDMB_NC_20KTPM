@@ -31,6 +31,14 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
     });
   }
 
+  @override
+  void didUpdateWidget(MultiSelectChip oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    setState(() {
+      selectedChoices = List.from(widget.selectedChoices);
+    });
+  }
+
   final TextEditingController _textEditingController = TextEditingController();
 
   @override

@@ -68,6 +68,14 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
     });
   }
 
+  void editProject(Map<String, dynamic> newProject, int index) {
+    setState(() {
+      print(projectList[index]);
+      projectList[index] = newProject;
+      print(projectList[index]);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     switch (step) {
@@ -387,14 +395,17 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
   // Input step 2
   Widget inputStep2() {
     // Show modal for add/editing model
-    void showProjectModal({dynamic value = const {}}) async {
+    void showProjectModal(
+        {dynamic value = const {},
+        bool isEdited = false,
+        index}) async {
       final TextEditingController projectNameController =
           TextEditingController();
       String from = DateTime.now().toString();
       String to = DateTime.now().toString();
       final TextEditingController descriptionController =
           TextEditingController();
-      List<dynamic> skillsets = [];
+      List<dynamic> skillsets = value['skillsets'] ?? [];
 
       projectNameController.text = value['projectName'] ?? "";
       from = value['from'] ??
@@ -414,154 +425,168 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Add project",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Add project",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 20),
 
-                        // Project name
-                        const Text("Project name"),
-                        const SizedBox(height: 10),
-                        InputField(
-                            controller: projectNameController,
-                            hintText: "Project name"),
+                      // Project name
+                      const Text("Project name"),
+                      const SizedBox(height: 10),
+                      InputField(
+                          controller: projectNameController,
+                          hintText: "Project name"),
 
-                        // Project duration
-                        const SizedBox(height: 20),
-                        const Text("Project duration"),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ElevatedButton(
-                                onPressed: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      firstDate: DateTime(2000),
-                                      lastDate:
-                                          DateTime(DateTime.now().year + 100),
-                                      initialDate: DateTime.now());
+                      // Project duration
+                      const SizedBox(height: 20),
+                      const Text("Project duration"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                              onPressed: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    firstDate: DateTime(2000),
+                                    lastDate:
+                                        DateTime(DateTime.now().year + 100),
+                                    initialDate: DateTime.now());
 
-                                  if (pickedDate != null) {
-                                    setState(() {
-                                      from = pickedDate.toString();
-                                    });
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  foregroundColor: Colors.white,
-                                  textStyle: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                if (pickedDate != null) {
+                                  setState(() {
+                                    from = pickedDate.toString();
+                                  });
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                foregroundColor: Colors.white,
+                                textStyle: const TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                child: Text(
-                                    "From: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(from))}")),
-                            ElevatedButton(
-                                onPressed: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      firstDate: DateTime(2000),
-                                      lastDate:
-                                          DateTime(DateTime.now().year + 100),
-                                      initialDate: DateTime.now());
+                              ),
+                              child: Text(
+                                  "From: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(from))}")),
+                          ElevatedButton(
+                              onPressed: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    firstDate: DateTime(2000),
+                                    lastDate:
+                                        DateTime(DateTime.now().year + 100),
+                                    initialDate: DateTime.now());
 
-                                  if (pickedDate != null) {
-                                    setState(() {
-                                      to = pickedDate.toString();
-                                    });
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  foregroundColor: Colors.white,
-                                  textStyle: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                if (pickedDate != null) {
+                                  setState(() {
+                                    to = pickedDate.toString();
+                                  });
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                foregroundColor: Colors.white,
+                                textStyle: const TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                child: Text(
-                                    "To: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(to))}")),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
+                              ),
+                              child: Text(
+                                  "To: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(to))}")),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
 
-                        // Project description
-                        const Text("Project description"),
-                        const SizedBox(height: 10),
-                        InputField(
-                            controller: descriptionController,
-                            hintText: "Project description"),
+                      // Project description
+                      const Text("Project description"),
+                      const SizedBox(height: 10),
+                      InputField(
+                          controller: descriptionController,
+                          hintText: "Project description"),
 
-                        // Skillsets
-                        const SizedBox(height: 20),
-                        const Text("Skillsets"),
-                        const SizedBox(height: 10),
-                        MultiSelectChip(
-                            itemList: skillsetsMockData,
-                            onSelectionChanged: (value) {
-                              setState(() {
-                                skillsets = value;
-                              });
-                            }),
+                      // Skillsets
+                      const SizedBox(height: 20),
+                      const Text("Skillsets"),
+                      const SizedBox(height: 10),
+                      MultiSelectChip(
+                          itemList: skillsetsMockData,
+                          selectedChoices: skillsets,
+                          onSelectionChanged: (value) {
+                            setState(() {
+                              skillsets = value;
+                            });
+                          }),
 
-                        // Cancel and save button
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                                onPressed: () {
+                      // Cancel and save button
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                foregroundColor: Colors.white,
+                                textStyle: const TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              child: const Text(
+                                "Cancel",
+                              )),
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                              onPressed: () {
+                                if (projectNameController.text != "" &&
+                                    descriptionController.text != "" &&
+                                    skillsets != []) {
+                                  !isEdited
+                                      ? addProject({
+                                          "projectName":
+                                              projectNameController.text,
+                                          "from": DateFormat('yyyy-MM-dd')
+                                              .format(DateTime.parse(from)),
+                                          "to": DateFormat('yyyy-MM-dd')
+                                              .format(DateTime.parse(to)),
+                                          "description":
+                                              descriptionController.text,
+                                          "skillsets": skillsets,
+                                        })
+                                      : editProject({
+                                          "projectName":
+                                              projectNameController.text,
+                                          "from": DateFormat('yyyy-MM-dd')
+                                              .format(DateTime.parse(from)),
+                                          "to": DateFormat('yyyy-MM-dd')
+                                              .format(DateTime.parse(to)),
+                                          "description":
+                                              descriptionController.text,
+                                          "skillsets": skillsets,
+                                        }, index);
+
                                   Navigator.pop(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  foregroundColor: Colors.white,
-                                  textStyle: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                } else {}
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                foregroundColor: Colors.white,
+                                textStyle: const TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                child: const Text(
-                                  "Cancel",
-                                )),
-                            const SizedBox(width: 10),
-                            ElevatedButton(
-                                onPressed: () {
-                                  if (projectNameController.text != "" &&
-                                      descriptionController.text != "" &&
-                                      skillsets != []) {
-                                    addProject({
-                                      "projectName": projectNameController.text,
-                                      "from": DateFormat('yyyy-MM-dd')
-                                          .format(DateTime.parse(from)),
-                                      "to": DateFormat('yyyy-MM-dd')
-                                          .format(DateTime.parse(to)),
-                                      "description": descriptionController.text,
-                                      "skillsets": skillsets,
-                                    });
-                                    Navigator.pop(context);
-                                  } else {}
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  foregroundColor: Colors.white,
-                                  textStyle: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                child: const Text(
-                                  "Save",
-                                )),
-                          ],
-                        )
-                      ],
-                    ),
+                              ),
+                              child: const Text(
+                                "Save",
+                              )),
+                        ],
+                      )
+                    ],
                   ),
                 ),
               );
@@ -614,7 +639,10 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                 return projectTile(
                     project: projectList[index],
                     onEdit: () {
-                      showProjectModal(value: projectList[index]);
+                      showProjectModal(
+                          value: projectList[index],
+                          isEdited: true,
+                          index: index);
                     },
                     onDeleted: () {
                       setState(() {
