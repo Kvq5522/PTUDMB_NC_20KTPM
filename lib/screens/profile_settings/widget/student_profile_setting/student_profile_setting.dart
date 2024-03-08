@@ -4,10 +4,11 @@ import 'package:studenthub/components/input_field.dart';
 import 'package:studenthub/components/multi_select_chip.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:studenthub/app_routes.dart';
-import '../../../constants/techstack_mock.dart';
-import '../../../constants/skillset_mock.dart';
-import '../../../constants/education_mock.dart';
-import '../../../constants/language_mock.dart';
+import 'package:studenthub/constants/project_list_mock.dart';
+import '../../../../constants/techstack_mock.dart';
+import '../../../../constants/skillset_mock.dart';
+import '../../../../constants/education_mock.dart';
+import '../../../../constants/language_mock.dart';
 
 import 'dart:io';
 
@@ -19,7 +20,7 @@ class StudentProfileSetting extends StatefulWidget {
 }
 
 class _StudentProfileSettingState extends State<StudentProfileSetting> {
-  final int step = 1;
+  int step = 1;
   String? _selectedTechstack;
   final List<String> _selectedSkills = [];
 
@@ -55,29 +56,20 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
     }
   }
 
-  final projectList = [
-    {
-      'projectName': 'Inteliligent Taxi Dispatch System',
-      'from': '2020-9-1',
-      'to': '2020-12-1',
-      'description':
-          'It is the developer of a super-app for ride-hailing, food delivery, and digital payments services on mobile devices that operates in Singapore, Malaysia, ...',
-      'skillsets': [
-        'Java',
-        'Spring Boot',
-        'MySQL',
-        'Docker',
-        'Kubernetes',
-      ]
-    },
-  ];
+  List<dynamic> projectList = [];
+
+  _StudentProfileSettingState() {
+    projectList = List.from(projectListMockData);
+  }
+
+  void addProject(Map<String, dynamic> newProject) {
+    setState(() {
+      projectList.add(newProject);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return buildInputStep();
-  }
-
-  Widget buildInputStep() {
     switch (step) {
       case 1:
         return inputStep1();
@@ -190,21 +182,21 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Languages',
                     style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    icon: Icon(Icons.add),
+                    icon: const Icon(Icons.add),
                     onPressed: () {
                       showDialog(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text('Add Language'),
+                            title: const Text('Add Language'),
                             content: TextFormField(
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: 'Enter language',
                               ),
                             ),
@@ -214,7 +206,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                   // Close the dialog
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Cancel'),
+                                child: const Text('Cancel'),
                               ),
                               ElevatedButton(
                                 onPressed: () {
@@ -222,7 +214,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                   // Close the dialog
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Add'),
+                                child: const Text('Add'),
                               ),
                             ],
                           );
@@ -244,13 +236,13 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                       Row(
                         children: [
                           IconButton(
-                            icon: Icon(Icons.edit),
+                            icon: const Icon(Icons.edit),
                             onPressed: () {
                               // Handle onPressed for editing language
                             },
                           ),
                           IconButton(
-                            icon: Icon(Icons.delete),
+                            icon: const Icon(Icons.delete),
                             onPressed: () {
                               // Handle onPressed for deleting language
                             },
@@ -266,21 +258,21 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Education',
                     style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    icon: Icon(Icons.add),
+                    icon: const Icon(Icons.add),
                     onPressed: () {
                       showDialog(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text('Add Education'),
+                            title: const Text('Add Education'),
                             content: TextFormField(
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: 'Enter education',
                               ),
                             ),
@@ -290,7 +282,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                   // Close the dialog
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Cancel'),
+                                child: const Text('Cancel'),
                               ),
                               ElevatedButton(
                                 onPressed: () {
@@ -298,7 +290,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                   // Close the dialog
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Add'),
+                                child: const Text('Add'),
                               ),
                             ],
                           );
@@ -324,13 +316,13 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                           Row(
                             children: [
                               IconButton(
-                                icon: Icon(Icons.edit),
+                                icon: const Icon(Icons.edit),
                                 onPressed: () {
                                   // Handle onPressed for editing education
                                 },
                               ),
                               IconButton(
-                                icon: Icon(Icons.delete),
+                                icon: const Icon(Icons.delete),
                                 onPressed: () {
                                   // Handle onPressed for deleting education
                                 },
@@ -341,7 +333,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                       ),
                       RichText(
                         text: TextSpan(
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16.0,
                             color: Colors.grey,
                           ),
@@ -356,7 +348,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16.0),
                     ],
                   );
                 },
@@ -371,6 +363,9 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
               child: ElevatedButton(
                 onPressed: () {
                   //navigate
+                  setState(() {
+                    step++;
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -391,7 +386,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
 
   // Input step 2
   Widget inputStep2() {
-    void showProjectModal({dynamic value = const {}}) {
+    // Show modal for add/editing model
+    void showProjectModal({dynamic value = const {}}) async {
       final TextEditingController projectNameController =
           TextEditingController();
       String from = DateTime.now().toString();
@@ -408,110 +404,168 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
       descriptionController.text = value['description'] ?? "";
       skillsets = value['skillsets'] ?? [];
 
-      showModalBottomSheet(
+      await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         builder: (context) {
-          return SingleChildScrollView(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Add project",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 20),
-
-                    // Project name
-                    const Text("Project name"),
-                    const SizedBox(height: 10),
-                    InputField(
-                        controller: projectNameController,
-                        hintText: "Project name"),
-
-                    // Project duration
-                    const SizedBox(height: 20),
-                    const Text("Project duration"),
-                    const SizedBox(height: 10),
-
-                    // Project description
-                    const Text("Project description"),
-                    const SizedBox(height: 10),
-                    InputField(
-                        controller: descriptionController,
-                        hintText: "Project description"),
-
-                    // Skillsets
-                    const SizedBox(height: 20),
-                    const Text("Skillsets"),
-                    const SizedBox(height: 10),
-                    MultiSelectChip(
-                        itemList: const [
-                          'Java',
-                          'Spring Boot',
-                          'MySQL',
-                          'Docker',
-                          'Kubernetes',
-                        ],
-                        onSelectionChanged: (value) {
-                          skillsets = value;
-                        }),
-
-                    //Error message
-
-                    // Cancel and save button
-                    Row(
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return SingleChildScrollView(
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                            child: const Text(
-                              "Cancel",
-                              style: TextStyle(color: Color(0xFF008ABD)),
-                            )),
-                        const SizedBox(width: 10),
-                        ElevatedButton(
-                            onPressed: () {
-                              if (projectNameController.text != "" &&
-                                  descriptionController.text != "" &&
-                                  skillsets != []) {
-                                setState(() {
-                                  projectList.add({
-                                    'projectName': projectNameController.text,
-                                    'from': from,
-                                    'to': to,
-                                    'description': descriptionController.text,
-                                    'skillsets': skillsets,
-                                  });
-                                });
-                                Navigator.pop(context);
-                              } else {}
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                            child: const Text(
-                              "Save",
-                              style: TextStyle(color: Color(0xFF008ABD)),
-                            )),
+                        const Text("Add project",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 20),
+
+                        // Project name
+                        const Text("Project name"),
+                        const SizedBox(height: 10),
+                        InputField(
+                            controller: projectNameController,
+                            hintText: "Project name"),
+
+                        // Project duration
+                        const SizedBox(height: 20),
+                        const Text("Project duration"),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      firstDate: DateTime(2000),
+                                      lastDate:
+                                          DateTime(DateTime.now().year + 100),
+                                      initialDate: DateTime.now());
+
+                                  if (pickedDate != null) {
+                                    setState(() {
+                                      from = pickedDate.toString();
+                                    });
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                  textStyle: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                child: Text(
+                                    "From: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(from))}")),
+                            ElevatedButton(
+                                onPressed: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      firstDate: DateTime(2000),
+                                      lastDate:
+                                          DateTime(DateTime.now().year + 100),
+                                      initialDate: DateTime.now());
+
+                                  if (pickedDate != null) {
+                                    setState(() {
+                                      to = pickedDate.toString();
+                                    });
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                  textStyle: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                child: Text(
+                                    "To: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(to))}")),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+
+                        // Project description
+                        const Text("Project description"),
+                        const SizedBox(height: 10),
+                        InputField(
+                            controller: descriptionController,
+                            hintText: "Project description"),
+
+                        // Skillsets
+                        const SizedBox(height: 20),
+                        const Text("Skillsets"),
+                        const SizedBox(height: 10),
+                        MultiSelectChip(
+                            itemList: skillsetsMockData,
+                            onSelectionChanged: (value) {
+                              setState(() {
+                                skillsets = value;
+                              });
+                            }),
+
+                        // Cancel and save button
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                  textStyle: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Cancel",
+                                )),
+                            const SizedBox(width: 10),
+                            ElevatedButton(
+                                onPressed: () {
+                                  if (projectNameController.text != "" &&
+                                      descriptionController.text != "" &&
+                                      skillsets != []) {
+                                    addProject({
+                                      "projectName": projectNameController.text,
+                                      "from": DateFormat('yyyy-MM-dd')
+                                          .format(DateTime.parse(from)),
+                                      "to": DateFormat('yyyy-MM-dd')
+                                          .format(DateTime.parse(to)),
+                                      "description": descriptionController.text,
+                                      "skillsets": skillsets,
+                                    });
+                                    Navigator.pop(context);
+                                  } else {}
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                  textStyle: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Save",
+                                )),
+                          ],
+                        )
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         },
       );
@@ -569,6 +623,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                     });
               }),
             ),
+            // Next and back button
             Align(
               alignment: Alignment.bottomRight,
               child: Row(
@@ -576,34 +631,49 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                 children: [
                   step > 1
                       ? ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              if (step > 1) {
+                                step--;
+                              }
+                            });
+                          },
                           style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4),
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
+                            textStyle: const TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           child: const Text(
                             "Back",
-                            style: TextStyle(color: Color(0xFF008ABD)),
                           ),
                         )
                       : const SizedBox(),
                   const SizedBox(width: 20),
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          if (step < 3) {
+                            step++;
+                          }
+                        });
+                      },
                       style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        textStyle: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       child: step < 3
                           ? const Text(
                               "Next",
-                              style: TextStyle(color: Color(0xFF008ABD)),
                             )
                           : const Text(
                               "Continue",
-                              style: TextStyle(color: Color(0xFF008ABD)),
                             )),
                 ],
               ),
@@ -680,10 +750,13 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
             children: [
               Expanded(
                 child: MultiSelectChip(
-                    itemList: project['skillsets'],
+                    itemList: skillsetsMockData,
                     selectedChoices: project['skillsets'],
                     onSelectionChanged: (value) {
-                      print(value);
+                      int indexOf = projectList.indexOf(project);
+                      setState(() {
+                        projectList[indexOf]['skillsets'] = value;
+                      });
                     }),
               )
             ],
@@ -700,7 +773,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
@@ -713,25 +786,36 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                 SizedBox(width: 8.0),
               ],
             ),
-            SizedBox(height: 16.0),
-            Text(
+            const SizedBox(height: 16.0),
+            const Text(
               'Tell us about yourself and you will be on your way to connect with real-world projects',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 14.0,
               ),
             ),
-            SizedBox(height: 36.0),
-            Text(
+            const SizedBox(height: 36.0),
+            const Text(
               'Resume/CV (*)',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: cvFileName != null ? null : _uploadCV,
+              style: ElevatedButton.styleFrom(
+                // backgroundColor: Colors.white, // Màu nền
+                elevation: 0, // Loại bỏ đổ bóng
+                side: const BorderSide(
+                  color: Color.fromARGB(255, 215, 215, 215), // Màu viền
+                  width: 1, // Độ dày viền
+                  style: BorderStyle.solid, // Kiểu đường viền
+                ),
+                fixedSize:
+                    const Size.fromHeight(80), // Kích thước cố định cho nút
+              ),
               child: Container(
                 width: double.infinity, // Tự động mở rộng chiều rộng
                 height: 40, // Đặt chiều cao
@@ -745,28 +829,28 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                   ),
                 ),
               ),
-              style: ElevatedButton.styleFrom(
-                // backgroundColor: Colors.white, // Màu nền
-                elevation: 0, // Loại bỏ đổ bóng
-                side: BorderSide(
-                  color: const Color.fromARGB(255, 215, 215, 215), // Màu viền
-                  width: 1, // Độ dày viền
-                  style: BorderStyle.solid, // Kiểu đường viền
-                ),
-                fixedSize: Size.fromHeight(80), // Kích thước cố định cho nút
-              ),
             ),
-            SizedBox(height: 16.0),
-            Text(
+            const SizedBox(height: 16.0),
+            const Text(
               'Transcript (*)',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: transcriptFileName != null ? null : _uploadTranscript,
+              style: ElevatedButton.styleFrom(
+                // backgroundColor: Colors.white, // Màu nền
+                elevation: 0, // Loại bỏ đổ bóng
+                side: const BorderSide(
+                  color: Color.fromARGB(255, 215, 215, 215), // Màu viền
+                  width: 1, // Độ dày viền
+                  style: BorderStyle.solid, // Kiểu đường viền
+                ),
+                fixedSize: const Size.fromHeight(80),
+              ),
               child: Container(
                 width: double.infinity, // Tự động mở rộng chiều rộng
                 height: 40, // Đặt chiều cao
@@ -780,36 +864,50 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                   ),
                 ),
               ),
-              style: ElevatedButton.styleFrom(
-                // backgroundColor: Colors.white, // Màu nền
-                elevation: 0, // Loại bỏ đổ bóng
-                side: BorderSide(
-                  color: const Color.fromARGB(255, 215, 215, 215), // Màu viền
-                  width: 1, // Độ dày viền
-                  style: BorderStyle.solid, // Kiểu đường viền
-                ),
-                fixedSize: Size.fromHeight(80),
-              ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             // Widget chứa nút nằm ở cuối màn hình bên phải
             Align(
               alignment: Alignment.bottomRight,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    routerConfig.pushReplacement('/project');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    // backgroundColor: Colors.blue,
-                    // foregroundColor: Colors.white,
-                    textStyle: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          if (step > 1) {
+                            step--;
+                          }
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        textStyle: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      child: const Text('Back'),
                     ),
-                  ),
-                  child: const Text('Continue'),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        routerConfig.pushReplacement('/project');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        textStyle: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      child: const Text('Continue'),
+                    ),
+                  ],
                 ),
               ),
             ),
