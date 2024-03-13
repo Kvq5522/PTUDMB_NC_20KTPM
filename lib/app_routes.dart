@@ -1,18 +1,13 @@
 // import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:studenthub/screens/dashboard/dashboard_screen.dart';
 import 'package:studenthub/screens/layout.dart';
 import 'package:studenthub/screens/home/home_screen.dart';
 import 'package:studenthub/screens/profile_settings/profile_setting_screen.dart';
 import 'package:studenthub/screens/authentication/login.dart';
-// import 'package:studenthub/screens/project/project_screen.dart';
 import 'package:studenthub/screens/authentication/signup_options.dart';
 import 'package:studenthub/screens/authentication/signup.dart';
 import 'package:studenthub/screens/user/choose_user_screen.dart';
 import 'package:studenthub/screens/welcome/welcome_screen.dart';
-// import 'package:studenthub/screens/dashboard/dashboard_screen.dart';
-
-// import 'package:studenthub/screens/project/project_screen.dart';
 
 GoRouter routerConfig = GoRouter(
   routes: [
