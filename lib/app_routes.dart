@@ -10,7 +10,7 @@ import 'package:studenthub/screens/authentication/signup_options.dart';
 import 'package:studenthub/screens/authentication/signup.dart';
 import 'package:studenthub/screens/user/choose_user_screen.dart';
 import 'package:studenthub/screens/welcome/welcome_screen.dart';
-// import 'package:studenthub/screens/dashboard/dashboard_screen.dart';
+import 'package:studenthub/screens/dashboard/dashboard_screen.dart';
 
 // import 'package:studenthub/screens/project/project_screen.dart';
 
@@ -27,7 +27,7 @@ GoRouter routerConfig = GoRouter(
     ),
     GoRoute(
       path: '/dashboard',
-      builder: (context, state) => const Layout(page: 1),
+      builder: (context, state) => const DashBoardScreen(),
     ),
     GoRoute(
       path: '/signup_options',
@@ -56,6 +56,10 @@ GoRouter routerConfig = GoRouter(
       builder: (context, state) => const WelcomeScreen(),
     ),
     //
+    GoRoute(
+      path: '/dashboard',
+      builder: (context, state) => const Layout(page: 1),
+    ),
     GoRoute(
       path: '/project',
       builder: (context, state) => const Layout(page: 0),
