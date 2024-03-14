@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:studenthub/components/app_bar.dart';
 import 'package:studenthub/screens/dashboard/dashboard_screen.dart';
 import 'package:studenthub/components/bottom_bar.dart';
-import 'package:studenthub/screens/project/project_screen.dart'; // Import the file
+import 'package:studenthub/screens/project/project_screen.dart';
+import 'package:studenthub/screens/saved_projects/saved_projects_screen.dart'; // Import the file
 
 class Layout extends StatefulWidget {
   final int page;

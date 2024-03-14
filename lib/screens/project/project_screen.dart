@@ -1,31 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/search_bar.dart';
-// import 'package:studenthub/constants/job_constants.dart';
+import 'package:studenthub/components/project_list.dart';
+import 'package:studenthub/app_routes.dart';
 
 class ProjectScreen extends StatelessWidget {
-  ProjectScreen({Key? key}) : super(key: key);
+  const ProjectScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF005587),
+      backgroundColor: const Color.fromARGB(255, 246, 246, 246),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // SEARCH BAR
           Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF008ABD),
-                  Color(0xFF005587),
-                ],
-              ),
+              color: Color(0xFF008ABD),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  spreadRadius: 0.5,
+                  blurRadius: 1,
+                  offset: Offset(0, 1),
+                ),
+              ],
             ),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(18, 20, 18, 40),
+              padding: const EdgeInsets.fromLTRB(20, 5, 20, 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,18 +36,20 @@ class ProjectScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      routerConfig.push('/saved-project');
+                    },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(99),
                       ),
                       fixedSize: Size.fromHeight(
-                          MediaQuery.of(context).size.height * 0.08),
+                          MediaQuery.of(context).size.height * 0.065),
                       foregroundColor: Colors.transparent,
                       backgroundColor: Colors.white,
                     ),
                     child: const Icon(
-                      Icons.filter_list_rounded,
+                      Icons.favorite_border_rounded,
                       color: Color(0xFF00658a),
                     ),
                   ),
@@ -54,8 +57,7 @@ class ProjectScreen extends StatelessWidget {
               ),
             ),
           ),
-
-          // LIST JOBS
+          // ProjectList(),
           Expanded(
             child: Container(
               decoration: const BoxDecoration(
