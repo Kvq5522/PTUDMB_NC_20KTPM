@@ -21,7 +21,19 @@ class _AccountListState extends State<AccountList> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     userInfoStore = Provider.of<UserInfoStore>(context);
-    userInfoStore.setUserType(widget.accountList[chosenIndex]['userType']);
+
+    if (userInfoStore.userType.isNotEmpty) {
+      final index = widget.accountList.indexWhere(
+          (element) => element['userType'] == userInfoStore.userType);
+
+      if (index != -1) {
+        setState(() {
+          chosenIndex = index;
+        });
+      }
+    } else {
+      userInfoStore.setUserType(widget.accountList[chosenIndex]['userType']);
+    }
   }
 
   @override

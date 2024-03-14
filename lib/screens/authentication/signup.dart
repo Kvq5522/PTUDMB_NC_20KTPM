@@ -188,6 +188,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 } else {
                   // Show error message or handle case where terms are not agreed upon
                 }
+                routerConfig.go('/dashboard');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF008ABD),

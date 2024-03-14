@@ -79,7 +79,7 @@ class WelcomeScreen extends StatelessWidget {
                   //     },
                   //   ),
                   // );
-                  routerConfig.pushReplacement('/dashboard');
+                  routerConfig.go('/dashboard');
                 },
                 style: ElevatedButton.styleFrom(
                   padding:

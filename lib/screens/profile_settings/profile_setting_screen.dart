@@ -30,7 +30,6 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
   }
 
   Widget _profileSetting() {
-    print('get user type: ${userInfoStore.userType}');
     switch (userInfoStore.userType) {
       case 'Company':
         return const CompanyProfileSetting();

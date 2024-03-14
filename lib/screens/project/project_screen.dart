@@ -91,6 +91,24 @@ class ProjectScreen extends StatelessWidget {
                               "Looking for a full-stack developer to work on a long-term project.",
                           proposal: "10-20",
                         ),
+                        infor(
+                          created: 3,
+                          title: "Full-stack Developer",
+                          time: "6-12 months",
+                          teamNumber: 5,
+                          detail:
+                              "Looking for a full-stack developer to work on a long-term project.",
+                          proposal: "10-20",
+                        ),
+                        infor(
+                          created: 3,
+                          title: "Full-stack Developer",
+                          time: "6-12 months",
+                          teamNumber: 5,
+                          detail:
+                              "Looking for a full-stack developer to work on a long-term project.",
+                          proposal: "10-20",
+                        ),
                       ],
                     ),
                   ),

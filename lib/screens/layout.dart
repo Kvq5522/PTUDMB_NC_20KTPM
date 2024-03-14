@@ -24,9 +24,9 @@ class _LayoutState extends State<Layout> {
 
   final screens = [
     ProjectScreen(),
-    DashBoardScreen(),
-    Center(child: Text("Message")),
-    Center(child: Text("Alerts")),
+    DashboardScreen(),
+    const Center(child: Text("Message")),
+    const Center(child: Text("Alerts")),
   ];
 
   @override

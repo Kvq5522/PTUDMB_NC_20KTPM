@@ -113,7 +113,7 @@ class _LoginFormState extends State<LoginForm> {
                 //   // Form is validated, process login
                 //   // Your login logic here
                 // }
-                routerConfig.pushReplacement('/choose-user');
+                routerConfig.go('/choose-user');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF008ABD),

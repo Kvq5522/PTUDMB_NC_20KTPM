@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/components/input_field.dart';
 import 'package:studenthub/components/radio_group.dart';
 
@@ -28,19 +28,6 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
 
   @override
   Widget build(BuildContext context) {
-    return _companyProfileSetting();
-  }
-
-  Widget _companyProfileSetting() {
-    switch (step) {
-      case 0:
-        return _inputProfile();
-      default:
-        return const SizedBox();
-    }
-  }
-
-  Widget _inputProfile() {
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -64,7 +51,6 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
               companySize: companySize,
               onChanged: (value) {
                 // Handle the selected company size
-                print('Selected company size: $value');
               },
             ),
             const SizedBox(height: 20),
@@ -95,6 +81,28 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
               hintText: "Input your company description here",
               bigField: true,
             ),
+
+            const SizedBox(height: 20),
+
+            //Button to submit
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      routerConfig.push('/welcome');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      textStyle: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    child: const Text("Continue")),
+              ],
+            )
           ],
         ),
       ),
