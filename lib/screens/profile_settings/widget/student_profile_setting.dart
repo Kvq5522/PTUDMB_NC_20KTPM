@@ -5,10 +5,11 @@ import 'package:studenthub/components/multi_select_chip.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/constants/project_list_mock.dart';
-import '../../../constants/techstack_mock.dart';
-import '../../../constants/skillset_mock.dart';
-import '../../../constants/education_mock.dart';
-import '../../../constants/language_mock.dart';
+import 'package:studenthub/constants/project_list_mock.dart';
+import '../../../../constants/techstack_mock.dart';
+import '../../../../constants/skillset_mock.dart';
+import '../../../../constants/education_mock.dart';
+import '../../../../constants/language_mock.dart';
 
 import 'dart:io';
 
@@ -923,7 +924,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                     const SizedBox(width: 10),
                     ElevatedButton(
                       onPressed: () {
-                        routerConfig.go('/dashboard');
+                        routerConfig.pushReplacement('/project');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,

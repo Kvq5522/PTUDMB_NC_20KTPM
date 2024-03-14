@@ -31,6 +31,14 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
     });
   }
 
+  @override
+  void didUpdateWidget(MultiSelectChip oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    setState(() {
+      selectedChoices = List.from(widget.selectedChoices);
+    });
+  }
+
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
@@ -53,7 +61,8 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
             child: DropdownMenu(
               controller: _textEditingController,
               requestFocusOnTap: true,
-              initialSelection: widget.itemList[0] ?? "",
+              initialSelection:
+                  widget.itemList.isNotEmpty ? widget.itemList[0] : "",
               label: Text(
                   widget.labelField != "" ? widget.labelField : "Select item"),
               dropdownMenuEntries:

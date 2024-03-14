@@ -1,9 +1,12 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/constants/proposals_mock.dart';
 import 'package:studenthub/screens/dashboard/widget/company_dashboard.dart';
 import 'package:studenthub/screens/dashboard/widget/student_dashboard.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
+import 'package:studenthub/app_routes.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);

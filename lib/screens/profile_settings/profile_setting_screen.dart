@@ -36,7 +36,9 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
       case 'Student':
         return const StudentProfileSetting();
       default:
-        return const SizedBox();
+        return const Center(
+          child: Text('Error loading profile setting. Please try again later.'),
+        );
     }
   }
 }
