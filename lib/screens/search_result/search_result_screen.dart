@@ -1,15 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:studenthub/app_routes.dart';
+import 'package:studenthub/components/filter.dart';
 import 'package:studenthub/components/search_bar.dart';
 import 'package:studenthub/components/project_list.dart';
-import 'package:studenthub/app_routes.dart';
 
-class ProjectScreen extends StatelessWidget {
-  const ProjectScreen({Key? key}) : super(key: key);
+class SearchResultScreen extends StatefulWidget {
+  const SearchResultScreen({super.key});
 
+  @override
+  State<SearchResultScreen> createState() => _SearchResultScreenState();
+}
+
+class _SearchResultScreenState extends State<SearchResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 246, 246, 246),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        title: Text(
+          'Project search',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF008ABD),
+        actions: [
+          IconButton(
+            onPressed: () {
+              routerConfig.push('/choose-user');
+            },
+            icon: const Icon(
+              Icons.person,
+              size: 30,
+              color: Colors.white,
+            ),
+          )
+        ],
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -37,7 +72,12 @@ class ProjectScreen extends StatelessWidget {
                   const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
-                      routerConfig.push('/saved-project');
+                      showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (BuildContext context) {
+                            return MyFillTer();
+                          });
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -49,7 +89,7 @@ class ProjectScreen extends StatelessWidget {
                       backgroundColor: Colors.white,
                     ),
                     child: const Icon(
-                      Icons.favorite_border_rounded,
+                      Icons.filter_list_rounded,
                       color: Color(0xFF00658a),
                     ),
                   ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/components/app_bar.dart';
 import 'package:studenthub/screens/profile_settings/widget/company_profile_setting.dart';
-import 'package:studenthub/screens/profile_settings/widget/student_profile_setting/student_profile_setting.dart';
+import './widget/student_profile_setting.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 
 class ProfileSettingScreen extends StatefulWidget {
