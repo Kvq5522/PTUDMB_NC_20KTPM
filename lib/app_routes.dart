@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:studenthub/screens/detail_project/detail_project_screen.dart';
+import 'package:studenthub/screens/dashboard/dashboard_detail/dashboard_detail_screen.dart';
+import 'package:studenthub/screens/project/project_apply/project_apply_screen.dart';
+import 'package:studenthub/screens/project/project_detail/project_detail_screen.dart';
 import 'package:studenthub/screens/layout.dart';
 import 'package:studenthub/screens/home/home_screen.dart';
 import 'package:studenthub/screens/profile_settings/profile_setting_screen.dart';
@@ -10,11 +12,11 @@ import 'package:studenthub/screens/saved_projects/saved_projects_screen.dart';
 import 'package:studenthub/screens/search_result/search_result_screen.dart';
 import 'package:studenthub/screens/user/choose_user_screen.dart';
 import 'package:studenthub/screens/welcome/welcome_screen.dart';
-import 'package:studenthub/screens/dashboard/dashboard_screen.dart';
-import 'package:studenthub/screens/dashboard/project_post.dart';
-// import 'package:studenthub/screens/project/project_screen.dart';
+import 'package:studenthub/screens/dashboard/dashboard_posting/dashboard_project_post_screen.dart';
 
 GoRouter routerConfig = GoRouter(
+  debugLogDiagnostics: true,
+  initialLocation: "/",
   routes: [
     GoRoute(
       path: '/',
@@ -61,16 +63,30 @@ GoRouter routerConfig = GoRouter(
       builder: (context, state) => const Layout(page: 1),
     ),
     GoRoute(
-      path: '/dashboard',
-      builder: (context, state) => const Layout(page: 1),
+      path: '/test',
+      builder: (context, state) {
+        final String? projectId = state.pathParameters?["project_id"];
+
+        print(projectId);
+
+        return DashboardDetailScreen(id: projectId ?? "");
+      },
     ),
     GoRoute(
       path: '/project',
       builder: (context, state) => const Layout(page: 0),
     ),
     GoRoute(
-      path: '/detail-project',
+      path: '/project-post',
+      builder: (context, state) => const ProjectPosting(),
+    ),
+    GoRoute(
+      path: '/project-detail',
       builder: (context, state) => const DetailProjectScreen(),
+    ),
+    GoRoute(
+      path: '/project-apply',
+      builder: ((context, state) => ProjectApplyScreen())
     ),
     GoRoute(
       path: '/saved-project',

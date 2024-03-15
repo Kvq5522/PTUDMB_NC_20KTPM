@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:studenthub/app_routes.dart';
+
+import 'package:studenthub/components/app_bar.dart';
 
 class DetailProjectScreen extends StatefulWidget {
   const DetailProjectScreen({super.key});
@@ -13,35 +14,7 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_rounded,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            routerConfig.go('/project');
-          },
-        ),
-        backgroundColor: Colors.transparent, // Đặt màu nền trong suốt
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            color: Color(0xFF008ABD),
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              routerConfig.push('/choose-user');
-            },
-            icon: const Icon(
-              Icons.person,
-              size: 30,
-              color: Colors.white,
-            ),
-          )
-        ],
-      ),
+      appBar: const MyAppBar(),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -64,10 +37,10 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                         Text(
                           "Senior Front End",
                           style: TextStyle(
-                            fontSize: 56,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                              fontSize: 56,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              overflow: TextOverflow.ellipsis),
                         ),
                         SizedBox(
                           height: 8,
@@ -225,7 +198,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                           const EdgeInsets.all(16),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        routerConfig.push("/project-apply");
+                      },
                       child: const Text(
                         "Apply Now",
                         style: TextStyle(

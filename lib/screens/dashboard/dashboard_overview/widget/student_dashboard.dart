@@ -80,6 +80,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
         return Container(
           child: Column(
             children: [
+              //Title and collapse button
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -120,13 +121,23 @@ class _StudentDashboardState extends State<StudentDashboard> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
+                                  "Created ${DateTime.now().difference(DateTime.parse(list[index]["createdDate"])).inDays} days ago",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                Text(
                                   list[index]["name"],
                                   style: const TextStyle(
-                                    fontSize: 16,
-                                    overflow: TextOverflow.ellipsis,
+                                    color: Color(0xFF008ABD),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    overflow: TextOverflow.visible,
                                   ),
                                 ),
                                 const SizedBox(height: 5),
+                                //Status
                                 Text(
                                   "${status.toUpperCase()[0] + status.substring(1)} ${DateTime.now().difference(DateTime.parse(list[index]["submittedDate"])).inDays} days ago",
                                   style: const TextStyle(
@@ -134,15 +145,33 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                     color: Colors.grey,
                                   ),
                                 ),
-                                const SizedBox(height: 10),
-                                const Text("Description:"),
                                 const SizedBox(height: 5),
+                                //Time
+                                Text(
+                                  "Time: ${list[index]["projectScope"]}",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                //Team Number
+                                Text(
+                                  "Team Number: ${list[index]["teamNumber"]}",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                //Description
                                 Text(
                                   list[index]["description"],
                                   style: const TextStyle(
                                     overflow: TextOverflow.visible,
                                   ),
                                 ),
+                                const SizedBox(height: 10),
                               ],
                             ),
                           )

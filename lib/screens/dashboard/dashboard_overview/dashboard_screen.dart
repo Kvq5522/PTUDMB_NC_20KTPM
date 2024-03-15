@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/constants/proposals_mock.dart';
-import 'package:studenthub/screens/dashboard/widget/company_dashboard.dart';
-import 'package:studenthub/screens/dashboard/widget/student_dashboard.dart';
+import 'package:studenthub/screens/dashboard/dashboard_overview/widget/company_dashboard.dart';
+import 'package:studenthub/screens/dashboard/dashboard_overview/widget/student_dashboard.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:studenthub/app_routes.dart';
 
@@ -153,7 +153,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               icon: const Icon(Icons.edit_rounded, size: 18),
               label: const Text("Post a jobs",
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-              onPressed: () {},
+              onPressed: () {
+                routerConfig.push('/project-post');
+              }, 
             )
           : null,
     );

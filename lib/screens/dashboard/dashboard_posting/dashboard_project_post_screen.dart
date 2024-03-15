@@ -1,6 +1,7 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/components/app_bar.dart';
 // import '../'
 
@@ -620,6 +621,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                         print("Job title: " + jobTitle.text);
                         print("Project time: " + studentNum.text);
                         print("Describe: " + projectDescribe.text);
+                        routerConfig.go("/dashboard");
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF008ABD),

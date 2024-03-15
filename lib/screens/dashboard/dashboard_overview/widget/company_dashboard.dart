@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:studenthub/app_routes.dart";
 
 class CompanyDashboard extends StatefulWidget {
   final List projectLists;
@@ -25,7 +26,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                 status: "pending"),
             collapsibleList(
                 list: widget.projectLists,
-                title: "Active Project",
+                title: "Working Project",
                 status: "working"),
             collapsibleList(
                 list: widget.projectLists,
@@ -69,24 +70,85 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
     }
 
     void showOptionsBottomModal() async {
-      await showModalBottomSheet(
+      await showModalBottomSheet<void>(
         context: context,
-        builder: (BuildContext context) {
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(25.0),
+          ),
+        ),
+        builder: (context) {
           return Container(
-            padding: const EdgeInsets.all(20),
-            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25.0),
+                topRight: Radius.circular(25.0),
+              ),
+              color: Colors.white,
+            ),
             child: Column(
-              children: [
-                const Text("Options"),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text("Edit"),
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: 50,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(25.0),
+                      topRight: Radius.circular(25.0),
+                    ),
+                  ),
+                  child: const Text(
+                    "Properties",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text("Delete"),
+                Container(
+                  width: double.infinity,
+                  height: 1,
+                  color: Colors.grey[300],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  child: ListView(
+                    children: <Widget>[
+                      ListTile(
+                        leading: const Icon(Icons.assignment),
+                        title: const Text("View Proposals"),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.message),
+                        title: const Text("View Messages"),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.work),
+                        title: const Text("View Hired"),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.assignment_turned_in),
+                        title: const Text("View Project"),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.edit),
+                        title: const Text("Edit Project"),
+                        onTap: () {},
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.delete),
+                        title: const Text("Remove Project"),
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -97,40 +159,48 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
-        return GestureDetector(
-          onTap: () {},
-          child: Container(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "$title (${countIf(list, status)})",
-                      style: const TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                      ),
+        return Container(
+          child: Column(
+            children: [
+              // Title and collapse button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "$title (${countIf(list, status)})",
+                    style: const TextStyle(
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isCollapsed = !isCollapsed;
-                        });
-                      },
-                      icon: isCollapsed
-                          ? const Icon(Icons.arrow_drop_down)
-                          : const Icon(Icons.arrow_drop_up),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: List.generate(
-                    list.length,
-                    (index) {
-                      if (isCollapsed) return const SizedBox();
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isCollapsed = !isCollapsed;
+                      });
+                    },
+                    icon: isCollapsed
+                        ? const Icon(Icons.arrow_drop_down)
+                        : const Icon(Icons.arrow_drop_up),
+                  ),
+                ],
+              ),
+              // List of projects
+              Column(
+                children: List.generate(
+                  list.length,
+                  (index) {
+                    if (isCollapsed) return const SizedBox();
 
-                      return list[index]["status"] == status
-                          ? Container(
+                    return list[index]["status"] == status
+                        ? GestureDetector(
+                            onTap: () {
+                              routerConfig.push(Uri(
+                                  path: "/test",
+                                  queryParameters: {
+                                    "project_id": list[index]["id"],
+                                  }).toString());
+                            },
+                            child: Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Colors.grey.shade300,
@@ -147,11 +217,12 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      //Project name
+                                      //Created date
                                       Text(
-                                        list[index]["name"],
+                                        "Created ${DateTime.now().difference(DateTime.parse(list[index]["createdDate"])).inDays} days ago",
                                         style: const TextStyle(
-                                          overflow: TextOverflow.ellipsis,
+                                          fontSize: 12,
+                                          color: Colors.grey,
                                         ),
                                       ),
                                       //More options
@@ -163,18 +234,19 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                     ],
                                   ),
                                   const SizedBox(height: 5),
-                                  // Created date
+                                  // Project name
                                   Text(
-                                    "Created ${DateTime.now().difference(DateTime.parse(list[index]["createdDate"])).inDays} days ago",
+                                    list[index]["name"],
                                     style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
+                                      color: Color(0xFF008ABD),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      overflow: TextOverflow.visible,
                                     ),
                                   ),
+
                                   const SizedBox(height: 10),
                                   // Description
-                                  const Text("Description:"),
-                                  const SizedBox(height: 5),
                                   Text(
                                     list[index]["description"],
                                     style: const TextStyle(
@@ -202,13 +274,13 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                   )
                                 ],
                               ),
-                            )
-                          : const SizedBox();
-                    },
-                  ),
+                            ),
+                          )
+                        : const SizedBox();
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },

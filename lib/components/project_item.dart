@@ -32,7 +32,7 @@ class _ProjectItemState extends State<ProjectItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        routerConfig.push('/detail-project');
+        routerConfig.push('/project-detail');
       },
       child: Container(
         width: double.infinity,
@@ -79,6 +79,7 @@ class _ProjectItemState extends State<ProjectItem> {
                 color: Color(0xFF008ABD),
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
+                overflow: TextOverflow.visible,
               ),
             ),
             const SizedBox(height: 8),
