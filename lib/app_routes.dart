@@ -1,20 +1,22 @@
-// import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:studenthub/screens/dashboard/dashboard_screen.dart';
+import 'package:studenthub/screens/dashboard/dashboard_detail/dashboard_detail_screen.dart';
+import 'package:studenthub/screens/project/project_apply/project_apply_screen.dart';
+import 'package:studenthub/screens/project/project_detail/project_detail_screen.dart';
 import 'package:studenthub/screens/layout.dart';
 import 'package:studenthub/screens/home/home_screen.dart';
 import 'package:studenthub/screens/profile_settings/profile_setting_screen.dart';
 import 'package:studenthub/screens/authentication/login.dart';
-// import 'package:studenthub/screens/project/project_screen.dart';
 import 'package:studenthub/screens/authentication/signup_options.dart';
 import 'package:studenthub/screens/authentication/signup.dart';
+import 'package:studenthub/screens/saved_projects/saved_projects_screen.dart';
+import 'package:studenthub/screens/search_result/search_result_screen.dart';
 import 'package:studenthub/screens/user/choose_user_screen.dart';
 import 'package:studenthub/screens/welcome/welcome_screen.dart';
-import 'package:studenthub/screens/dashboard/dashboard_screen.dart';
-import 'package:studenthub/screens/dashboard/project_post.dart';
-// import 'package:studenthub/screens/project/project_screen.dart';
+import 'package:studenthub/screens/dashboard/dashboard_posting/dashboard_project_post_screen.dart';
 
 GoRouter routerConfig = GoRouter(
+  debugLogDiagnostics: true,
+  initialLocation: "/",
   routes: [
     GoRoute(
       path: '/',
@@ -25,7 +27,10 @@ GoRouter routerConfig = GoRouter(
       path: '/login',
       builder: (context, state) => LoginScreen(),
     ),
-
+    GoRoute(
+      path: '/project',
+      builder: (context, state) => const Layout(page: 0),
+    ),
     GoRoute(
       path: '/signup_options',
       builder: (context, state) => const SignUpOptions(),
@@ -58,13 +63,38 @@ GoRouter routerConfig = GoRouter(
       builder: (context, state) => const Layout(page: 1),
     ),
     GoRoute(
+      path: '/test',
+      builder: (context, state) {
+        final String? projectId = state.pathParameters?["project_id"];
+
+        print(projectId);
+
+        return DashboardDetailScreen(id: projectId ?? "");
+      },
+    ),
+    GoRoute(
       path: '/project',
       builder: (context, state) => const Layout(page: 0),
     ),
-    //Dashboard
     GoRoute(
-      path: '/project_post',
+      path: '/project-post',
       builder: (context, state) => const ProjectPosting(),
+    ),
+    GoRoute(
+      path: '/project-detail',
+      builder: (context, state) => const DetailProjectScreen(),
+    ),
+    GoRoute(
+      path: '/project-apply',
+      builder: ((context, state) => ProjectApplyScreen())
+    ),
+    GoRoute(
+      path: '/saved-project',
+      builder: (context, state) => const SavedProjectScreen(),
+    ),
+    GoRoute(
+      path: '/search-result',
+      builder: (context, state) => const SearchResultScreen(),
     ),
   ],
 );

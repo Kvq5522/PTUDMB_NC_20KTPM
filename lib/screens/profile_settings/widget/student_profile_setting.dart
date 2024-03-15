@@ -5,6 +5,7 @@ import 'package:studenthub/components/multi_select_chip.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/constants/project_list_mock.dart';
+import 'package:studenthub/constants/project_list_mock.dart';
 import '../../../../constants/techstack_mock.dart';
 import '../../../../constants/skillset_mock.dart';
 import '../../../../constants/education_mock.dart';
