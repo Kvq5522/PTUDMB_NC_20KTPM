@@ -63,7 +63,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             bottomLeft: Radius.circular(4)),
                       ),
                       backgroundColor: filter == "All"
-                          ? const Color(0xFF00658a)
+                          ? const Color(0xFF008ABD)
                           : Colors.white,
                     ),
                     child: Text("All",
@@ -85,7 +85,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         borderRadius: BorderRadius.circular(0),
                       ),
                       backgroundColor: filter == "Working"
-                          ? const Color(0xFF00658a)
+                          ? const Color(0xFF008ABD)
                           : Colors.white,
                     ),
                     child: Text("Working",
@@ -110,7 +110,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             bottomRight: Radius.circular(4)),
                       ),
                       backgroundColor: filter == "Archived"
-                          ? const Color(0xFF00658a)
+                          ? const Color(0xFF008ABD)
                           : Colors.white,
                     ),
                     child: Text("Archived",
@@ -148,14 +148,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(99),
               ),
-              backgroundColor: const Color(0xFF00658a),
+              backgroundColor: const Color(0xFF008ABD),
               foregroundColor: Colors.white,
               icon: const Icon(Icons.edit_rounded, size: 18),
               label: const Text("Post a jobs",
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
               onPressed: () {
                 routerConfig.push('/project-post');
-              }, 
+              },
             )
           : null,
     );

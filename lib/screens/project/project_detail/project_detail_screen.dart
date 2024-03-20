@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:studenthub/app_routes.dart';
 
 import 'package:studenthub/components/app_bar.dart';
@@ -30,40 +31,43 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Senior Front End",
-                          style: TextStyle(
+                    Flexible(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Senior Front End",
+                            style: TextStyle(
                               fontSize: 56,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              overflow: TextOverflow.ellipsis),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.access_time,
-                              color: Colors.white,
-                              size: 18,
+                              // overflow: TextOverflow.ellipsis,
                             ),
-                            SizedBox(width: 5),
-                            Text(
-                              "Created 5 days ago",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w300,
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.access_time,
                                 color: Colors.white,
+                                size: 18,
                               ),
-                            ),
-                          ],
-                        )
-                      ],
+                              SizedBox(width: 5),
+                              Text(
+                                "Created 5 days ago",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),

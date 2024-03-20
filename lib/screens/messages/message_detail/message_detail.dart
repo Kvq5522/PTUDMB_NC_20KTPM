@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:studenthub/screens/messages/widget/schedule.dart';
+import 'package:studenthub/screens/messages/widget/schedule_item.dart';
 import '../../../constants/messages_mock.dart';
 import 'package:intl/intl.dart';
 
@@ -34,6 +36,20 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
               child: ListView(
                 reverse: true,
                 children: [
+                  ScheduleItem(
+                    isSender: true,
+                    name: "Luis Pham",
+                    avatarUrl: "assets/images/avatar.png",
+                    title: "Catch up meeting",
+                    duration: "1 hours",
+                    day: "Thursday",
+                    date: "13/3/2024",
+                    timeMeeting: "15:00",
+                    endDay: "Thursday",
+                    endDate: "13/3/2024",
+                    endTimeMeeting: "15:00",
+                    time: DateTime.now(),
+                  ),
                   message_items(
                     false,
                     "Luis Pham",
@@ -64,7 +80,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
       margin: const EdgeInsets.only(bottom: 10),
       alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment:
             isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
@@ -173,11 +189,47 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios_rounded,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          // Navigator.of(context).pop();
+        },
+      ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Text("Luis Pham"), Icon(Icons.more_vert)],
+        children: [
+          Text(
+            "Luis Pham",
+            style: TextStyle(color: Colors.white),
+          )
+        ],
       ),
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: const Color(0xFF008ABD),
+      actions: [
+        IconButton(
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return MySchedule();
+                });
+          },
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          icon: const Icon(
+            Icons.more_vert,
+            size: 30,
+            color: Colors.white,
+          ),
+        )
+      ],
     );
   }
 }
