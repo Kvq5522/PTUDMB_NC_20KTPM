@@ -12,6 +12,7 @@ import 'package:studenthub/screens/saved_projects/saved_projects_screen.dart';
 import 'package:studenthub/screens/search_result/search_result_screen.dart';
 import 'package:studenthub/screens/user/choose_user_screen.dart';
 import 'package:studenthub/screens/welcome/welcome_screen.dart';
+import 'package:studenthub/screens/messages/message_detail/message_detail.dart';
 import 'package:studenthub/screens/dashboard/dashboard_posting/dashboard_project_post_screen.dart';
 
 GoRouter routerConfig = GoRouter(
@@ -43,6 +44,15 @@ GoRouter routerConfig = GoRouter(
           selectedOption: selectedOption,
         );
       },
+    ),
+    //Messages
+    GoRoute(
+      path: '/messages',
+      builder: (context, state) => const Layout(page: 2),
+    ),
+    GoRoute(
+      path: '/message_detail',
+      builder: (context, state) => const MessageDetailScreen(),
     ),
     // User and Profile settings
     GoRoute(

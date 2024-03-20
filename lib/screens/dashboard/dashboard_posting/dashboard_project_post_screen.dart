@@ -278,7 +278,6 @@ class _ProjectPostingState extends State<ProjectPosting> {
               });
             },
           ),
-
           Container(
             alignment: Alignment.topLeft,
             child: errorMessage2.isNotEmpty
@@ -288,47 +287,66 @@ class _ProjectPostingState extends State<ProjectPosting> {
                   )
                 : SizedBox(),
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  if (projectTime.isNotEmpty && studentNum.text.isNotEmpty) {
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
                     setState(() {
-                      errorMessage = '';
+                      step--;
                     });
-                    if (studentNum.text.isNotEmpty) {
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: const Color(0xFF008ABD),
+                    textStyle: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  child: const Text('Previous'),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    if (projectTime.isNotEmpty && studentNum.text.isNotEmpty) {
                       setState(() {
-                        errorMessage2 = '';
-                        step++;
+                        errorMessage = '';
                       });
+                      if (studentNum.text.isNotEmpty) {
+                        setState(() {
+                          errorMessage2 = '';
+                          step++;
+                        });
+                      } else {
+                        setState(() {
+                          errorMessage2 = "Please fill this field!";
+                        });
+                      }
                     } else {
                       setState(() {
-                        errorMessage2 = "Please fill this field!";
+                        errorMessage = projectTime.isEmpty
+                            ? "Please choose a project time"
+                            : '';
+                        errorMessage2 = studentNum.text.isEmpty
+                            ? "Please fill this field!"
+                            : '';
                       });
                     }
-                  } else {
-                    setState(() {
-                      errorMessage = projectTime.isEmpty
-                          ? "Please choose a project time"
-                          : '';
-                      errorMessage2 = studentNum.text.isEmpty
-                          ? "Please fill this field!"
-                          : '';
-                    });
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF008ABD),
-                  foregroundColor: Colors.white,
-                  textStyle: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF008ABD),
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                  child: const Text('Next: Scope'),
                 ),
-                child: const Text('Next: Scope'),
-              ),
+              ],
             ),
           ),
         ],
@@ -451,35 +469,54 @@ class _ProjectPostingState extends State<ProjectPosting> {
                   )
                 : SizedBox(),
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  if (projectDescribe.text.isNotEmpty) {
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
                     setState(() {
-                      step++;
+                      step--;
                     });
-                    setState(() {
-                      errorMessage = '';
-                    });
-                  } else {
-                    setState(() {
-                      errorMessage = "Please fill this field";
-                    });
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF008ABD),
-                  foregroundColor: Colors.white,
-                  textStyle: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: const Color(0xFF008ABD),
+                    textStyle: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                  child: const Text('Previous'),
                 ),
-                child: const Text('Next: Scope'),
-              ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    if (projectDescribe.text.isNotEmpty) {
+                      setState(() {
+                        step++;
+                      });
+                      setState(() {
+                        errorMessage = '';
+                      });
+                    } else {
+                      setState(() {
+                        errorMessage = "Please fill this field";
+                      });
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF008ABD),
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  child: const Text('Next: Scope'),
+                ),
+              ],
             ),
           ),
         ],
@@ -612,27 +649,46 @@ class _ProjectPostingState extends State<ProjectPosting> {
                     ),
                   ],
                 ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        print("Job title: " + jobTitle.text);
-                        print("Project time: " + studentNum.text);
-                        print("Describe: " + projectDescribe.text);
-                        routerConfig.go("/dashboard");
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF008ABD),
-                        foregroundColor: Colors.white,
-                        textStyle: const TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            step--;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: const Color(0xFF008ABD),
+                          textStyle: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
+                        child: const Text('Previous'),
                       ),
-                      child: const Text('Post job'),
-                    ),
+                      SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          print("Job title: " + jobTitle.text);
+                          print("Project time: " + studentNum.text);
+                          print("Describe: " + projectDescribe.text);
+                          routerConfig.go("/dashboard");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF008ABD),
+                          foregroundColor: Colors.white,
+                          textStyle: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        child: const Text('Post job'),
+                      ),
+                    ],
                   ),
                 ),
               ],
