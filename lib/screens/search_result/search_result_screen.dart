@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/components/filter.dart';
 import 'package:studenthub/components/search_bar.dart';
-import 'package:studenthub/components/project_list.dart';
+import 'package:studenthub/screens/project/widget/project_list.dart';
 
 class SearchResultScreen extends StatefulWidget {
   const SearchResultScreen({super.key});

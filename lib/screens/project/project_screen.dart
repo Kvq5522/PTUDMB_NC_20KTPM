@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/search_bar.dart';
-import 'package:studenthub/components/project_list.dart';
+import 'package:studenthub/screens/project/widget/project_list.dart';
 import 'package:studenthub/app_routes.dart';
 
 class ProjectScreen extends StatelessWidget {
@@ -14,19 +14,11 @@ class ProjectScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFF008ABD),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  spreadRadius: 0.5,
-                  blurRadius: 1,
-                  offset: Offset(0, 1),
-                ),
-              ],
-            ),
+            // decoration: const BoxDecoration(
+            //   color: Colors.white,
+            // ),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 5, 20, 15),
+              padding: const EdgeInsets.fromLTRB(20, 15, 20, 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,7 +38,7 @@ class ProjectScreen extends StatelessWidget {
                       fixedSize: Size.fromHeight(
                           MediaQuery.of(context).size.height * 0.065),
                       foregroundColor: Colors.transparent,
-                      backgroundColor: Colors.white,
+                      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     ),
                     child: const Icon(
                       Icons.favorite_border_rounded,

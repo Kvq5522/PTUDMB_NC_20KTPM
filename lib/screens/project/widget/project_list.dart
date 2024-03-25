@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:studenthub/components/project_item.dart';
+import 'package:studenthub/screens/project/widget/project_item.dart';
 
 class ProjectList extends StatefulWidget {
   const ProjectList({super.key});
@@ -13,7 +13,7 @@ class _ProjectListState extends State<ProjectList> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Column(
           children: [
             ProjectItem(

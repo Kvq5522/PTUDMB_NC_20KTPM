@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:studenthub/components/app_bar.dart';
 import 'package:studenthub/screens/dashboard/dashboard_overview/dashboard_screen.dart';
 import 'package:studenthub/components/bottom_bar.dart';
+import 'package:studenthub/screens/notifications/notifications.dart';
 import 'package:studenthub/screens/project/project_screen.dart';
+import 'package:studenthub/screens/messages/message_overview/message_screen.dart';
 import 'package:studenthub/screens/saved_projects/saved_projects_screen.dart'; // Import the file
 
 class Layout extends StatefulWidget {
@@ -26,8 +28,8 @@ class _LayoutState extends State<Layout> {
   final screens = [
     const ProjectScreen(),
     const DashboardScreen(),
-    const Center(child: Text("Message")),
-    const Center(child: Text("Alerts")),
+    const MessageScreen(),
+    const NotificaitonScreen()
   ];
 
   @override

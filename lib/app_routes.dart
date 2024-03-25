@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/dashboard_detail_screen.dart';
+
 import 'package:studenthub/screens/project/project_apply/project_apply_screen.dart';
 import 'package:studenthub/screens/project/project_detail/project_detail_screen.dart';
 import 'package:studenthub/screens/layout.dart';
@@ -11,8 +12,11 @@ import 'package:studenthub/screens/authentication/signup.dart';
 import 'package:studenthub/screens/saved_projects/saved_projects_screen.dart';
 import 'package:studenthub/screens/search_result/search_result_screen.dart';
 import 'package:studenthub/screens/user/choose_user_screen.dart';
+import 'package:studenthub/screens/video_call/video_call_screen.dart';
 import 'package:studenthub/screens/welcome/welcome_screen.dart';
+import 'package:studenthub/screens/messages/message_detail/message_detail.dart';
 import 'package:studenthub/screens/dashboard/dashboard_posting/dashboard_project_post_screen.dart';
+import 'package:studenthub/screens/notifications/notifications.dart';
 
 GoRouter routerConfig = GoRouter(
   debugLogDiagnostics: true,
@@ -44,6 +48,19 @@ GoRouter routerConfig = GoRouter(
         );
       },
     ),
+    //Messages
+    GoRoute(
+      path: '/messages',
+      builder: (context, state) => const Layout(page: 2),
+    ),
+    GoRoute(
+      path: '/message_detail',
+      builder: (context, state) => const MessageDetailScreen(),
+    ),
+    GoRoute(
+      path: '/notification',
+      builder: (context, state) => const NotificaitonScreen(),
+    ),
     // User and Profile settings
     GoRoute(
       path: '/choose-user',
@@ -65,9 +82,9 @@ GoRouter routerConfig = GoRouter(
     GoRoute(
       path: '/test',
       builder: (context, state) {
-        final String? projectId = state.pathParameters?["project_id"];
+        final String? projectId = state.pathParameters["project_id"];
 
-        print(projectId);
+        // print(projectId);
 
         return DashboardDetailScreen(id: projectId ?? "");
       },
@@ -85,9 +102,8 @@ GoRouter routerConfig = GoRouter(
       builder: (context, state) => const DetailProjectScreen(),
     ),
     GoRoute(
-      path: '/project-apply',
-      builder: ((context, state) => ProjectApplyScreen())
-    ),
+        path: '/project-apply',
+        builder: ((context, state) => ProjectApplyScreen())),
     GoRoute(
       path: '/saved-project',
       builder: (context, state) => const SavedProjectScreen(),
@@ -95,6 +111,10 @@ GoRouter routerConfig = GoRouter(
     GoRoute(
       path: '/search-result',
       builder: (context, state) => const SearchResultScreen(),
+    ),
+    GoRoute(
+      path: '/video-call',
+      builder: (context, state) => VideoCallScreen(),
     ),
   ],
 );

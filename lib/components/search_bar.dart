@@ -16,11 +16,12 @@ class _MySearchBarState extends State<MySearchBar> {
         _showSearchBottomSheet(context);
       },
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.06,
+        height: MediaQuery.of(context).size.height * 0.065,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(99),
           border: Border.all(color: const Color.fromARGB(255, 243, 243, 243)),
-          color: const Color.fromARGB(255, 243, 243, 243),
+          // color: const Color.fromARGB(255, 243, 243, 243),
+          color: Colors.white,
         ),
         child: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
