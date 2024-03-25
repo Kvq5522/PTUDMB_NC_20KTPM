@@ -16,6 +16,7 @@ import 'package:studenthub/screens/video_call/video_call_screen.dart';
 import 'package:studenthub/screens/welcome/welcome_screen.dart';
 import 'package:studenthub/screens/messages/message_detail/message_detail.dart';
 import 'package:studenthub/screens/dashboard/dashboard_posting/dashboard_project_post_screen.dart';
+import 'package:studenthub/screens/notifications/notifications.dart';
 
 GoRouter routerConfig = GoRouter(
   debugLogDiagnostics: true,
@@ -55,6 +56,10 @@ GoRouter routerConfig = GoRouter(
     GoRoute(
       path: '/message_detail',
       builder: (context, state) => const MessageDetailScreen(),
+    ),
+    GoRoute(
+      path: '/notification',
+      builder: (context, state) => const NotificaitonScreen(),
     ),
     // User and Profile settings
     GoRoute(

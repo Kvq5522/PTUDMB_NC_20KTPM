@@ -5,7 +5,7 @@ import '../../../constants/messages_mock.dart';
 import '../../../app_routes.dart';
 
 class MessageScreen extends StatefulWidget {
-  const MessageScreen({super.key}); // Sửa constructor
+  const MessageScreen({super.key});
 
   @override
   State<MessageScreen> createState() => _MessageScreenState();
@@ -87,6 +87,7 @@ class _MessageScreenState extends State<MessageScreen> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          //Avatar
                           CircleAvatar(
                             backgroundImage:
                                 AssetImage(displayList[index].avatar),
@@ -122,7 +123,6 @@ class _MessageScreenState extends State<MessageScreen> {
                                   ],
                                 ),
                                 // Job
-
                                 Text(
                                   displayList[index].job,
                                   style: const TextStyle(
