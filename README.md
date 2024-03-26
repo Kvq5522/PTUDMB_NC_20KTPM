@@ -1,20 +1,20 @@
-StudentHub
-This is a new Flutter project aiming to create a centralized platform for students. The application facilitates various features beneficial for students to manage their academic life efficiently.
+# StudentHub
 
-Team Members:
-John Doe - Project Manager
+Welcome to **StudentHub**! 🎓 This Flutter project aims to create a centralized platform for students, offering various features to efficiently manage their academic life.
 
-Role: Oversees project development and coordination.
-Contact: GitHub
-Alice Smith - Lead Developer
+## Team Members
 
-Role: Leads the development team, responsible for coding and implementation.
-Contact: GitHub
-Bob Johnson - UI/UX Designer
+1. **Quách Vĩnh Khang** - _20127528_
 
-Role: Designs user interfaces and ensures a seamless user experience.
-Contact: GitHub
-Video Demo:
-Check out our video demo showcasing the features and functionalities of StudentHub: Demo Video
+   - **Contact**: [GitHub](https://github.com/Kvq5522)
 
-Feel free to reach out to any team member for inquiries or collaboration opportunities. Your feedback is valuable to us!
+2. **Trần Xuân Quang** - _20127608_
+
+   - **Contact**: [GitHub](https://github.com/txquang2202)
+
+3. **Hồ Quốc Duy** - _20127145_
+   - **Contact**: [GitHub](https://github.com/HQDuy47)
+
+## Video Demo 📽️
+
+[Demo Video](https://www.youtube.com/watch?v=QWbywkZ6DdU)
