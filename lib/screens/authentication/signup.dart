@@ -182,13 +182,13 @@ class _SignUpFormState extends State<SignUpForm> {
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                // if (_formKey.currentState!.validate() && _agreeToTerms) {
-                //   // Form is validated and terms are agreed upon, process sign up
-                //   // Your sign up logic here
-                // } else {
-                //   // Show error message or handle case where terms are not agreed upon
-                // }
-                routerConfig.pushReplacement('/dashboard');
+                if (_formKey.currentState!.validate() && _agreeToTerms) {
+                  // Form is validated and terms are agreed upon, process sign up
+                  // Your sign up logic here
+                } else {
+                  // Show error message or handle case where terms are not agreed upon
+                }
+                routerConfig.go('/dashboard');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF008ABD),
