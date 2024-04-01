@@ -8,6 +8,7 @@ import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/constants/project_list_mock.dart';
 import 'package:studenthub/services/user.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
+import 'package:studenthub/constants/project_list_mock.dart';
 import '../../../../constants/techstack_mock.dart';
 import '../../../../constants/skillset_mock.dart';
 import '../../../../constants/education_mock.dart';
@@ -76,6 +77,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
     }
   }
 
+  List<dynamic> projectList = [];
+
   _StudentProfileSettingState() {
     projectList = List.from(projectListMockData);
   }
@@ -115,6 +118,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
       print(e);
     }
   }
+
 
   void addProject(Map<String, dynamic> newProject) {
     setState(() {
@@ -208,6 +212,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
           ),
           const SizedBox(height: 16.0),
           const Text('Skillset'),
+
           //skillset selection
           Container(
             decoration: BoxDecoration(
@@ -450,6 +455,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
     // Show modal for add/editing model
     void showProjectModal(
         {dynamic value = const {}, bool isEdited = false, index}) async {
+
       final TextEditingController projectNameController =
           TextEditingController();
       String from = DateTime.now().toString();

@@ -35,6 +35,7 @@ class _AccountListState extends State<AccountList> {
       userInfoStore.setUserType(widget.accountList.isNotEmpty
           ? widget.accountList?[chosenIndex]?['userType']
           : "Student");
+
     }
   }
 
