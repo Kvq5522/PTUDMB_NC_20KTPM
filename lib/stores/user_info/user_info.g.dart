@@ -56,6 +56,53 @@ mixin _$UserInfoStore on _UserInfoStore, Store {
     });
   }
 
+  late final _$hasProfileAtom =
+      Atom(name: '_UserInfoStore.hasProfile', context: context);
+
+  @override
+  bool get hasProfile {
+    _$hasProfileAtom.reportRead();
+    return super.hasProfile;
+  }
+
+  @override
+  set hasProfile(bool value) {
+    _$hasProfileAtom.reportWrite(value, super.hasProfile, () {
+      super.hasProfile = value;
+    });
+  }
+
+  late final _$roleIdAtom =
+      Atom(name: '_UserInfoStore.roleId', context: context);
+
+  @override
+  BigInt get roleId {
+    _$roleIdAtom.reportRead();
+    return super.roleId;
+  }
+
+  @override
+  set roleId(BigInt value) {
+    _$roleIdAtom.reportWrite(value, super.roleId, () {
+      super.roleId = value;
+    });
+  }
+
+  late final _$tokenAtom = Atom(name: '_UserInfoStore.token', context: context);
+
+  @override
+  String get token {
+    _$tokenAtom.reportRead();
+    return super.token;
+  }
+
+  @override
+  set token(String value) {
+    _$tokenAtom.reportWrite(value, super.token, () {
+      super.token = value;
+    });
+  }
+
   late final _$_UserInfoStoreActionController =
       ActionController(name: '_UserInfoStore', context: context);
 
@@ -93,11 +140,58 @@ mixin _$UserInfoStore on _UserInfoStore, Store {
   }
 
   @override
+  void setHasProfile(bool value) {
+    final _$actionInfo = _$_UserInfoStoreActionController.startAction(
+        name: '_UserInfoStore.setHasProfile');
+    try {
+      return super.setHasProfile(value);
+    } finally {
+      _$_UserInfoStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setRoleId(BigInt value) {
+    final _$actionInfo = _$_UserInfoStoreActionController.startAction(
+        name: '_UserInfoStore.setRoleId');
+    try {
+      return super.setRoleId(value);
+    } finally {
+      _$_UserInfoStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setToken(String value) {
+    final _$actionInfo = _$_UserInfoStoreActionController.startAction(
+        name: '_UserInfoStore.setToken');
+    try {
+      return super.setToken(value);
+    } finally {
+      _$_UserInfoStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void reset() {
+    final _$actionInfo = _$_UserInfoStoreActionController.startAction(
+        name: '_UserInfoStore.reset');
+    try {
+      return super.reset();
+    } finally {
+      _$_UserInfoStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 username: ${username},
 email: ${email},
-userType: ${userType}
+userType: ${userType},
+hasProfile: ${hasProfile},
+roleId: ${roleId},
+token: ${token}
     ''';
   }
 }

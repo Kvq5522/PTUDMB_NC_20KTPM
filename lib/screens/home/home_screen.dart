@@ -71,9 +71,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 buildPage(
                   color: const Color(0xFFa9e1e9),
                   urlImage: 'assets/images/intro5.png',
-                  title: "StudentHub",
+                  title: "Student Hub",
                   subtitle:
-                      "StudentHub connects students and companies, fostering mutual development and advancement.",
+                      "Student Hub connects students and companies, fostering mutual development and advancement.",
                   isLastPage: true,
                 ),
               ],
@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           final prefs = await SharedPreferences.getInstance();
                           prefs.setBool("showHome", true);
 
-                          routerConfig.pushReplacement('/login');
+                          routerConfig.push('/login');
                         },
                         child: const Text(
                           'Get started',
@@ -234,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 alignment: Alignment.center,
                 child: Text(
                   titleRole ?? "",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                   ),
