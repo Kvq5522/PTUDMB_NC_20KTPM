@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:studenthub/components/input_field.dart';
 import 'package:studenthub/components/multi_select_chip.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:studenthub/app_routes.dart';
+import 'package:studenthub/constants/project_list_mock.dart';
+import 'package:studenthub/services/user.service.dart';
+import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:studenthub/constants/project_list_mock.dart';
 import '../../../../constants/techstack_mock.dart';
 import '../../../../constants/skillset_mock.dart';
@@ -23,9 +27,26 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
   int step = 1;
   String? _selectedTechstack;
   final List<String> _selectedSkills = [];
+  final UserService _userService = UserService();
+  late UserInfoStore _userInfoStore;
+
+  bool _isLoading = false;
+
+  List<dynamic> projectList = [];
+
+  List<Map<String, dynamic>> _defaultTechStack = [];
+  List<Map<String, dynamic>> _defaultSkillSet = [];
+
+  List<Map<String, dynamic>> _loadedTechStack = [];
+  List<Map<String, dynamic>> _loadedSkillSet = [];
+  List<Map<String, dynamic>> _loadedEducation = [];
+  List<Map<String, dynamic>> _loadedLanguage = [];
+  List<Map<String, dynamic>> _loadedProject = [];
+  String _loadedTranscript = '';
 
   String? cvFileName; // Biến lưu tên của CV đã tải lên
   String? transcriptFileName; // Biến lưu tên của Transcript đã tải lên
+
   // Function to handle CV upload
   Future<void> _uploadCV() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -61,6 +82,43 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
   _StudentProfileSettingState() {
     projectList = List.from(projectListMockData);
   }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    _userInfoStore = Provider.of<UserInfoStore>(context);
+
+    try {
+      List results = await Future.wait([
+        _userService.getAllTechStack(token: _userInfoStore.token),
+        _userService.getAllSkillSet(token: _userInfoStore.token),
+        // _userService.getUserTechStack(
+        //     token: _userInfoStore.token, userId: _userInfoStore.roleId),
+        // _userService.getUserSkillSet(
+        //     token: _userInfoStore.token, userId: _userInfoStore.roleId)
+      ]);
+
+      List<Map<String, dynamic>> techStacks = results[0];
+      List<Map<String, dynamic>> skillsets = results[1];
+      // List<Map<String, dynamic>> userTechStacks = results[2];
+      // List<Map<String, dynamic>> userSkillsets = results[3];
+
+      setState(() {
+        _defaultTechStack = List.from(techStacks);
+        _defaultSkillSet = List.from(skillsets);
+        // _loadedTechStack = List.from(userTechStacks);
+        // _loadedSkillSet = List.from(userSkillsets);
+      });
+
+      // print(techStacks);
+      // print(skillsets);
+      // print(userTechStacks);
+      // print(userSkillsets);
+    } catch (e) {
+      print(e);
+    }
+  }
+
 
   void addProject(Map<String, dynamic> newProject) {
     setState(() {
@@ -396,9 +454,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
   Widget inputStep2() {
     // Show modal for add/editing model
     void showProjectModal(
-        {dynamic value = const {},
-        bool isEdited = false,
-        index}) async {
+        {dynamic value = const {}, bool isEdited = false, index}) async {
+
       final TextEditingController projectNameController =
           TextEditingController();
       String from = DateTime.now().toString();

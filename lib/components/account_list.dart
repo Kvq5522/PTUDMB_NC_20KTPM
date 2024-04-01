@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 
 class AccountList extends StatefulWidget {
-  final accountList;
+  final List accountList;
 
   const AccountList({super.key, required this.accountList});
 
@@ -21,7 +21,22 @@ class _AccountListState extends State<AccountList> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     userInfoStore = Provider.of<UserInfoStore>(context);
-    userInfoStore.setUserType(widget.accountList[chosenIndex]['userType']);
+
+    if (userInfoStore.userType.isNotEmpty) {
+      final index = widget.accountList.indexWhere(
+          (element) => element['userType'] == userInfoStore.userType);
+
+      if (index != -1) {
+        setState(() {
+          chosenIndex = index;
+        });
+      }
+    } else {
+      userInfoStore.setUserType(widget.accountList.isNotEmpty
+          ? widget.accountList?[chosenIndex]?['userType']
+          : "Student");
+
+    }
   }
 
   @override
@@ -59,9 +74,14 @@ class _AccountListState extends State<AccountList> {
             toggle = !toggle;
           });
 
-          print('set user type: ${account["userType"]}');
+          print(account);
 
           userInfoStore.setUserType(account['userType']);
+
+          if (account["hasProfile"]) {
+            userInfoStore.setHasProfile(account['hasProfile']);
+            userInfoStore.setRoleId(BigInt.from(account['roleId']));
+          }
         }
       },
       child: Container(

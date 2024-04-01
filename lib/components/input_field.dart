@@ -27,7 +27,7 @@ class InputField extends StatelessWidget {
       child: TextField(
         controller: controller,
         obscureText: obscureText,
-        maxLines: bigField ? null : 3,
+        maxLines: bigField ? 7 : null,
         keyboardType: bigField ? TextInputType.multiline : TextInputType.text,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
