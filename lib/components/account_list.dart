@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 
 class AccountList extends StatefulWidget {
-  final accountList;
+  final List accountList;
 
   const AccountList({super.key, required this.accountList});
 
@@ -32,7 +32,10 @@ class _AccountListState extends State<AccountList> {
         });
       }
     } else {
-      userInfoStore.setUserType(widget.accountList[chosenIndex]['userType']);
+      userInfoStore.setUserType(widget.accountList.isNotEmpty
+          ? widget.accountList?[chosenIndex]?['userType']
+          : "Student");
+
     }
   }
 
@@ -71,9 +74,14 @@ class _AccountListState extends State<AccountList> {
             toggle = !toggle;
           });
 
-          print('set user type: ${account["userType"]}');
+          print(account);
 
           userInfoStore.setUserType(account['userType']);
+
+          if (account["hasProfile"]) {
+            userInfoStore.setHasProfile(account['hasProfile']);
+            userInfoStore.setRoleId(BigInt.from(account['roleId']));
+          }
         }
       },
       child: Container(

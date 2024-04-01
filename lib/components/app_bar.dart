@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
+import 'package:studenthub/stores/user_info/user_info.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({super.key});
@@ -10,6 +12,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserInfoStore _userInfoStore = Provider.of<UserInfoStore>(context);
+
     final currentConfig =
         GoRouter.of(context).routerDelegate.currentConfiguration;
     final currentPath = currentConfig.uri.toString();
@@ -27,6 +31,25 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         currentPath == "/choose-user"
             ? IconButton(
                 onPressed: () {
+                  if (!_userInfoStore.hasProfile) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Please create a profile first.',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        backgroundColor: Colors.redAccent,
+                        behavior: SnackBarBehavior.floating,
+                        margin: EdgeInsets.all(30),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+
+                    return;
+                  }
+
                   routerConfig.go('/dashboard');
                 },
                 icon: const Icon(

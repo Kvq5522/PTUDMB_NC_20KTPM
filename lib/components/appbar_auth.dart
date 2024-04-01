@@ -17,17 +17,17 @@ class Auth_AppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: const Color(0xFF008ABD),
       elevation: 2,
       shadowColor: Colors.black,
-      actions: [
-        IconButton(
-          onPressed: () async {
-            routerConfig.push('/');
-          },
-          icon: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: Colors.white,
-          ),
-        ),
-      ],
+      // actions: [
+      //   IconButton(
+      //     onPressed: () async {
+      //       routerConfig.push('/');
+      //     },
+      //     icon: const Icon(
+      //       Icons.arrow_forward_ios_rounded,
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      // ],
     );
   }
 

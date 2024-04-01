@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:studenthub/components/checkbox_formfield.dart';
+import 'package:studenthub/services/auth.service.dart';
 import '../../app_routes.dart';
 import '../../components/appbar_auth.dart';
 
@@ -30,20 +32,6 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: _buildBottomNavigation(context),
-    );
-  }
-
-  AppBar bar() {
-    return AppBar(
-      title: Text('Student Hub'),
-      actions: [
-        IconButton(
-          icon: Icon(Icons.person),
-          onPressed: () {
-            //when click on profile icon
-          },
-        ),
-      ],
     );
   }
 
@@ -100,7 +88,9 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
-  bool _agreeToTerms = false;
+  final AuthenticationService _authService = AuthenticationService();
+  bool _isLoading = false;
+  String? _errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +103,13 @@ class _SignUpFormState extends State<SignUpForm> {
           children: <Widget>[
             TextFormField(
               controller: _fullNameController,
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your full name';
+                }
+
+                return null;
+              },
               decoration: InputDecoration(
                 labelText: 'Full Name',
                 labelStyle: TextStyle(color: Colors.black),
@@ -129,6 +126,16 @@ class _SignUpFormState extends State<SignUpForm> {
             SizedBox(height: 20.0),
             TextFormField(
               controller: _emailController,
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return 'Email is required';
+                } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                    .hasMatch(value)) {
+                  return 'Please enter a valid email address';
+                } else {
+                  return null;
+                }
+              },
               decoration: InputDecoration(
                 labelText: 'Email',
                 labelStyle: TextStyle(color: Colors.black),
@@ -145,6 +152,15 @@ class _SignUpFormState extends State<SignUpForm> {
             SizedBox(height: 20.0),
             TextFormField(
               controller: _passwordController,
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return 'Password is required';
+                } else if (!RegExp(
+                        r'((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$')
+                    .hasMatch(value)) {
+                  return 'Password must contain at least one upper case letter, one lower case letter';
+                }
+              },
               decoration: InputDecoration(
                 labelText: 'Password',
                 labelStyle: TextStyle(color: Colors.black),
@@ -160,41 +176,91 @@ class _SignUpFormState extends State<SignUpForm> {
               cursorColor: const Color(0xFF008ABD),
             ),
             SizedBox(height: 20.0),
-            Row(
-              children: [
-                Checkbox(
-                  value: _agreeToTerms,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _agreeToTerms = newValue!;
-                    });
-                  },
-                  activeColor: const Color(0xFF008ABD),
-                ),
-                Flexible(
-                  child: Text(
-                    'Yes, I understand and agree to studentHub',
-                    style: TextStyle(fontSize: 15, color: Colors.black),
-                  ),
-                ),
-              ],
+            // Row(
+            //   children: [
+            //     Checkbox(
+            //       value: _agreeToTerms,
+            //       onChanged: (newValue) {
+            //         setState(() {
+            //           _agreeToTerms = newValue!;
+            //         });
+            //       },
+            //       activeColor: const Color(0xFF008ABD),
+            //     ),
+            //     Flexible(
+            //       child: Text(
+            //         'Yes, I understand and agree to Student Hub',
+            //         style: TextStyle(fontSize: 15, color: Colors.black),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            CheckboxFormField(
+              title: Text(
+                "Yes, I understand and agree to Student Hub",
+                style: TextStyle(fontSize: 15, color: Colors.black),
+              ),
+              onSaved: (value) {},
+              validator: (value) {
+                if (value == false) {
+                  return 'You must agree to the terms';
+                }
+                return null;
+              },
             ),
-            SizedBox(height: 20.0),
+            if (_errorMessage != null)
+              Text(
+                _errorMessage!,
+                style: TextStyle(color: Colors.red, fontSize: 16),
+              ),
+            const SizedBox(height: 20.0),
             ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate() && _agreeToTerms) {
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
                   // Form is validated and terms are agreed upon, process sign up
                   // Your sign up logic here
-                } else {
-                  // Show error message or handle case where terms are not agreed upon
+                  try {
+                    setState(() {
+                      _isLoading = true;
+                      _errorMessage = null;
+                    });
+
+                    await _authService.signUp(
+                      _fullNameController.text,
+                      _emailController.text,
+                      _passwordController.text,
+                      widget.selectedOption == 'student',
+                    );
+
+                    await _authService.signIn(
+                      _emailController.text,
+                      _passwordController.text,
+                    );
+
+                    routerConfig.go('/dashboard');
+                  } catch (e) {
+                    setState(() {
+                      _errorMessage = e.toString();
+                    });
+                  } finally {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  }
                 }
-                routerConfig.go('/dashboard');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF008ABD),
               ),
-              child: Text('Sign Up',
-                  style: TextStyle(fontSize: 18.0, color: Colors.white)),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                child: _isLoading
+                    ? CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                    : Text('Sign Up',
+                        style: TextStyle(fontSize: 18.0, color: Colors.white)),
+              ),
             ),
           ],
         ),
