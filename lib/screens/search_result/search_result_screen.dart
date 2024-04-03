@@ -18,7 +18,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 246, 246, 246),
       appBar: AppBar(
-        leading: GoRouter.of(context).canPop()
+       leading: GoRouter.of(context).canPop()
             ? IconButton(
                 icon: const Icon(
                   Icons.arrow_back_ios_rounded,

@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:studenthub/utils/toast.dart';
 
+
 class MessageDetailScreen extends StatefulWidget {
   const MessageDetailScreen({super.key});
 
@@ -31,6 +32,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
   late UserInfoStore _userInfoStore;
 
   final _notificationService = NotificationService();
+
 
   @override
   void initState() {

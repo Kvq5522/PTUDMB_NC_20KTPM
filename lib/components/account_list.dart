@@ -73,6 +73,7 @@ class _AccountListState extends State<AccountList> {
             toggle = !toggle;
           });
 
+          print(account);
           userInfoStore.setUserType(account['userType']);
 
           if (account["hasProfile"]) {

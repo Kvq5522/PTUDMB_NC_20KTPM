@@ -452,6 +452,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
     // Show modal for add/editing model
     void showProjectModal(
         {dynamic value = const {}, bool isEdited = false, index}) async {
+
       final TextEditingController projectNameController =
           TextEditingController();
       String from = DateTime.now().toString();
