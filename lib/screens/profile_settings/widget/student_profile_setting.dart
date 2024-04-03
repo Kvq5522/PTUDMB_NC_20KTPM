@@ -77,8 +77,6 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
     }
   }
 
-  List<dynamic> projectList = [];
-
   _StudentProfileSettingState() {
     projectList = List.from(projectListMockData);
   }
@@ -118,7 +116,6 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
       print(e);
     }
   }
-
 
   void addProject(Map<String, dynamic> newProject) {
     setState(() {
