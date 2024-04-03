@@ -35,7 +35,6 @@ class _AccountListState extends State<AccountList> {
       userInfoStore.setUserType(widget.accountList.isNotEmpty
           ? widget.accountList?[chosenIndex]?['userType']
           : "Student");
-
     }
   }
 
@@ -74,13 +73,14 @@ class _AccountListState extends State<AccountList> {
             toggle = !toggle;
           });
 
-          print(account);
-
           userInfoStore.setUserType(account['userType']);
 
           if (account["hasProfile"]) {
             userInfoStore.setHasProfile(account['hasProfile']);
             userInfoStore.setRoleId(BigInt.from(account['roleId']));
+          } else {
+            userInfoStore.setHasProfile(false);
+            userInfoStore.setRoleId(BigInt.zero);
           }
         }
       },

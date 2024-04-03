@@ -1,10 +1,18 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import 'package:studenthub/screens/messages/widget/schedule.dart';
 import 'package:studenthub/screens/messages/widget/schedule_item.dart';
+import 'package:studenthub/services/notification.service.dart';
+import 'package:studenthub/stores/user_info/user_info.dart';
 import '../../../constants/conservation_mock.dart';
 import 'package:intl/intl.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:studenthub/utils/toast.dart';
 
 class MessageDetailScreen extends StatefulWidget {
   const MessageDetailScreen({super.key});
@@ -19,10 +27,69 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
 
   final TextEditingController _messageController = TextEditingController();
 
+  late IO.Socket socket;
+  late UserInfoStore _userInfoStore;
+
+  final _notificationService = NotificationService();
+
   @override
   void initState() {
     super.initState();
     _loadMessages();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _userInfoStore = Provider.of<UserInfoStore>(context);
+
+    print('Token: ${_userInfoStore.token}, Url: ${dotenv.env["BASE_URL"]}');
+
+    socket = IO.io(
+        dotenv.env["BASE_URL"],
+        OptionBuilder()
+            .setTransports(['websocket']) // for Flutter or Dart VM
+            .disableAutoConnect() // disable auto-connection
+            .build());
+
+    socket.io.options?['extraHeaders'] = {
+      'Authorization': 'Bearer ${_userInfoStore.token}',
+    };
+
+    socket.io.options?['query'] = {
+      'project_id': BigInt.from(1),
+    };
+
+    socket.onConnectTimeout((data) => print('Connect Timeout: $data'));
+
+    socket.connect();
+    socket.onReconnect((data) => print('Reconnected'));
+    socket.onConnect((data) => {
+          print('Connected'),
+        });
+    socket.onDisconnect((data) => {
+          print('Disconnected'),
+        });
+    socket.onConnectError((data) => {
+          showDangerToast(
+              context: context, message: 'Please check your connection!')
+        });
+    socket.onError((data) => print(data));
+    socket.on('SEND_MESSAGE', (data) {
+      print('Receive: ${data.toString()}');
+
+      _messageService.sendMessage(data?['content']);
+      _loadMessages();
+      _messageController.clear();
+
+      try {
+        _notificationService.showNotification(
+            title: 'New message', body: data?['content']);
+      } catch (e) {
+        print(e.toString());
+      }
+    });
   }
 
   void _loadMessages() {
@@ -185,10 +252,10 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
   }
 
   void _sendMessage(String message) {
-    print('Sending message: $message');
-    _messageService.sendMessage(message);
-    _loadMessages();
-    _messageController.clear();
+    socket.emit("SEND_MESSAGE", {
+      "content": message,
+      "project_id": 1,
+    });
   }
 
   String _formatTime(DateTime time) {
@@ -207,13 +274,17 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
-      leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back_ios_rounded,
-          color: Colors.white,
-        ),
-        onPressed: () {},
-      ),
+      leading: GoRouter.of(context).canPop()
+          ? IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios_rounded,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                GoRouter.of(context).pop();
+              },
+            )
+          : null,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

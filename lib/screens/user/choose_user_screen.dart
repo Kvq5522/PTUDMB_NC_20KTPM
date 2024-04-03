@@ -63,7 +63,7 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
           accountList[1] = {
             ...accountList[1],
             "hasProfile": true,
-            "companyName": userInfo['company']['companyName'],
+            "username": userInfo['company']['companyName'],
             "roleId": userInfo['company']['id'],
           };
         });
@@ -121,7 +121,7 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
                           ),
                           label: "Log out",
                           onTap: () {
-                            _userInfoStore.setToken("");
+                            _userInfoStore.reset();
                             routerConfig.go("/");
                           }),
                     ],

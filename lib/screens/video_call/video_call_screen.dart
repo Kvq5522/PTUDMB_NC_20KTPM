@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class VideoCallScreen extends StatelessWidget {
+  const VideoCallScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_rounded,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        leading: GoRouter.of(context).canPop()
+            ? IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  GoRouter.of(context).pop();
+                },
+              )
+            : null,
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -50,7 +55,7 @@ class VideoCallScreen extends StatelessWidget {
               child: Container(
                 color: Colors.green, // Background color for video
                 height: 200, // Tăng chiều cao của container
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Video will be displayed here',
                     style: TextStyle(
@@ -70,7 +75,7 @@ class VideoCallScreen extends StatelessWidget {
               child: Container(
                 color: const Color(0xFF008ABD), // Background color for video
                 height: 300, // Tăng chiều cao của container
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Video will be displayed here',
                     style: TextStyle(
@@ -98,22 +103,22 @@ class VideoCallScreen extends StatelessWidget {
                       // Handle mute action
                     },
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   // End call button
                   FloatingActionButton(
                     onPressed: () {
                       // Handle end call action
                     },
                     backgroundColor: const Color(0xFF008ABD),
-                    child: Icon(
+                    child: const Icon(
                       Icons.call_end,
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   // Camera switch button
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.switch_camera,
                     ),
                     onPressed: () {

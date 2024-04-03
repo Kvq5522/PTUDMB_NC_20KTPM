@@ -77,8 +77,6 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
     }
   }
 
-  List<dynamic> projectList = [];
-
   _StudentProfileSettingState() {
     projectList = List.from(projectListMockData);
   }
@@ -118,7 +116,6 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
       print(e);
     }
   }
-
 
   void addProject(Map<String, dynamic> newProject) {
     setState(() {
@@ -455,7 +452,6 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
     // Show modal for add/editing model
     void showProjectModal(
         {dynamic value = const {}, bool isEdited = false, index}) async {
-
       final TextEditingController projectNameController =
           TextEditingController();
       String from = DateTime.now().toString();
