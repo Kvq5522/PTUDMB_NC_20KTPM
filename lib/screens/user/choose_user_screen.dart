@@ -1,10 +1,81 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:studenthub/components/account_list.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/components/app_bar.dart';
+import 'package:studenthub/services/auth.service.dart';
+import 'package:studenthub/stores/user_info/user_info.dart';
 
-class ChooseUserScreen extends StatelessWidget {
+class ChooseUserScreen extends StatefulWidget {
   const ChooseUserScreen({super.key});
+
+  @override
+  State<ChooseUserScreen> createState() => _ChooseUserScreenState();
+}
+
+class _ChooseUserScreenState extends State<ChooseUserScreen> {
+  final AuthenticationService _authService = AuthenticationService();
+  late UserInfoStore _userInfoStore;
+  List accountList = [];
+
+  bool _isLoading = false;
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    _userInfoStore = Provider.of<UserInfoStore>(context);
+
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      var userInfo = await _authService.getUserInfo(_userInfoStore.token);
+
+      setState(() {
+        accountList = [
+          {
+            "username": userInfo['fullname'],
+            "userType": "Student",
+            "avatar": "https://cdn-icons-png.flaticon.com/512/147/147142.png",
+            "hasProfile": false
+          },
+          {
+            "username": userInfo['fullname'],
+            "userType": "Company",
+            "avatar": "https://cdn-icons-png.flaticon.com/512/147/147142.png",
+            "hasProfile": false
+          }
+        ];
+      });
+
+      if (userInfo['student'] != null) {
+        setState(() {
+          accountList[0] = {
+            ...accountList[0],
+            "hasProfile": true,
+            "roleId": userInfo['student']['id'],
+          };
+        });
+      }
+
+      if (userInfo['company'] != null) {
+        setState(() {
+          accountList[1] = {
+            ...accountList[1],
+            "hasProfile": true,
+            "username": userInfo['company']['companyName'],
+            "roleId": userInfo['company']['id'],
+          };
+        });
+      }
+    } catch (e) {
+      routerConfig.go("/login");
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,20 +91,9 @@ class ChooseUserScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       // Display account list
-                      const AccountList(accountList: [
-                        {
-                          "username": "Tran Xuan Quang",
-                          "userType": "Company",
-                          "avatar":
-                              "https://cdn-icons-png.flaticon.com/512/147/147142.png"
-                        },
-                        {
-                          "username": "Tran Xuan Quang Student",
-                          "userType": "Student",
-                          "avatar":
-                              "https://cdn-icons-png.flaticon.com/512/147/147142.png"
-                        }
-                      ]),
+                      _isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : AccountList(accountList: accountList),
 
                       // Display feature buttons
                       _featureButton(
@@ -60,7 +120,10 @@ class ChooseUserScreen extends StatelessWidget {
                             size: 35,
                           ),
                           label: "Log out",
-                          onTap: () {}),
+                          onTap: () {
+                            _userInfoStore.reset();
+                            routerConfig.go("/");
+                          }),
                     ],
                   ),
                 ],

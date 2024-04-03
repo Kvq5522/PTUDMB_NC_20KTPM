@@ -61,7 +61,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                               bottomLeft: Radius.circular(4)),
                         ),
                         backgroundColor: filter == "Proposals"
-                            ? const Color(0xFF00658a)
+                            ? const Color(0xFF008ABD)
                             : Colors.white,
                         padding: const EdgeInsets.all(0),
                       ),
@@ -86,7 +86,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                           borderRadius: BorderRadius.circular(0),
                         ),
                         backgroundColor: filter == "Detail"
-                            ? const Color(0xFF00658a)
+                            ? const Color(0xFF008ABD)
                             : Colors.white,
                         padding: const EdgeInsets.all(0),
                       ),
@@ -112,7 +112,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                               bottomRight: Radius.circular(4)),
                         ),
                         backgroundColor: filter == "Message"
-                            ? const Color(0xFF00658a)
+                            ? const Color(0xFF008ABD)
                             : Colors.white,
                         padding: const EdgeInsets.all(0),
                       ),
@@ -138,7 +138,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                               bottomRight: Radius.circular(4)),
                         ),
                         backgroundColor: filter == "Hired"
-                            ? const Color(0xFF00658a)
+                            ? const Color(0xFF008ABD)
                             : Colors.white,
                         padding: const EdgeInsets.all(0),
                       ),

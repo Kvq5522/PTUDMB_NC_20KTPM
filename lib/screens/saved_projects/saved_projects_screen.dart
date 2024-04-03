@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:studenthub/components/project_list.dart';
+import 'package:studenthub/screens/project/widget/project_list.dart';
 import 'package:studenthub/app_routes.dart';
 
 class SavedProjectScreen extends StatefulWidget {

@@ -1,20 +1,104 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import '../../../constants/messages_mock.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+import 'package:studenthub/screens/messages/widget/schedule.dart';
+import 'package:studenthub/screens/messages/widget/schedule_item.dart';
+import 'package:studenthub/services/notification.service.dart';
+import 'package:studenthub/stores/user_info/user_info.dart';
+import '../../../constants/conservation_mock.dart';
 import 'package:intl/intl.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:studenthub/utils/toast.dart';
+
 
 class MessageDetailScreen extends StatefulWidget {
-  const MessageDetailScreen({super.key}); // Sửa constructor
+  const MessageDetailScreen({super.key});
 
   @override
   State<MessageDetailScreen> createState() => _MessageDetailScreen();
 }
 
 class _MessageDetailScreen extends State<MessageDetailScreen> {
-  List<Message> searchResults = [];
+  final MessageService _messageService = MessageService();
+  List<Message> _messages = [];
 
-  TextEditingController _messageController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
+
+  late IO.Socket socket;
+  late UserInfoStore _userInfoStore;
+
+  final _notificationService = NotificationService();
+
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMessages();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _userInfoStore = Provider.of<UserInfoStore>(context);
+
+    print('Token: ${_userInfoStore.token}, Url: ${dotenv.env["BASE_URL"]}');
+
+    socket = IO.io(
+        dotenv.env["BASE_URL"],
+        OptionBuilder()
+            .setTransports(['websocket']) // for Flutter or Dart VM
+            .disableAutoConnect() // disable auto-connection
+            .build());
+
+    socket.io.options?['extraHeaders'] = {
+      'Authorization': 'Bearer ${_userInfoStore.token}',
+    };
+
+    socket.io.options?['query'] = {
+      'project_id': BigInt.from(1),
+    };
+
+    socket.onConnectTimeout((data) => print('Connect Timeout: $data'));
+
+    socket.connect();
+    socket.onReconnect((data) => print('Reconnected'));
+    socket.onConnect((data) => {
+          print('Connected'),
+        });
+    socket.onDisconnect((data) => {
+          print('Disconnected'),
+        });
+    socket.onConnectError((data) => {
+          showDangerToast(
+              context: context, message: 'Please check your connection!')
+        });
+    socket.onError((data) => print(data));
+    socket.on('SEND_MESSAGE', (data) {
+      print('Receive: ${data.toString()}');
+
+      _messageService.sendMessage(data?['content']);
+      _loadMessages();
+      _messageController.clear();
+
+      try {
+        _notificationService.showNotification(
+            title: 'New message', body: data?['content']);
+      } catch (e) {
+        print(e.toString());
+      }
+    });
+  }
+
+  void _loadMessages() {
+    setState(() {
+      _messages = _messageService.getMessages();
+    });
+  }
 
   @override
   void dispose() {
@@ -31,40 +115,50 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         child: Column(
           children: [
             Expanded(
-              child: ListView(
+              child: ListView.builder(
                 reverse: true,
-                children: [
-                  message_items(
-                    false,
-                    "Luis Pham",
-                    "assets/images/avatar.png",
-                    "Em co ban gai r ",
-                    DateTime.now(),
-                  ),
-                  message_items(
-                    true,
-                    "Luis Pham",
-                    "assets/images/avatar.png",
-                    "Em an com chua",
-                    DateTime.now().subtract(Duration(hours: 1)),
-                  ),
-                ],
+                itemCount: _messages.length,
+                itemBuilder: (context, index) {
+                  final message = _messages[index];
+                  return message_items(
+                    message.isSender,
+                    message.name,
+                    message.avatarUrl,
+                    message.text,
+                    message.time,
+                  );
+                },
               ),
             ),
+            ScheduleItem(
+              isSender: true,
+              name: "Luis Pham",
+              avatarUrl: "assets/images/avatar.png",
+              title: "Catch up meeting",
+              duration: "1 hour",
+              day: "Thursday",
+              date: "13/3/2024",
+              timeMeeting: "15:00",
+              endDay: "Thursday",
+              endDate: "13/3/2024",
+              endTimeMeeting: "16:00",
+              time: DateTime.now(),
+            ),
             _messageInput(),
+            SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  Container message_items(bool isSender, String name, String avatarUrl,
+  Widget message_items(bool isSender, String name, String avatarUrl,
       String text, DateTime time) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment:
             isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
@@ -75,6 +169,9 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
             ),
           if (!isSender) SizedBox(width: 8),
           Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.67,
+            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: isSender ? Colors.blue : Colors.grey.shade300,
@@ -91,11 +188,16 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
                       color: Colors.black,
                     ),
                   ),
-                Text(
-                  text,
-                  style: TextStyle(
-                    color: isSender ? Colors.white : Colors.black,
-                  ),
+                Wrap(
+                  spacing: 4.0,
+                  children: [
+                    Text(
+                      text,
+                      style: TextStyle(
+                        color: isSender ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 4),
                 Text(
@@ -152,9 +254,10 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
   }
 
   void _sendMessage(String message) {
-    print('Sending message: $message');
-
-    _messageController.clear();
+    socket.emit("SEND_MESSAGE", {
+      "content": message,
+      "project_id": 1,
+    });
   }
 
   String _formatTime(DateTime time) {
@@ -173,11 +276,87 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
+      leading: GoRouter.of(context).canPop()
+          ? IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios_rounded,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                GoRouter.of(context).pop();
+              },
+            )
+          : null,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Text("Luis Pham"), Icon(Icons.more_vert)],
+        children: [
+          Text(
+            messagesMock[1].name,
+            style: TextStyle(color: Colors.white),
+          )
+        ],
       ),
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: const Color(0xFF008ABD),
+      actions: [
+        IconButton(
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return MySchedule();
+                });
+          },
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          icon: const Icon(
+            Icons.more_vert,
+            size: 30,
+            color: Colors.white,
+          ),
+        )
+      ],
     );
   }
 }
+
+class MessageService {
+  List<Message> messages = messagesMock;
+
+  List<Message> getMessages() {
+    return messages;
+  }
+
+  void sendMessage(String message) {
+    final newMessage = Message(
+      isSender: true,
+      name: 'You',
+      avatarUrl: 'assets/images/avatar.png',
+      text: message,
+      time: DateTime.now(),
+    );
+    messages.insert(0, newMessage);
+  }
+}
+
+// class ScheduleService {
+//   List<ScheduleItem> schedule = scheduleMock;
+
+//   List<ScheduleItem> getSchedule() {
+//     return schedule;
+//   }
+
+//   void createSchedule(String message) {
+//     final newSchedule = Message(
+//       isSender: true,
+//       name: 'You',
+//       avatarUrl: 'assets/images/avatar.png',
+//       text: message,
+//       time: DateTime.now(),
+//     );
+//     schedule.insert(0, newSchedule);
+//   }
+// }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/components/filter.dart';
 import 'package:studenthub/components/search_bar.dart';
-import 'package:studenthub/components/project_list.dart';
+import 'package:studenthub/screens/project/widget/project_list.dart';
 
 class SearchResultScreen extends StatefulWidget {
   const SearchResultScreen({super.key});
@@ -17,16 +18,18 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 246, 246, 246),
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_rounded,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Text(
+       leading: GoRouter.of(context).canPop()
+            ? IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  GoRouter.of(context).pop();
+                },
+              )
+            : null,
+        title: const Text(
           'Project search',
           style: TextStyle(color: Colors.white),
         ),

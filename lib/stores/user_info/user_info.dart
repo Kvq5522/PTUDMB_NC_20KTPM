@@ -14,6 +14,15 @@ abstract class _UserInfoStore with Store {
   @observable
   String userType = '';
 
+  @observable
+  bool hasProfile = false;
+
+  @observable
+  BigInt roleId = BigInt.zero;
+
+  @observable
+  String token = '';
+
   @action
   void setUsername(String value) => username = value;
 
@@ -22,4 +31,22 @@ abstract class _UserInfoStore with Store {
 
   @action
   void setUserType(String value) => userType = value;
+
+  @action
+  void setHasProfile(bool value) => hasProfile = value;
+
+  @action
+  void setRoleId(BigInt value) => roleId = value;
+
+  @action
+  void setToken(String value) => token = value;
+
+  @action
+  void reset() {
+    username = '';
+    email = '';
+    userType = '';
+    hasProfile = false;
+    roleId = BigInt.zero;
+  }
 }
