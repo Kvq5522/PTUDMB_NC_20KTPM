@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/components/account_list.dart';
 import 'package:studenthub/app_routes.dart';
@@ -29,7 +30,10 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
       setState(() {
         _isLoading = true;
       });
+
       var userInfo = await _authService.getUserInfo(_userInfoStore.token);
+
+      _userInfoStore.setUserId(BigInt.from(userInfo['id']));
 
       setState(() {
         accountList = [
@@ -121,6 +125,7 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
                           ),
                           label: "Log out",
                           onTap: () {
+                            FlutterBackgroundService().invoke("stopService");
                             _userInfoStore.reset();
                             routerConfig.go("/");
                           }),

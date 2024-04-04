@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -24,30 +26,40 @@ class NotificationService {
 
   notificationDetails() {
     return const NotificationDetails(
-        android: AndroidNotificationDetails(
-            'com.studenthub', 'channel name',
-            importance: Importance.max, priority: Priority.high),
+        android: AndroidNotificationDetails('com.studenthub', 'channel name',
+            importance: Importance.max,
+            priority: Priority.high,
+            enableVibration: true,
+            icon: '@mipmap/ic_launcher',
+            playSound: true),
         iOS: DarwinNotificationDetails(
           presentAlert: true,
           presentBadge: true,
+          presentSound: true,
         ));
   }
 
   Future showNotification(
       {int id = 0, String? title, String? body, String? payLoad}) async {
-    print('Id: $id, Title: $title, Body: $body, Payload: $payLoad');
     return flutterLocalNotificationPlugin.show(
         id, title, body, await notificationDetails());
   }
 
   Future<void> requestPermission() async {
-    await flutterLocalNotificationPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
+    if (Platform.isIOS) {
+      await flutterLocalNotificationPlugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    } else if (Platform.isAndroid) {
+      await flutterLocalNotificationPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestPermission();
+    }
   }
 }

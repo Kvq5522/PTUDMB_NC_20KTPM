@@ -75,6 +75,8 @@ class _AccountListState extends State<AccountList> {
 
           print(account);
           userInfoStore.setUserType(account['userType']);
+          userInfoStore.setUsername(account['username']);
+          
 
           if (account["hasProfile"]) {
             userInfoStore.setHasProfile(account['hasProfile']);

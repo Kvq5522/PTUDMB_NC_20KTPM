@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:studenthub/networks/dio_client.dart';
-import 'package:studenthub/stores/user_info/user_info.dart';
 
 class UserService {
-  final UserInfoStore _userInfoStore = UserInfoStore();
   final DioClient _dioClient = DioClient();
 
   //Create a company profile

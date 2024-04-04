@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:studenthub/networks/dio_client.dart';
-import 'package:studenthub/stores/user_info/user_info.dart';
 
 class AuthenticationService {
-  final UserInfoStore _userInfoStore = UserInfoStore();
   final DioClient _dioClient = DioClient();
 
   Future<void> signUp(
@@ -26,8 +24,6 @@ class AuthenticationService {
             : "Sign up failed, please try again.";
         throw Exception(errorMessage);
       }
-
-      _userInfoStore.setUserType(isStudent ? "Student" : "Company");
     } on Exception catch (_) {
       rethrow;
     }

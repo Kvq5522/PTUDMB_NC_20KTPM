@@ -216,11 +216,11 @@ class ScheduleItem extends StatelessWidget {
             ),
           ),
           if (isSender) const SizedBox(width: 8),
-          if (isSender)
-            CircleAvatar(
-              backgroundImage: AssetImage(avatarUrl),
-              radius: 20,
-            ),
+          // if (isSender)
+          //   CircleAvatar(
+          //     backgroundImage: AssetImage(avatarUrl),
+          //     radius: 20,
+          //   ),
         ],
       ),
     );
