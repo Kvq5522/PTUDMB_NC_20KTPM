@@ -9,7 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
-
+studenthub-api-feat-chat-service
 # IntelliJ related
 *.iml
 *.ipr
