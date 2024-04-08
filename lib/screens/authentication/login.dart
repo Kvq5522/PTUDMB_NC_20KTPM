@@ -1,6 +1,7 @@
 // ignore_for_file: sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/services/auth.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
@@ -157,7 +158,16 @@ class _LoginFormState extends State<LoginForm> {
                     String token = await _authService.signIn(
                         _emailController.text, _passwordController.text);
 
+                    Map<String, dynamic> userInfo =
+                        await _authService.getUserInfo(token);
+
+                    FlutterBackgroundService().invoke("setAsBackground", {
+                      "token": token,
+                      "userId": userInfo['id'].toString(),
+                    });
+
                     _userInfoStore.setToken(token);
+                    _userInfoStore.setUserId(BigInt.from(userInfo['id']));
 
                     routerConfig.go('/choose-user');
                   } catch (e) {

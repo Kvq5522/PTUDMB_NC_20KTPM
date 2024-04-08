@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:studenthub/components/checkbox_formfield.dart';
 import 'package:studenthub/services/auth.service.dart';
+import 'package:studenthub/stores/user_info/user_info.dart';
 import '../../app_routes.dart';
 import '../../components/appbar_auth.dart';
 
@@ -91,6 +93,14 @@ class _SignUpFormState extends State<SignUpForm> {
   final AuthenticationService _authService = AuthenticationService();
   bool _isLoading = false;
   String? _errorMessage;
+
+  late UserInfoStore _userInfoStore;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _userInfoStore = Provider.of<UserInfoStore>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,6 +241,11 @@ class _SignUpFormState extends State<SignUpForm> {
                       _passwordController.text,
                       widget.selectedOption == 'student',
                     );
+
+                    _userInfoStore.setUserType(
+                        widget.selectedOption == 'student'
+                            ? 'Student'
+                            : 'Company');
 
                     await _authService.signIn(
                       _emailController.text,

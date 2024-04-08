@@ -1,19 +1,20 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:studenthub/components/message_bubble.dart';
 import 'package:studenthub/screens/messages/widget/schedule.dart';
 import 'package:studenthub/screens/messages/widget/schedule_item.dart';
+import 'package:studenthub/services/message.service.dart';
 import 'package:studenthub/services/notification.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import '../../../constants/conservation_mock.dart';
-import 'package:intl/intl.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:studenthub/utils/toast.dart';
-
 
 class MessageDetailScreen extends StatefulWidget {
   const MessageDetailScreen({super.key});
@@ -23,21 +24,24 @@ class MessageDetailScreen extends StatefulWidget {
 }
 
 class _MessageDetailScreen extends State<MessageDetailScreen> {
-  final MessageService _messageService = MessageService();
-  List<Message> _messages = [];
+  // final MessageService _messageService = MessageService();
+  List<Message> _messageList = [];
+  bool _isLoading = false;
+  FocusNode myFocusNode = FocusNode();
+  int page = 1;
+  bool hasNewMessageScrollToBottom = false;
+  bool noMoreMessage = false;
 
   final TextEditingController _messageController = TextEditingController();
+  final MessageService _messageService = MessageService();
+  final ScrollController _scrollController = ScrollController();
 
   late IO.Socket socket;
   late UserInfoStore _userInfoStore;
 
-  final _notificationService = NotificationService();
-
-
   @override
   void initState() {
     super.initState();
-    _loadMessages();
   }
 
   @override
@@ -46,8 +50,51 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
 
     _userInfoStore = Provider.of<UserInfoStore>(context);
 
-    print('Token: ${_userInfoStore.token}, Url: ${dotenv.env["BASE_URL"]}');
+    _loadMessages(
+      token: _userInfoStore.token,
+      projectId: BigInt.one,
+      receiverId: BigInt.from(_userInfoStore.userId == BigInt.one ? 2 : 1),
+    );
 
+    // Load more messages when scroll to bottom
+    _scrollController.addListener(() async {
+      if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
+          !noMoreMessage) {
+        int newPage = page + 1;
+
+        setState(() {
+          page = newPage;
+        });
+
+        await _loadMessages(
+          token: _userInfoStore.token,
+          projectId: BigInt.one,
+          receiverId: BigInt.from(_userInfoStore.userId == BigInt.one ? 2 : 1),
+          page: newPage,
+        );
+      }
+    });
+
+    // Scroll to bottom when keyboard is opened
+    myFocusNode.addListener(() {
+      if (myFocusNode.hasFocus) {
+        setState(() {
+          //
+          Future.delayed(
+            const Duration(milliseconds: 500),
+            () => _scrollToBottom(),
+          );
+        });
+      }
+    });
+
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () => _scrollToBottom(),
+    );
+
+    // Init socket
     socket = IO.io(
         dotenv.env["BASE_URL"],
         OptionBuilder()
@@ -74,149 +121,208 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
           print('Disconnected'),
         });
     socket.onConnectError((data) => {
-          showDangerToast(
-              context: context, message: 'Please check your connection!')
+          if (mounted)
+            {
+              showDangerToast(
+                  context: context, message: "Please check your connection!")
+            }
         });
     socket.onError((data) => print(data));
-    socket.on('SEND_MESSAGE', (data) {
-      print('Receive: ${data.toString()}');
+    socket.on('RECEIVE_MESSAGE', (data) {
+      final message = Message(
+        isSender: BigInt.from(data?["senderId"]) == _userInfoStore.userId
+            ? true
+            : false,
+        name: BigInt.from(data?["senderId"]) == _userInfoStore.userId
+            ? "You"
+            : "Luis Pham",
+        avatarUrl: 'assets/images/avatar.png',
+        text: data?['content'],
+        time: DateTime.now(),
+        messageFlag: data?['messageFlag'],
+      );
 
-      _messageService.sendMessage(data?['content']);
-      _loadMessages();
-      _messageController.clear();
-
-      try {
-        _notificationService.showNotification(
-            title: 'New message', body: data?['content']);
-      } catch (e) {
-        print(e.toString());
+      if (_scrollController.position.pixels !=
+          _scrollController.position.minScrollExtent) {
+        hasNewMessageScrollToBottom = true;
       }
-    });
-  }
 
-  void _loadMessages() {
-    setState(() {
-      _messages = _messageService.getMessages();
+      setState(() {
+        _messageList.insert(0, message);
+      });
+    });
+
+    socket.on("ERROR", (data) {
+      showDangerToast(
+          context: context, message: "Please check your connection!");
     });
   }
 
   @override
   void dispose() {
-    _messageController.dispose();
     super.dispose();
+
+    _messageController.dispose();
+    socket.off("RECEIVE_MESSAGE");
+    socket.disconnect();
+    myFocusNode.dispose();
+  }
+
+  void _scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.minScrollExtent,
+      duration: Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  Future<void> _loadMessages(
+      {required String token,
+      required BigInt projectId,
+      required BigInt receiverId,
+      int page = 1}) async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+
+      List<Map<String, dynamic>> fetchedMessages =
+          await _messageService.getMessages(
+        token: _userInfoStore.token,
+        projectId: projectId,
+        receiverId: receiverId,
+        page: page,
+      );
+
+      if (fetchedMessages.isEmpty) {
+        setState(() {
+          page = page - 1;
+          noMoreMessage = true;
+        });
+        return;
+      }
+
+      setState(() {
+        List<Message> newMessages = fetchedMessages
+            .map((message) => Message(
+                  isSender:
+                      BigInt.from(message["senderId"]) == _userInfoStore.userId
+                          ? true
+                          : false,
+                  name:
+                      BigInt.from(message["senderId"]) == _userInfoStore.userId
+                          ? "You"
+                          : "Luis Pham",
+                  avatarUrl: 'assets/images/avatar.png',
+                  text: message["content"],
+                  time: DateTime.parse(message["createdAt"]),
+                  messageFlag: message["messageFlag"],
+                ))
+            .toList();
+
+        _messageList.addAll(newMessages);
+      });
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      if (mounted) {
+        showDangerToast(context: context, message: e.toString());
+      }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _sendMessage(String message) {
+    socket.emit("SEND_MESSAGE", {
+      "content": message,
+      "projectId": 1,
+      "senderId": _userInfoStore.userId == BigInt.one ? 1 : 2,
+      "receiverId": _userInfoStore.userId == BigInt.one ? 2 : 1,
+      "messageFlag": 0
+    });
+
+    _messageController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(context),
+      floatingActionButton: hasNewMessageScrollToBottom
+          ? LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return Container(
+                  margin: EdgeInsets.only(
+                    bottom:
+                        constraints.maxHeight * 0.07, // Adjust this as needed
+                  ),
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      _scrollToBottom();
+                      setState(() {
+                        hasNewMessageScrollToBottom = false;
+                      });
+                    },
+                    backgroundColor: Colors.blue,
+                    child: const Icon(Icons.arrow_downward),
+                  ),
+                );
+              },
+            )
+          : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             Expanded(
               child: ListView.builder(
+                controller: _scrollController,
                 reverse: true,
-                itemCount: _messages.length,
+                itemCount: _messageList.length,
                 itemBuilder: (context, index) {
-                  final message = _messages[index];
-                  return message_items(
-                    message.isSender,
-                    message.name,
-                    message.avatarUrl,
-                    message.text,
-                    message.time,
-                  );
+                  final message = _messageList[index];
+
+                  switch (message.messageFlag) {
+                    case 0:
+                      return MessageBubble(
+                        isSender: message.isSender,
+                        name: message.name,
+                        avatarUrl: message.avatarUrl,
+                        text: message.text,
+                        time: message.time,
+                      );
+                    case 1:
+                      return ScheduleItem(
+                        isSender: message.isSender,
+                        name: message.name,
+                        avatarUrl: message.avatarUrl,
+                        title: message.text,
+                        duration: "1 hour",
+                        day: "Thursday",
+                        date: "13/3/2024",
+                        timeMeeting: "15:00",
+                        endDay: "Thursday",
+                        endDate: "13/3/2024",
+                        endTimeMeeting: "16:00",
+                        time: message.time,
+                      );
+                    default:
+                      return null;
+                  }
                 },
               ),
             ),
-            ScheduleItem(
-              isSender: true,
-              name: "Luis Pham",
-              avatarUrl: "assets/images/avatar.png",
-              title: "Catch up meeting",
-              duration: "1 hour",
-              day: "Thursday",
-              date: "13/3/2024",
-              timeMeeting: "15:00",
-              endDay: "Thursday",
-              endDate: "13/3/2024",
-              endTimeMeeting: "16:00",
-              time: DateTime.now(),
-            ),
-            _messageInput(),
-            SizedBox(height: 20),
+            Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                child: _messageInput()),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget message_items(bool isSender, String name, String avatarUrl,
-      String text, DateTime time) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment:
-            isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
-        children: [
-          if (!isSender)
-            CircleAvatar(
-              backgroundImage: AssetImage(avatarUrl),
-              radius: 20,
-            ),
-          if (!isSender) SizedBox(width: 8),
-          Container(
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.67,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: isSender ? Colors.blue : Colors.grey.shade300,
-            ),
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (!isSender)
-                  Text(
-                    name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                Wrap(
-                  spacing: 4.0,
-                  children: [
-                    Text(
-                      text,
-                      style: TextStyle(
-                        color: isSender ? Colors.white : Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 4),
-                Text(
-                  _formatTime(time),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isSender ? Colors.white70 : Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (isSender) SizedBox(width: 8),
-          if (isSender)
-            CircleAvatar(
-              backgroundImage: AssetImage(avatarUrl),
-              radius: 20,
-            ),
-        ],
       ),
     );
   }
@@ -253,27 +359,6 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
     );
   }
 
-  void _sendMessage(String message) {
-    socket.emit("SEND_MESSAGE", {
-      "content": message,
-      "project_id": 1,
-    });
-  }
-
-  String _formatTime(DateTime time) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final yesterday = DateTime(now.year, now.month, now.day - 1);
-
-    if (time.isAfter(today)) {
-      return TimeOfDay.fromDateTime(time).format(context);
-    } else if (time.isAfter(yesterday)) {
-      return 'Yesterday';
-    } else {
-      return DateFormat('MMM d').format(time);
-    }
-  }
-
   AppBar _appBar(BuildContext context) {
     return AppBar(
       leading: GoRouter.of(context).canPop()
@@ -291,7 +376,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            messagesMock[1].name,
+            'Luis Pham',
             style: TextStyle(color: Colors.white),
           )
         ],
@@ -323,24 +408,24 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
   }
 }
 
-class MessageService {
-  List<Message> messages = messagesMock;
+// class MessageService {
+//   List<Message> messages = messagesMock;
 
-  List<Message> getMessages() {
-    return messages;
-  }
+//   List<Message> getMessages() {
+//     return messages;
+//   }
 
-  void sendMessage(String message) {
-    final newMessage = Message(
-      isSender: true,
-      name: 'You',
-      avatarUrl: 'assets/images/avatar.png',
-      text: message,
-      time: DateTime.now(),
-    );
-    messages.insert(0, newMessage);
-  }
-}
+//   void sendMessage(String message) {
+//     final newMessage = Message(
+//       isSender: true,
+//       name: 'You',
+//       avatarUrl: 'assets/images/avatar.png',
+//       text: message,
+//       time: DateTime.now(),
+//     );
+//     messages.insert(0, newMessage);
+//   }
+// }
 
 // class ScheduleService {
 //   List<ScheduleItem> schedule = scheduleMock;

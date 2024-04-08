@@ -6,6 +6,9 @@ class UserInfoStore = _UserInfoStore with _$UserInfoStore;
 
 abstract class _UserInfoStore with Store {
   @observable
+  BigInt userId = BigInt.zero;
+
+  @observable
   String username = '';
 
   @observable
@@ -22,6 +25,9 @@ abstract class _UserInfoStore with Store {
 
   @observable
   String token = '';
+
+  @action
+  void setUserId(BigInt value) => userId = value;
 
   @action
   void setUsername(String value) => username = value;

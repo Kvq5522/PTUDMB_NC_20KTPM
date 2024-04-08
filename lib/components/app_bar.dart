@@ -34,7 +34,11 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 color: Colors.white,
               ),
               onPressed: () {
-                GoRouter.of(context).pop();
+                try {
+                  GoRouter.of(context).pop();
+                } catch (e) {
+                  print(e);
+                }
               },
             )
           : null,
