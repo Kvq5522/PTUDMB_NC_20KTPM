@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:studenthub/services/auth.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import '../../app_routes.dart';
-import '../../components/appbar_auth.dart';
+import '../../components/appbars/appbar_auth.dart';
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
 class LoginScreen extends StatelessWidget {

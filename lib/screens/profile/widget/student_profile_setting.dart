@@ -137,6 +137,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
           ),
           const SizedBox(height: 16.0),
           const Text('Skillset'),
+          const SizedBox(height: 16.0),
 
           //skillset selection
           Container(
@@ -290,59 +291,6 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                     },
                   ),
                 ],
-              ),
-
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: educationData.length,
-                itemBuilder: (context, index) {
-                  final education = educationData[index];
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(education.title),
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.edit),
-                                onPressed: () {
-                                  // Handle onPressed for editing education
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () {
-                                  // Handle onPressed for deleting education
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.grey,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: education.period,
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.grey[400],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 16.0),
-                    ],
-                  );
-                },
               ),
             ],
           ),

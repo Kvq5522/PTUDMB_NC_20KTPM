@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:studenthub/components/app_bar.dart';
+import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/app_routes.dart';
 
 class WelcomeScreen extends StatelessWidget {

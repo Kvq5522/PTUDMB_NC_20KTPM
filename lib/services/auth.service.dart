@@ -4,7 +4,7 @@ import 'package:studenthub/networks/dio_client.dart';
 class AuthenticationService {
   final DioClient _dioClient = DioClient();
 
-  Future<void> signUp(
+  Future<bool> signUp(
       String fullname, String email, String password, bool isStudent) async {
     try {
       Response res = await _dioClient.post(
@@ -24,6 +24,8 @@ class AuthenticationService {
             : "Sign up failed, please try again.";
         throw Exception(errorMessage);
       }
+
+      return true;
     } on Exception catch (_) {
       rethrow;
     }

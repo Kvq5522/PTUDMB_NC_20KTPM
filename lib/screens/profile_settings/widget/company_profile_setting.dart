@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
-import 'package:studenthub/components/app_bar.dart';
+import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/components/loading_screen.dart';
 import 'package:studenthub/components/radio_group.dart';
 import 'package:studenthub/services/user.service.dart';
@@ -241,6 +241,8 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
 
                                     routerConfig.go('/dashboard');
                                   } else if (res.isNotEmpty) {
+                                    _userInfoStore.setHasProfile(true);
+
                                     showSuccessToast(
                                         context: context,
                                         message: "Company profile created.");

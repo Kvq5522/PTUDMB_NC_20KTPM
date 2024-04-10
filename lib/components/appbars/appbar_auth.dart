@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../app_routes.dart';
+import '../../app_routes.dart';
 
 // ignore: camel_case_types
 class Auth_AppBar extends StatelessWidget implements PreferredSizeWidget {

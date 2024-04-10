@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:studenthub/components/formfields/datetime_formfield.dart';
 import 'package:studenthub/components/input_field.dart';
 import 'package:studenthub/components/multi_select_chip.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:studenthub/app_routes.dart';
+import 'package:studenthub/components/formfields/education_trait_formfield.dart';
+import 'package:studenthub/components/formfields/language_trait_formfield.dart';
 import 'package:studenthub/constants/project_list_mock.dart';
 import 'package:studenthub/services/user.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
-import 'package:studenthub/constants/project_list_mock.dart';
-import '../../../../constants/techstack_mock.dart';
-import '../../../../constants/skillset_mock.dart';
+import 'package:studenthub/utils/string.dart';
 import '../../../../constants/education_mock.dart';
 import '../../../../constants/language_mock.dart';
 
@@ -25,8 +27,6 @@ class StudentProfileSetting extends StatefulWidget {
 
 class _StudentProfileSettingState extends State<StudentProfileSetting> {
   int step = 1;
-  String? _selectedTechstack;
-  final List<String> _selectedSkills = [];
   final UserService _userService = UserService();
   late UserInfoStore _userInfoStore;
 
@@ -37,7 +37,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
   List<Map<String, dynamic>> _defaultTechStack = [];
   List<Map<String, dynamic>> _defaultSkillSet = [];
 
-  List<Map<String, dynamic>> _loadedTechStack = [];
+  Map<String, dynamic> _loadedTechStack = {};
   List<Map<String, dynamic>> _loadedSkillSet = [];
   List<Map<String, dynamic>> _loadedEducation = [];
   List<Map<String, dynamic>> _loadedLanguage = [];
@@ -87,31 +87,33 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
     _userInfoStore = Provider.of<UserInfoStore>(context);
 
     try {
-      List results = await Future.wait([
+      List<Future> initialRequest = [
         _userService.getAllTechStack(token: _userInfoStore.token),
         _userService.getAllSkillSet(token: _userInfoStore.token),
-        // _userService.getUserTechStack(
-        //     token: _userInfoStore.token, userId: _userInfoStore.roleId),
-        // _userService.getUserSkillSet(
-        //     token: _userInfoStore.token, userId: _userInfoStore.roleId)
-      ]);
+      ];
 
-      List<Map<String, dynamic>> techStacks = results[0];
-      List<Map<String, dynamic>> skillsets = results[1];
-      // List<Map<String, dynamic>> userTechStacks = results[2];
-      // List<Map<String, dynamic>> userSkillsets = results[3];
+      if (_userInfoStore.hasProfile) {
+        initialRequest.addAll([
+          _userService.getUserTechStack(
+              token: _userInfoStore.token, userId: _userInfoStore.roleId),
+          _userService.getUserSkillSet(
+              token: _userInfoStore.token, userId: _userInfoStore.roleId)
+        ]);
+      }
+
+      List results = await Future.wait(initialRequest);
 
       setState(() {
-        _defaultTechStack = List.from(techStacks);
-        _defaultSkillSet = List.from(skillsets);
-        // _loadedTechStack = List.from(userTechStacks);
-        // _loadedSkillSet = List.from(userSkillsets);
-      });
+        _defaultTechStack = List.from(results[0]);
+        _defaultSkillSet = List.from(results[1]);
 
-      // print(techStacks);
-      // print(skillsets);
-      // print(userTechStacks);
-      // print(userSkillsets);
+        if (_userInfoStore.hasProfile) {
+          _loadedTechStack = results[2];
+          _loadedSkillSet = List.from(results[3]);
+        } else {
+          _loadedTechStack = _defaultTechStack[0];
+        }
+      });
     } catch (e) {
       print(e);
     }
@@ -127,7 +129,6 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
     setState(() {
       print(projectList[index]);
       projectList[index] = newProject;
-      print(projectList[index]);
     });
   }
 
@@ -146,303 +147,409 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
   }
 
   Widget inputStep1() {
+    final formKey = GlobalKey<FormState>();
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //title text
-          const Center(
-            child: Text(
-              'Welcome to Student Hub',
+      child: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //title text
+            const Center(
+              child: Text(
+                'Welcome to Student Hub',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            const Text(
+              'Tell us about yourself and we will be on your way to connect with the real world',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16.0),
             ),
-          ),
-          const SizedBox(height: 16.0),
-          const Text(
-            'Tell us about yourself and we will be on your way to connect with the real world',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16.0),
-          ),
-          const SizedBox(height: 16.0),
-          const Text('Techstack'),
-          const SizedBox(height: 16.0),
-          //dropdown
-          Container(
-            constraints: const BoxConstraints(maxWidth: double.infinity),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-              border: Border.all(color: Colors.grey),
-            ),
-            child: DropdownButton<String>(
-              hint: const Padding(
-                padding: EdgeInsets.only(left: 20.0),
-                child: Text(
-                  "Choose a tech stack",
-                  style: TextStyle(
-                    color: Colors.grey,
+            const SizedBox(height: 16.0),
+            const Text('Techstack'),
+            const SizedBox(height: 16.0),
+
+            //dropdown
+            Container(
+              constraints: const BoxConstraints(maxWidth: double.infinity),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                border: Border.all(color: Colors.grey),
+              ),
+              child: DropdownButton<Map<String, dynamic>>(
+                hint: const Padding(
+                  padding: EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    "Choose a tech stack",
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
                   ),
                 ),
-              ),
-              isExpanded: true,
-              underline: const SizedBox(),
-              icon: const Icon(Icons.arrow_drop_down),
-              style: const TextStyle(color: Colors.black, fontSize: 16.0),
-              value: _selectedTechstack,
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedTechstack = newValue;
-                });
-              },
-              items: TechStackMockData.techStackItems.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8.0),
-                    child: Text(value),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-          const SizedBox(height: 16.0),
-          const Text('Skillset'),
-
-          //skillset selection
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            width: double.infinity,
-            padding: const EdgeInsets.all(8.0),
-            child: Wrap(
-              spacing: 8.0,
-              children: SkillsMockData.skillsList.map((String skill) {
-                return FilterChip(
-                  label: Text(skill),
-                  selected: _selectedSkills.contains(skill),
-                  onSelected: (bool selected) {
-                    setState(() {
-                      if (selected) {
-                        _selectedSkills.add(skill);
-                      } else {
-                        _selectedSkills.remove(skill);
-                      }
-                    });
-                  },
-                  selectedColor: const Color(0xFF008ABD),
-                );
-              }).toList(),
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Language section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Languages',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Add Language'),
-                            content: TextFormField(
-                              decoration: const InputDecoration(
-                                hintText: 'Enter language',
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  // Close the dialog
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Handle adding the language
-                                  // Close the dialog
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Add'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
-
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: languageData.length,
-                itemBuilder: (context, index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(languageData[index]),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () {
-                              // Handle onPressed for editing language
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              // Handle onPressed for deleting language
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-              ),
-
-              // Education section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Education',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Add Education'),
-                            content: TextFormField(
-                              decoration: const InputDecoration(
-                                hintText: 'Enter education',
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  // Close the dialog
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Handle adding the language
-                                  // Close the dialog
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Add'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
-
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: educationData.length,
-                itemBuilder: (context, index) {
-                  final education = educationData[index];
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(education.title),
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () {
-                                  // Handle onPressed for editing education
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  // Handle onPressed for deleting education
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.grey,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: education.period,
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.grey[400],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 16.0),
-                    ],
-                  );
-                },
-              ),
-            ],
-          ),
-
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  //navigate
+                isExpanded: true,
+                underline: const SizedBox(),
+                icon: const Icon(Icons.arrow_drop_down),
+                style: const TextStyle(color: Colors.black, fontSize: 16.0),
+                value: _loadedTechStack,
+                onChanged: (Map<String, dynamic>? newValue) {
                   setState(() {
-                    step++;
+                    // _loadedTechStack = newValue;
                   });
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  textStyle: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                child: const Text('Next'),
+                items: _defaultTechStack.map((Map<String, dynamic> value) {
+                  return DropdownMenuItem<Map<String, dynamic>>(
+                    value: value,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: Text(value?["name"]),
+                    ),
+                  );
+                }).toList(),
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 16.0),
+            const Text('Skillset'),
+            const SizedBox(height: 16.0),
+
+            MultiSelectChip(
+              itemList: _defaultSkillSet,
+              valueField: "name",
+              labelField: "name",
+              isEditable: true,
+              selectedChoices: _loadedSkillSet,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "Please select at least one skillset";
+                }
+
+                return null;
+              },
+              onSaved: (value) {},
+              onSelectionChanged: (List<dynamic> arr) {
+                setState(() {
+                  if (_loadedSkillSet.isEmpty) {
+                    setState(() {
+                      _loadedSkillSet = arr.map((skillset) {
+                        return {"name": skillset?["name"]};
+                      }).toList();
+                    });
+                  } else {
+                    setState(() {
+                      _loadedSkillSet.removeWhere((skillset) {
+                        return !arr.contains(skillset?["name"]);
+                      });
+
+                      for (var skillset in arr) {
+                        if (!_loadedSkillSet.contains(skillset)) {
+                          _loadedSkillSet.add({"name": skillset?["name"]});
+                        }
+                      }
+                    });
+                  }
+                });
+              },
+            ),
+
+            // Language section
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Languages',
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.add_circle_rounded,
+                        color: Color(0xFF008ABD),
+                      ),
+                      onPressed: () {
+                        var formKey = GlobalKey<FormState>();
+                        TextEditingController languageController =
+                            TextEditingController();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Add Language'),
+                              content: Form(
+                                key: formKey,
+                                child: TextFormField(
+                                  validator: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please type proper language';
+                                    } else if (_loadedLanguage.any((element) =>
+                                        element['name']
+                                            .toString()
+                                            .toLowerCase() ==
+                                        value.toLowerCase())) {
+                                      return 'You are already added this language';
+                                    }
+                                    return null;
+                                  },
+                                  controller: languageController,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Enter language',
+                                  ),
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    // Close the dialog
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Handle adding the language
+                                    // Close the dialog
+                                    if (formKey.currentState!.validate()) {
+                                      setState(() {
+                                        _loadedLanguage.add({
+                                          "name": capitalize(
+                                              languageController.text)
+                                        });
+                                      });
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                  child: const Text('Add'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+
+                // Education section
+                LanguageTraitFormField(
+                  languageData: _loadedLanguage,
+                  labelField: "name",
+                  context: context,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please add at least one language";
+                    }
+                  },
+                  onSaved: (value) {},
+                  onEdit: (String value, int index) {
+                    setState(() {
+                      _loadedLanguage[index]?["name"] = value;
+                    });
+                  },
+                  onDelete: (int index) {
+                    setState(() {
+                      _loadedLanguage.removeAt(index);
+                    });
+                  },
+                ),
+
+                // Education section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Education',
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.add_circle_rounded,
+                        color: Color(0xFF008ABD),
+                      ),
+                      onPressed: () {
+                        var formKey = GlobalKey<FormState>();
+                        TextEditingController educationController =
+                            TextEditingController();
+                        DateTime from = DateTime.now();
+                        DateTime to = DateTime.now();
+
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Center(
+                              child: IntrinsicWidth(
+                                child: IntrinsicHeight(
+                                  child: AlertDialog(
+                                    title: const Text('Add Education'),
+                                    content: Form(
+                                      key: formKey,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize
+                                            .min, // This makes the column fit its content
+                                        children: [
+                                          TextFormField(
+                                            validator: (String? value) {
+                                              if (value!.isEmpty) {
+                                                return 'Please type proper education';
+                                              } else if (_loadedEducation.any(
+                                                  (element) =>
+                                                      element['schoolName']
+                                                          .toString()
+                                                          .toLowerCase() ==
+                                                      value.toLowerCase())) {
+                                                return 'You are already added this education';
+                                              }
+                                              return null;
+                                            },
+                                            controller: educationController,
+                                            decoration: const InputDecoration(
+                                              hintText: 'Enter education',
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Row(
+                                            children: [
+                                              // From date
+                                              Expanded(
+                                                child: DateTimeFormField(
+                                                  context: context,
+                                                  initialValue: from,
+                                                  onSaved: (value) {},
+                                                  validator: (value) {
+                                                    if (value == null) {
+                                                      return 'Please select a date';
+                                                    } else if (value
+                                                        .isAfter(to)) {
+                                                      return 'From date must be before today';
+                                                    }
+
+                                                    from = value;
+
+                                                    return null;
+                                                  },
+                                                ),
+                                              ),
+                                              const SizedBox(width: 20),
+                                              Expanded(
+                                                child: DateTimeFormField(
+                                                  context: context,
+                                                  initialValue: to,
+                                                  onSaved: (value) {},
+                                                  validator: (value) {
+                                                    if (value == null) {
+                                                      return 'Please select a date';
+                                                    } else if (from
+                                                        .isAfter(value)) {
+                                                      return 'From date must be before to date';
+                                                    }
+
+                                                    to = value;
+
+                                                    return null;
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    actions: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Close the dialog
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Handle adding the language
+                                          // Close the dialog
+                                          if (formKey.currentState!
+                                              .validate()) {
+                                            setState(() {
+                                              _loadedEducation.add({
+                                                "schoolName": capitalize(
+                                                    educationController.text),
+                                                "startYear": from.toString(),
+                                                "endYear": to.toString()
+                                              });
+                                            });
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                        child: const Text('Add'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+
+                EducationTraitFormField(
+                  educationData: _loadedEducation,
+                  context: context,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please add at least one education";
+                    }
+                  },
+                  onSaved: (value) {},
+                  onEdit: (dynamic value, int index) {
+                    setState(() {
+                      _loadedEducation[index] = value;
+                    });
+                  },
+                  onDelete: (int index) {
+                    setState(() {
+                      _loadedEducation.removeAt(index);
+                    });
+                  },
+                ),
+              ],
+            ),
+
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    //navigate
+                    if (formKey.currentState!.validate()) {
+                      setState(() {
+                        step++;
+                      });
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  child: const Text('Next'),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -452,7 +559,6 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
     // Show modal for add/editing model
     void showProjectModal(
         {dynamic value = const {}, bool isEdited = false, index}) async {
-
       final TextEditingController projectNameController =
           TextEditingController();
       String from = DateTime.now().toString();
@@ -483,8 +589,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Add project",
-                          style: TextStyle(
+                      Text(isEdited ? "Edit project" : "Add project",
+                          style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 20),
 
@@ -567,13 +673,25 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                       const Text("Skillsets"),
                       const SizedBox(height: 10),
                       MultiSelectChip(
-                          itemList: skillsetsMockData,
-                          selectedChoices: skillsets,
-                          onSelectionChanged: (value) {
-                            setState(() {
-                              skillsets = value;
-                            });
-                          }),
+                        itemList: skillsetsMockData,
+                        selectedChoices: skillsets,
+                        validator: (value) {
+                          print("value $value");
+
+                          if (value!.isEmpty) {
+                            return "Please select at least one skillset";
+                          }
+
+                          return null;
+                        },
+                        onSaved: (value) {},
+                        onSelectionChanged: (value) {
+                          setState(() {
+                            skillsets = value;
+                          });
+                        },
+                        isEditable: true,
+                      ),
 
                       // Cancel and save button
                       Row(
@@ -834,6 +952,10 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                 child: MultiSelectChip(
                     itemList: skillsetsMockData,
                     selectedChoices: project['skillsets'],
+                    validator: (value) {
+                      print(value);
+                    },
+                    onSaved: (value) {},
                     onSelectionChanged: (value) {
                       int indexOf = projectList.indexOf(project);
                       setState(() {
@@ -977,7 +1099,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                     const SizedBox(width: 10),
                     ElevatedButton(
                       onPressed: () {
-                        routerConfig.pushReplacement('/project');
+                        routerConfig.go('/project');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,

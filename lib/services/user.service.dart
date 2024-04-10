@@ -126,7 +126,7 @@ class UserService {
   }
 
   //Get user techstacks
-  Future<List<Map<String, dynamic>>> getUserTechStack(
+  Future<Map<String, dynamic>> getUserTechStack(
       {required String token, required BigInt userId}) async {
     try {
       Response res = await _dioClient.get(
@@ -144,7 +144,7 @@ class UserService {
         throw Exception(errorMessage);
       }
 
-      return List<Map<String, dynamic>>.from(res.data?["result"]);
+      return Map<String, dynamic>.from(res.data?["result"]);
     } catch (_) {
       rethrow;
     }
@@ -193,6 +193,64 @@ class UserService {
       }
 
       return List<Map<String, dynamic>>.from(res.data?["result"]);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  // Get user languages
+  Future<List<Map<String, dynamic>>> getUserLanguages({
+    required String token,
+    required BigInt userId,
+  }) async {
+    try {
+      Response res = await _dioClient.get(
+        "/api/profile/student/getByStudentId/$userId",
+        token: token,
+      );
+
+      print(res.data?["result"]);
+
+      if (res.statusCode! >= 400) {
+        // List errors = res.data?["errorDetails"];
+        String errorMessage = res.data?["errorDetails"];
+        // ? errors.join("\n")
+        // : "Get user languages failed, please try again.";
+        throw Exception(errorMessage);
+      }
+
+      return List<Map<String, dynamic>>.from(res.data?["result"]);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  // 
+  Future<Map<String, dynamic>> updateUserLanguage({
+    required String token,
+    required BigInt userId,
+    required String language,
+  }) async {
+    try {
+      Response res = await _dioClient.put(
+        "/api/profile/student/$userId/languages",
+        body: {
+          "language": language,
+        },
+        token: token,
+      );
+
+      print(res);
+
+      if (res.statusCode! >= 400) {
+        // List errors = res.data?["errorDetails"];
+        String errorMessage = res.data?["errorDetails"];
+        // ? errors.join("\n")
+        // : "Create user language failed, please try again.";
+        throw Exception(errorMessage);
+      }
+
+      return res.data?["result"];
     } catch (_) {
       rethrow;
     }

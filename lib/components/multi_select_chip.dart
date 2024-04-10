@@ -1,26 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:studenthub/utils/string.dart';
 
-class MultiSelectChip extends StatefulWidget {
+class MultiSelectChip extends FormField<List<dynamic>> {
+  final List<dynamic> itemList;
+  final String valueField;
+  final String labelField;
+  final bool isEditable;
+  final Function(List<dynamic>) onSelectionChanged;
+  final List<dynamic> selectedChoices;
+
+  MultiSelectChip({
+    required this.itemList,
+    this.valueField = "",
+    this.labelField = "",
+    this.isEditable = false,
+    required this.onSelectionChanged,
+    required this.selectedChoices,
+    required FormFieldSetter<List<dynamic>> onSaved,
+    required FormFieldValidator<List<dynamic>> validator,
+    List<dynamic>? initialValue,
+    bool autovalidate = false,
+  }) : super(
+          onSaved: onSaved,
+          validator: (value) {
+            return validator([...selectedChoices]);
+          },
+          initialValue: initialValue ?? [],
+          builder: (FormFieldState<List<dynamic>> state) {
+            return Column(
+              children: [
+                _MultiSelectChipImpl(
+                  itemList: itemList,
+                  valueField: valueField,
+                  labelField: labelField,
+                  isEditable: isEditable,
+                  onSelectionChanged: onSelectionChanged,
+                  selectedChoices: selectedChoices,
+                ),
+                if (state.errorText != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        state.errorText!,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
+        );
+}
+
+class _MultiSelectChipImpl extends StatefulWidget {
   final List<dynamic> itemList;
   final List<dynamic> selectedChoices;
   final String valueField;
   final String labelField;
+  final bool isEditable;
   final Function(List<dynamic>) onSelectionChanged;
 
   //Need to pass value and label field simultaneously to get the value and label from the list
   //If valueField and labelField is empty, it will return the item itself
-  const MultiSelectChip(
-      {required this.itemList,
-      this.selectedChoices = const [],
-      this.valueField = "",
-      this.labelField = "",
-      required this.onSelectionChanged});
-
-  @override
-  State<MultiSelectChip> createState() => _MultiSelectChipState();
+  const _MultiSelectChipImpl({
+    super.key,
+    required this.itemList,
+    this.selectedChoices = const [],
+    required this.valueField,
+    required this.labelField,
+    required this.isEditable,
+    required this.onSelectionChanged,
+  });
+  State<_MultiSelectChipImpl> createState() => _MultiSelectChipImplState();
 }
 
-class _MultiSelectChipState extends State<MultiSelectChip> {
+class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
   List<dynamic> selectedChoices = [];
 
   @override
@@ -31,8 +90,90 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
     });
   }
 
+  void showAddItemSheet() async {
+    TextEditingController textEditingController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: IntrinsicWidth(
+              child: IntrinsicHeight(
+                child: AlertDialog(
+                  title: Text(
+                      'Add New ${widget.labelField != "" ? capitalize(widget.labelField) : 'Item'}'),
+                  content: Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: textEditingController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter item';
+                            } else if (widget.itemList
+                                    .map((e) => e.toString().toLowerCase())
+                                    .contains(value.toLowerCase()) ||
+                                (widget.labelField != "" &&
+                                    widget.itemList.any((element) =>
+                                        element[widget.labelField]
+                                            .toString()
+                                            .toLowerCase() ==
+                                        value.toLowerCase()))) {
+                              return 'Item already exists';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            labelText: widget.labelField != ""
+                                ? capitalize(widget.labelField)
+                                : 'Item',
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const SizedBox(width: 10),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            const SizedBox(width: 10),
+                            ElevatedButton(
+                              onPressed: () {
+                                print(textEditingController.text);
+                                if (formKey.currentState!.validate()) {
+                                  // setState(() {
+                                  //   widget.itemList.add(widget.labelField != ""
+                                  //       ? {
+                                  //           widget.valueField:
+                                  //               textEditingController.text,
+                                  //         }
+                                  //       : textEditingController.text);
+                                  // });
+                                  // Navigator.pop(context);
+                                }
+                              },
+                              child: const Text('Add'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
   @override
-  void didUpdateWidget(MultiSelectChip oldWidget) {
+  void didUpdateWidget(_MultiSelectChipImpl oldWidget) {
     super.didUpdateWidget(oldWidget);
     setState(() {
       selectedChoices = List.from(widget.selectedChoices);
@@ -56,45 +197,76 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
       child: Column(
         children: [
           //Create dropdown button for itemlist
-          Container(
-            width: double.infinity,
-            child: DropdownMenu(
-              controller: _textEditingController,
-              requestFocusOnTap: true,
-              initialSelection:
-                  widget.itemList.isNotEmpty ? widget.itemList[0] : "",
-              label: Text(
-                  widget.labelField != "" ? widget.labelField : "Select item"),
-              dropdownMenuEntries:
-                  widget.itemList.map<DropdownMenuEntry<dynamic>>((item) {
-                return DropdownMenuEntry<dynamic>(
-                    value: widget.valueField != ""
-                        ? item[widget.labelField]
-                        : item,
-                    label: widget.labelField != ""
-                        ? item[widget.labelField]
-                        : item);
-              }).toList(),
-              onSelected: (value) => {
-                setState(() {
-                  bool valueNotInSelectedChoice = true;
+          widget.isEditable
+              ? SizedBox(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: DropdownMenu(
+                          controller: _textEditingController,
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          menuHeight: 200.0,
+                          requestFocusOnTap: true,
+                          initialSelection: widget.itemList.isNotEmpty
+                              ? widget.itemList[0]
+                              : "",
+                          label: Text(widget.labelField != ""
+                              ? capitalize(widget.labelField)
+                              : "Select item"),
+                          dropdownMenuEntries: widget.itemList
+                              .map<DropdownMenuEntry<dynamic>>((item) {
+                            return DropdownMenuEntry<dynamic>(
+                                value: widget.valueField != ""
+                                    ? item[widget.valueField]
+                                    : item,
+                                label: widget.labelField != ""
+                                    ? item[widget.labelField]
+                                    : item);
+                          }).toList(),
+                          onSelected: (value) => {
+                            setState(() {
+                              bool valueNotInSelectedChoice = true;
 
-                  for (var i = 0; i < selectedChoices.length; i++) {
-                    if (selectedChoices[i] == value) {
-                      valueNotInSelectedChoice = false;
-                      break;
-                    }
-                  }
+                              for (var i = 0; i < selectedChoices.length; i++) {
+                                if (selectedChoices[i] == value ||
+                                    (widget.labelField != "" &&
+                                        selectedChoices[i][widget.labelField] ==
+                                            value)) {
+                                  valueNotInSelectedChoice = false;
+                                  break;
+                                }
+                              }
 
-                  if (valueNotInSelectedChoice && value != null) {
-                    selectedChoices.add(value);
-                    widget.onSelectionChanged(selectedChoices);
-                  }
-                })
-              },
-            ),
-          ),
-          Container(
+                              if (valueNotInSelectedChoice && value != null) {
+                                selectedChoices.add(widget.labelField != ""
+                                    ? {
+                                        widget.valueField: value,
+                                      }
+                                    : value);
+                                widget.onSelectionChanged(selectedChoices);
+                              }
+                            })
+                          },
+                        ),
+                      ),
+                      widget.isEditable
+                          ? IconButton(
+                              onPressed: () {
+                                if (widget.isEditable) {
+                                  showAddItemSheet();
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.add_circle_rounded,
+                                color: Color(0xFF008ABD),
+                              ),
+                            )
+                          : const SizedBox()
+                    ],
+                  ),
+                )
+              : const SizedBox(),
+          SizedBox(
             width: double.infinity,
             child: Wrap(
               children: selectedChoices.map((item) {
@@ -102,15 +274,24 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
                   padding: const EdgeInsets.all(2.0),
                   child: Chip(
                     label: Text(widget.labelField != ""
-                        ? item[widget.labelField]
-                        : item),
+                        ? item[widget.labelField].toString()
+                        : item.toString()),
+                    deleteIconColor: const Color(0xFF008ABD),
+                    deleteIcon: widget.isEditable
+                        ? Transform.translate(
+                            offset: const Offset(
+                                0, -2), // Adjust the offset as needed
+                            child: const Icon(
+                              Icons.cancel,
+                              color: Color(0xFF008ABD),
+                            ),
+                          )
+                        : const SizedBox(),
                     onDeleted: () {
-                      int index = selectedChoices.indexOf(item);
-
-                      setState(() {
-                        selectedChoices.removeAt(index);
+                      if (widget.isEditable) {
+                        selectedChoices.remove(item);
                         widget.onSelectionChanged(selectedChoices);
-                      });
+                      }
                     },
                   ),
                 );
