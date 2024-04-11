@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/formfields/datetime_formfield.dart';
 import 'package:studenthub/utils/string.dart';
+import 'package:studenthub/utils/time.dart';
 
 class EducationTraitFormField extends FormField<List<dynamic>> {
   final List<dynamic> educationData;
@@ -50,10 +51,16 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                             TextEditingController();
                                         educationController.text =
                                             education?["schoolName"];
-                                        DateTime from = DateTime.parse(
-                                            education?["startYear"]);
-                                        DateTime to = DateTime.parse(
-                                            education?["endYear"]);
+                                        DateTime from = education?["startYear"]
+                                                is int
+                                            ? DateTime(education?["startYear"])
+                                            : DateTime.parse(
+                                                education?["startYear"]);
+                                        DateTime to = education?["endYear"]
+                                                is int
+                                            ? DateTime(education?["endYear"])
+                                            : DateTime.parse(
+                                                education?["endYear"]);
 
                                         showDialog(
                                           context: context,
@@ -256,7 +263,7 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                 children: [
                                   TextSpan(
                                     text:
-                                        '${DateTime.parse(education?["startYear"]).year} - ${DateTime.parse(education?["endYear"]).year}',
+                                        '${formatYear(education?["startYear"])} - ${formatYear(education?["endYear"])}',
                                     style: TextStyle(
                                       fontSize: 14.0,
                                       color: Colors.grey[400],
@@ -272,7 +279,7 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                     : [
                         const Center(
                           child: Text(
-                            "No education data",
+                            "You have not added any education yet.",
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,

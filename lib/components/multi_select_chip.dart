@@ -7,15 +7,19 @@ class MultiSelectChip extends FormField<List<dynamic>> {
   final String labelField;
   final bool isEditable;
   final Function(List<dynamic>) onSelectionChanged;
+  final Function(dynamic) onAddItem;
   final List<dynamic> selectedChoices;
+  final bool isExpanded;
 
   MultiSelectChip({
     required this.itemList,
     this.valueField = "",
     this.labelField = "",
     this.isEditable = false,
+    this.isExpanded = true,
     required this.onSelectionChanged,
     required this.selectedChoices,
+    required this.onAddItem,
     required FormFieldSetter<List<dynamic>> onSaved,
     required FormFieldValidator<List<dynamic>> validator,
     List<dynamic>? initialValue,
@@ -36,6 +40,8 @@ class MultiSelectChip extends FormField<List<dynamic>> {
                   isEditable: isEditable,
                   onSelectionChanged: onSelectionChanged,
                   selectedChoices: selectedChoices,
+                  onAddItem: onAddItem,
+                  isExpanded: isExpanded,
                 ),
                 if (state.errorText != null)
                   Padding(
@@ -63,14 +69,18 @@ class _MultiSelectChipImpl extends StatefulWidget {
   final String valueField;
   final String labelField;
   final bool isEditable;
+  final bool isExpanded;
   final Function(List<dynamic>) onSelectionChanged;
+  final Function(dynamic) onAddItem;
 
   //Need to pass value and label field simultaneously to get the value and label from the list
   //If valueField and labelField is empty, it will return the item itself
   const _MultiSelectChipImpl({
     super.key,
     required this.itemList,
+    required this.isExpanded,
     this.selectedChoices = const [],
+    required this.onAddItem,
     required this.valueField,
     required this.labelField,
     required this.isEditable,
@@ -145,17 +155,12 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                             const SizedBox(width: 10),
                             ElevatedButton(
                               onPressed: () {
-                                print(textEditingController.text);
                                 if (formKey.currentState!.validate()) {
-                                  // setState(() {
-                                  //   widget.itemList.add(widget.labelField != ""
-                                  //       ? {
-                                  //           widget.valueField:
-                                  //               textEditingController.text,
-                                  //         }
-                                  //       : textEditingController.text);
-                                  // });
-                                  // Navigator.pop(context);
+                                  widget.onAddItem(
+                                    textEditingController.text,
+                                  );
+
+                                  Navigator.pop(context);
                                 }
                               },
                               child: const Text('Add'),
@@ -200,11 +205,13 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
           widget.isEditable
               ? SizedBox(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: DropdownMenu(
                           controller: _textEditingController,
-                          width: MediaQuery.of(context).size.width * 0.8,
+                          width: MediaQuery.of(context).size.width *
+                              (widget.isExpanded ? 0.8 : 0.5),
                           menuHeight: 200.0,
                           requestFocusOnTap: true,
                           initialSelection: widget.itemList.isNotEmpty
@@ -231,14 +238,14 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                                 if (selectedChoices[i] == value ||
                                     (widget.labelField != "" &&
                                         selectedChoices[i][widget.labelField] ==
-                                            value)) {
+                                            value[widget.labelField])) {
                                   valueNotInSelectedChoice = false;
                                   break;
                                 }
                               }
 
                               if (valueNotInSelectedChoice && value != null) {
-                                selectedChoices.add(widget.labelField != ""
+                                selectedChoices.add(widget.valueField != ""
                                     ? {
                                         widget.valueField: value,
                                       }
@@ -260,6 +267,7 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                                 Icons.add_circle_rounded,
                                 color: Color(0xFF008ABD),
                               ),
+                              tooltip: "Add new item",
                             )
                           : const SizedBox()
                     ],

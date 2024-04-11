@@ -207,9 +207,8 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                                     _isLoading = true;
                                   });
 
-                                  Map<String, dynamic> res = _userInfoStore
-                                          .hasProfile
-                                      ? await _userService.editCompanyProfile(
+                                  Map<String, dynamic> res = await _userService
+                                      .createOrUpdateCompanyProfile(
                                           token: _userInfoStore.token,
                                           companyName:
                                               _companyNameController.text,
@@ -219,17 +218,8 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                                           description:
                                               _companyDescriptionController
                                                   .text,
-                                          companyId: _userInfoStore.roleId)
-                                      : await _userService.createCompanyProfile(
-                                          token: _userInfoStore.token,
-                                          companyName:
-                                              _companyNameController.text,
-                                          size: _chosenCompanySize,
-                                          website:
-                                              _companyWebsiteController.text,
-                                          description:
-                                              _companyDescriptionController
-                                                  .text);
+                                          hasProfile: _userInfoStore.hasProfile,
+                                          companyId: _userInfoStore.roleId);
 
                                   if (res.isNotEmpty &&
                                       _userInfoStore.hasProfile) {

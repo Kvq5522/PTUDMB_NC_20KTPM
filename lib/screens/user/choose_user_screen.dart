@@ -72,6 +72,8 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
           };
         });
       }
+
+      print(accountList);
     } catch (e) {
       routerConfig.go("/login");
     } finally {

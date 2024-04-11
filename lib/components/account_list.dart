@@ -32,14 +32,21 @@ class _AccountListState extends State<AccountList> {
         });
       }
 
-      if (widget.accountList[index]?["hasProfile"]) {
+      if (widget.accountList[index]?["hasProfile"] == true) {
         _userInfoStore
             .setRoleId(BigInt.from(widget.accountList[index]["roleId"]));
+        _userInfoStore.setHasProfile(true);
       }
     } else {
       _userInfoStore.setUserType(widget.accountList.isNotEmpty
           ? widget.accountList?[chosenIndex]?['userType']
           : "Student");
+
+      if (widget.accountList[0]?["hasProfile"] == true) {
+        _userInfoStore
+            .setRoleId(BigInt.from(widget.accountList[0]["roleId"]));
+        _userInfoStore.setHasProfile(true);
+      }
     }
   }
 

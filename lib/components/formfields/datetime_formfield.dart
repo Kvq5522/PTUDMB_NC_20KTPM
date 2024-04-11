@@ -24,7 +24,7 @@ class DateTimeFormField extends FormField<DateTime> {
                   context: state.context,
                   initialDate: state.value!,
                   firstDate: DateTime(1900),
-                  lastDate: DateTime.now(),
+                  lastDate: DateTime(DateTime.now().year + 10),
                 );
                 if (date != null) {
                   state.didChange(date);

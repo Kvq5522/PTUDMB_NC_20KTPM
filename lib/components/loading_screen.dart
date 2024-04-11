@@ -7,9 +7,9 @@ class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(top: const MyAppBar().preferredSize.height),
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height -
-          const MyAppBar().preferredSize.height,
+      height: MediaQuery.of(context).size.height,
       color: Colors.grey.withOpacity(0.1), // 60% transparent slate background
       child: const Center(
         child: CircularProgressIndicator(

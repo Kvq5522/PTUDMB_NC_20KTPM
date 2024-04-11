@@ -50,7 +50,7 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                                       TextEditingController languageController =
                                           TextEditingController();
                                       languageController.text =
-                                          language['name'];
+                                          language?['languageName'] ?? "";
 
                                       showDialog(
                                         context: context,
@@ -65,7 +65,7 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                                                     return 'Please type proper language';
                                                   } else if (languageData.any(
                                                       (element) =>
-                                                          element['name']
+                                                          element['languageName']
                                                               .toString()
                                                               .toLowerCase() ==
                                                           value
@@ -149,7 +149,7 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                       : [
                           const Center(
                               child: Text(
-                            "No language language",
+                            "You have not added any language yet.",
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,

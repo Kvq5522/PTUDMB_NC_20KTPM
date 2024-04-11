@@ -2,14 +2,13 @@ import "package:flutter/material.dart";
 
 import 'package:studenthub/components/multi_select_chip.dart';
 
-
 class ProjectTile extends StatelessWidget {
   final dynamic project;
-  final List<dynamic> skillsets;
+  final List<Map<String, dynamic>> skillsets;
   final Function() onEdit;
   final Function() onDeleted;
-  final Function(List<dynamic>) onSetSkillsets;
-  final Function(dynamic) onAddSkillsets;
+  final Function(List<Map<String, dynamic>>) onSetSkillsets;
+  final Function(Map<String, dynamic>) onAddSkillsets;
 
   const ProjectTile({
     super.key,
@@ -39,9 +38,15 @@ class ProjectTile extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(project['projectName'] as String),
                   Text(
-                    "${project['from']} - ${project['to']}",
+                    project?['title'] as String,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "${project['startMonth']} - ${project['endMonth']}",
                     textAlign: TextAlign.left,
                   )
                 ],
@@ -71,18 +76,21 @@ class ProjectTile extends StatelessWidget {
           Text("${project['description']}"),
           const SizedBox(height: 10),
           const Text('Skillsets'),
-          // Row(
-          //   children: [
-          //     Expanded(
-          //       child: MultiSelectChip(
-          //           itemList: skillsetsMockData,
-          //           selectedChoices: project['skillsets'],
-          //           onSelectionChanged: (value) {
-          //             onSetSkillsets(value);
-          //           }),
-          //     )
-          //   ],
-          // )
+          Row(
+            children: [
+              Expanded(
+                child: MultiSelectChip(
+                  itemList: skillsets,
+                  selectedChoices: project['skillSets'],
+                  labelField: "name",
+                  onSelectionChanged: (value) {},
+                  onAddItem: (value) {},
+                  onSaved: (value) {},
+                  validator: (value) {},
+                ),
+              )
+            ],
+          )
         ],
       ),
     );
