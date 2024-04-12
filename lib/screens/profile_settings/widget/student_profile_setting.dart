@@ -545,14 +545,15 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                                 onPressed: () {
                                                   // Close the dialog
                                                   Navigator.of(context).pop();
-                                                },style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  foregroundColor: Colors.white,
-                                  textStyle: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.blue,
+                                                  foregroundColor: Colors.white,
+                                                  textStyle: const TextStyle(
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
                                                 child: const Text('Cancel'),
                                               ),
                                               ElevatedButton(
@@ -573,14 +574,15 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                                     });
                                                     Navigator.of(context).pop();
                                                   }
-                                                },style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  foregroundColor: Colors.white,
-                                  textStyle: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.blue,
+                                                  foregroundColor: Colors.white,
+                                                  textStyle: const TextStyle(
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
                                                 child: const Text('Add'),
                                               ),
                                             ],
