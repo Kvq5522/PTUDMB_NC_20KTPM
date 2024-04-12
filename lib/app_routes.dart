@@ -72,7 +72,13 @@ GoRouter routerConfig = GoRouter(
     ),
     GoRoute(
       path: '/welcome',
-      builder: (context, state) => const WelcomeScreen(),
+      builder: (context, state) {
+        final userName = state.extra as String;
+        print("username $userName");
+        return WelcomeScreen(
+          userName: userName.isEmpty ? "User" : userName,
+        );
+      },
     ),
     //
     GoRoute(

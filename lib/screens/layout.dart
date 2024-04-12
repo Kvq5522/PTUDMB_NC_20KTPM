@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:studenthub/components/app_bar.dart';
+import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/screens/dashboard/dashboard_overview/dashboard_screen.dart';
 import 'package:studenthub/components/bottom_bar.dart';
 import 'package:studenthub/screens/notifications/notifications.dart';

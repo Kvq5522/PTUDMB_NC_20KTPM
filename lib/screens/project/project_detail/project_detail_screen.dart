@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:studenthub/app_routes.dart';
 
-import 'package:studenthub/components/app_bar.dart';
+import 'package:studenthub/components/appbars/app_bar.dart';
 
 class DetailProjectScreen extends StatefulWidget {
   const DetailProjectScreen({super.key});

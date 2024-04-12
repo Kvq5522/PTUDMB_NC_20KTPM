@@ -1,20 +1,12 @@
 // education_mock.dart
 
 class EducationInfo {
-  final String title;
-  final String period;
+  final String schoolName;
+  final String startYear;
+  final String endYear;
 
-  EducationInfo({required this.title, required this.period});
+  EducationInfo(
+      {required this.schoolName,
+      required this.startYear,
+      required this.endYear});
 }
-
-List<EducationInfo> educationData = [
-  EducationInfo(
-    title: 'Le Hong Phong High School',
-    period: '2008 - 2010',
-  ),
-  EducationInfo(
-    title: 'Ho Chi Minh University of Science',
-    period: '2010 - 2014',
-  ),
-  // Add more education details as needed
-];

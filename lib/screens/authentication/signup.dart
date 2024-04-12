@@ -2,11 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:studenthub/components/checkbox_formfield.dart';
+import 'package:studenthub/components/formfields/checkbox_formfield.dart';
 import 'package:studenthub/services/auth.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
+import 'package:studenthub/utils/toast.dart';
 import '../../app_routes.dart';
-import '../../components/appbar_auth.dart';
+import '../../components/appbars/appbar_auth.dart';
 
 class SignUpScreen extends StatelessWidget {
   final String selectedOption;
@@ -235,24 +236,30 @@ class _SignUpFormState extends State<SignUpForm> {
                       _errorMessage = null;
                     });
 
-                    await _authService.signUp(
+                    bool isSignupSuccess = await _authService.signUp(
                       _fullNameController.text,
                       _emailController.text,
                       _passwordController.text,
                       widget.selectedOption == 'student',
                     );
 
+                    if (!isSignupSuccess) {
+                      throw Exception('Sign up failed, please try again.');
+                    }
+
+                    if (mounted) {
+                      showSuccessToast(
+                          context: context,
+                          message:
+                              "Please check your email to verify your account.");
+                    }
+
                     _userInfoStore.setUserType(
                         widget.selectedOption == 'student'
                             ? 'Student'
                             : 'Company');
 
-                    await _authService.signIn(
-                      _emailController.text,
-                      _passwordController.text,
-                    );
-
-                    routerConfig.go('/dashboard');
+                    routerConfig.go('/login');
                   } catch (e) {
                     setState(() {
                       _errorMessage = e.toString();

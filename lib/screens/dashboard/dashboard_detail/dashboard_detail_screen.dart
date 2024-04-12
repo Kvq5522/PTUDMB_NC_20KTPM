@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:studenthub/components/app_bar.dart';
+import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/constants/proposals_mock.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/widget/dashboard_detail_hired_list.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/widget/dashboard_detail_proposal_list.dart';
