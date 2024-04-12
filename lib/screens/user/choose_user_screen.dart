@@ -3,7 +3,7 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/components/account_list.dart';
 import 'package:studenthub/app_routes.dart';
-import 'package:studenthub/components/app_bar.dart';
+import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/services/auth.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 
@@ -72,6 +72,8 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
           };
         });
       }
+
+      print(accountList);
     } catch (e) {
       routerConfig.go("/login");
     } finally {

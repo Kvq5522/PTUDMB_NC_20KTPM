@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
-import 'package:studenthub/components/app_bar.dart';
+import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/components/loading_screen.dart';
 import 'package:studenthub/components/radio_group.dart';
 import 'package:studenthub/services/user.service.dart';
@@ -207,9 +207,8 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                                     _isLoading = true;
                                   });
 
-                                  Map<String, dynamic> res = _userInfoStore
-                                          .hasProfile
-                                      ? await _userService.editCompanyProfile(
+                                  Map<String, dynamic> res = await _userService
+                                      .createOrUpdateCompanyProfile(
                                           token: _userInfoStore.token,
                                           companyName:
                                               _companyNameController.text,
@@ -219,17 +218,8 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                                           description:
                                               _companyDescriptionController
                                                   .text,
-                                          companyId: _userInfoStore.roleId)
-                                      : await _userService.createCompanyProfile(
-                                          token: _userInfoStore.token,
-                                          companyName:
-                                              _companyNameController.text,
-                                          size: _chosenCompanySize,
-                                          website:
-                                              _companyWebsiteController.text,
-                                          description:
-                                              _companyDescriptionController
-                                                  .text);
+                                          hasProfile: _userInfoStore.hasProfile,
+                                          companyId: _userInfoStore.roleId);
 
                                   if (res.isNotEmpty &&
                                       _userInfoStore.hasProfile) {
@@ -238,15 +228,15 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                                           context: context,
                                           message: "Company profile updated.");
                                     }
-
-                                    routerConfig.go('/dashboard');
                                   } else if (res.isNotEmpty) {
+                                    _userInfoStore.setHasProfile(true);
+
                                     showSuccessToast(
                                         context: context,
                                         message: "Company profile created.");
-
-                                    routerConfig.go('/welcome');
                                   }
+                                  routerConfig.go('/welcome',
+                                      extra: res["companyName"]);
                                 }
                               } catch (e) {
                                 if (e.toString().contains("Unauthorized")) {
