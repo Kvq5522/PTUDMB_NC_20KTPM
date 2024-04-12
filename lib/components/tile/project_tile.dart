@@ -7,8 +7,6 @@ class ProjectTile extends StatelessWidget {
   final List<Map<String, dynamic>> skillsets;
   final Function() onEdit;
   final Function() onDeleted;
-  final Function(List<Map<String, dynamic>>) onSetSkillsets;
-  final Function(Map<String, dynamic>) onAddSkillsets;
 
   const ProjectTile({
     super.key,
@@ -16,8 +14,6 @@ class ProjectTile extends StatelessWidget {
     required this.skillsets,
     required this.onEdit,
     required this.onDeleted,
-    required this.onSetSkillsets,
-    required this.onAddSkillsets,
   });
 
   @override
@@ -81,7 +77,7 @@ class ProjectTile extends StatelessWidget {
               Expanded(
                 child: MultiSelectChip(
                   itemList: skillsets,
-                  selectedChoices: project['skillSets'],
+                  selectedChoices: project['skillSets'] ?? [],
                   labelField: "name",
                   onSelectionChanged: (value) {},
                   onAddItem: (value) {},

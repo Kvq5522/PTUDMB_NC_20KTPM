@@ -228,17 +228,15 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                                           context: context,
                                           message: "Company profile updated.");
                                     }
-
-                                    routerConfig.go('/dashboard');
                                   } else if (res.isNotEmpty) {
                                     _userInfoStore.setHasProfile(true);
 
                                     showSuccessToast(
                                         context: context,
                                         message: "Company profile created.");
-
-                                    routerConfig.go('/welcome');
                                   }
+                                  routerConfig.go('/welcome',
+                                      extra: res["companyName"]);
                                 }
                               } catch (e) {
                                 if (e.toString().contains("Unauthorized")) {

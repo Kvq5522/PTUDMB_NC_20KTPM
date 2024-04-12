@@ -150,6 +150,14 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                foregroundColor: Colors.white,
+                                textStyle: const TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               child: const Text('Cancel'),
                             ),
                             const SizedBox(width: 10),
@@ -163,6 +171,14 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                                   Navigator.pop(context);
                                 }
                               },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                foregroundColor: Colors.white,
+                                textStyle: const TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               child: const Text('Add'),
                             ),
                           ],
@@ -211,7 +227,7 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                         child: DropdownMenu(
                           controller: _textEditingController,
                           width: MediaQuery.of(context).size.width *
-                              (widget.isExpanded ? 0.8 : 0.5),
+                              (widget.isExpanded ? 0.75 : 0.5),
                           menuHeight: 200.0,
                           requestFocusOnTap: true,
                           initialSelection: widget.itemList.isNotEmpty

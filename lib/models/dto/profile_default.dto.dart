@@ -7,7 +7,7 @@ class StudentLanguageDto {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id': id?.toInt(),
       'languageName': languageName,
       'level': level,
     };
@@ -28,7 +28,7 @@ class StudentEducationDto {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id': id?.toInt(),
       'schoolName': schoolName,
       'startYear': startYear,
       'endYear': endYear,
@@ -37,7 +37,7 @@ class StudentEducationDto {
 }
 
 class StudentExperienceDto {
-  String? id;
+  BigInt? id;
   String startMonth;
   String endMonth;
   String title;
@@ -54,7 +54,7 @@ class StudentExperienceDto {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id':  id?.toInt(),
       'startMonth': startMonth,
       'endMonth': endMonth,
       'title': title,

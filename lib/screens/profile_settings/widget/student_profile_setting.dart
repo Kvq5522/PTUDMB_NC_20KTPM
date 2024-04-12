@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/components/formfields/datetime_formfield.dart';
 import 'package:studenthub/components/formfields/experience_formfield.dart';
-import 'package:studenthub/components/input_field.dart';
 import 'package:studenthub/components/loading_screen.dart';
 import 'package:studenthub/components/multi_select_chip.dart';
 import 'package:file_picker/file_picker.dart';
@@ -44,23 +43,20 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
   List<Map<String, dynamic>> _loadedLanguage = [];
   List<Map<String, dynamic>> _loadedExperience = [];
   String _loadedTranscript = '';
-
-  String? cvFileName; // Biến lưu tên của CV đã tải lên
-  String? transcriptFileName; // Biến lưu tên của Transcript đã tải lên
+  String _loadedResume = '';
+  String _uploadResume = '';
+  String _uploadTranscript = '';
 
   // Function to handle CV upload
-  Future<void> _uploadCV() async {
+  Future<void> _uploadResumeFunc() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
 
       if (result != null) {
         File file = File(result.files.single.path!);
         setState(() {
-          cvFileName = file.path
-              .split('/')
-              .last; // Lấy tên tệp từ đường dẫn và lưu vào cvFileName
+          _uploadResume = file.path;
         });
-        // Process the file here, such as uploading it to a server
       }
     } catch (e) {
       print(e);
@@ -71,17 +67,14 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
   }
 
   // Function to handle Transcript upload
-  Future<void> _uploadTranscript() async {
+  Future<void> _uploadTranscriptFunc() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
       File file = File(result.files.single.path!);
       setState(() {
-        transcriptFileName = file.path
-            .split('/')
-            .last; // Lấy tên tệp từ đường dẫn và lưu vào transcriptFileName
+        _uploadTranscript = file.path;
       });
-      // Process the file here, such as uploading it to a server
     }
   }
 
@@ -124,7 +117,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
           _loadedEducation = List.from(results[2]["educations"]);
           _loadedLanguage = List.from(results[2]["languages"]);
           _loadedExperience = List.from(results[2]["experiences"]);
-          print(List.from(results[2]["experiences"]));
+          _loadedTranscript = results[2]["transcript"] ?? "";
+          _loadedResume = results[2]["resume"] ?? "";
         } else {
           _loadedTechStack = _defaultTechStack[0];
         }
@@ -285,11 +279,33 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                           }
                         });
                       },
-                      onAddItem: (dynamic value) {
-                        setState(() {
-                          _defaultSkillSet.add({"name": value});
-                          _loadedSkillSet.add({"name": value});
-                        });
+                      onAddItem: (dynamic value) async {
+                        try {
+                          setState(() {
+                            _isLoading = true;
+                          });
+
+                          Map<String, dynamic> newSkillSet =
+                              await _userService.createSkillset(
+                                  token: _userInfoStore.token,
+                                  skillsetName: value.toString());
+
+                          setState(() {
+                            _defaultSkillSet.add(newSkillSet);
+                            _loadedSkillSet.add(newSkillSet);
+                          });
+                        } catch (e) {
+                          print(e);
+                          if (mounted) {
+                            showDangerToast(
+                                context: context,
+                                message: "Cannot add skillset");
+                          }
+                        } finally {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        }
                       },
                     ),
 
@@ -342,11 +358,19 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                         ),
                                       ),
                                       actions: [
-                                        TextButton(
+                                        ElevatedButton(
                                           onPressed: () {
                                             // Close the dialog
                                             Navigator.of(context).pop();
                                           },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.blue,
+                                            foregroundColor: Colors.white,
+                                            textStyle: const TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                           child: const Text('Cancel'),
                                         ),
                                         ElevatedButton(
@@ -364,6 +388,14 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                               Navigator.of(context).pop();
                                             }
                                           },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.blue,
+                                            foregroundColor: Colors.white,
+                                            textStyle: const TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                           child: const Text('Add'),
                                         ),
                                       ],
@@ -388,7 +420,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                           onSaved: (value) {},
                           onEdit: (String value, int index) {
                             setState(() {
-                              _loadedLanguage[index]?["languageName"] = value;
+                              _loadedLanguage[index]["languageName"] = value;
                             });
                           },
                           onDelete: (int index) {
@@ -513,7 +545,14 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                                 onPressed: () {
                                                   // Close the dialog
                                                   Navigator.of(context).pop();
-                                                },
+                                                },style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                  textStyle: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                                                 child: const Text('Cancel'),
                                               ),
                                               ElevatedButton(
@@ -534,7 +573,14 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                                     });
                                                     Navigator.of(context).pop();
                                                   }
-                                                },
+                                                },style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                  textStyle: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                                                 child: const Text('Add'),
                                               ),
                                             ],
@@ -603,6 +649,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                 BigInt? studentId =
                                     BigInt.from(newProfile?["id"]);
                                 _userInfoStore.setRoleId(studentId);
+                                _userInfoStore.setHasProfile(true);
 
                                 await _userService.updateUserLanguage(
                                     token: _userInfoStore.token,
@@ -611,11 +658,11 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                       (language) {
                                         return language["id"] != null
                                             ? StudentLanguageDto(
+                                                id: BigInt.from(language["id"]),
                                                 languageName:
                                                     language["languageName"],
                                                 level: "")
                                             : StudentLanguageDto(
-                                                id: BigInt.from(language["id"]),
                                                 languageName:
                                                     language["languageName"],
                                                 level: "");
@@ -629,16 +676,32 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                         _loadedEducation.map((education) {
                                       return education["id"] != null
                                           ? StudentEducationDto(
+                                              id: BigInt.tryParse(
+                                                  education["id"].toString()),
                                               schoolName:
                                                   education["schoolName"],
-                                              startYear: education["startYear"],
-                                              endYear: education["endYear"])
+                                              startYear: education["startYear"]
+                                                      is int
+                                                  ? education["startYear"]
+                                                  : DateTime.parse(education["startYear"])
+                                                      .year,
+                                              endYear: education["endYear"] is int
+                                                  ? education["endYear"]
+                                                  : DateTime.parse(education["endYear"])
+                                                      .year)
                                           : StudentEducationDto(
-                                              id: BigInt.from(education["id"]),
                                               schoolName:
                                                   education["schoolName"],
-                                              startYear: education["startYear"],
-                                              endYear: education["endYear"]);
+                                              startYear: education["startYear"]
+                                                      is int
+                                                  ? education["startYear"]
+                                                  : DateTime.parse(education["startYear"])
+                                                      .year,
+                                              endYear: education["endYear"] is int
+                                                  ? education["endYear"]
+                                                  : DateTime.parse(
+                                                          education["endYear"])
+                                                      .year);
                                     }).toList());
 
                                 setState(() {
@@ -727,8 +790,9 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                             if (value!.isEmpty) {
                               return "Please enter project name";
                             } else if (_loadedExperience.any((element) =>
-                                element["title"]!.toLowerCase() ==
-                                value!.toLowerCase()) && !isEdited) {
+                                    element["title"]!.toLowerCase() ==
+                                    value!.toLowerCase()) &&
+                                !isEdited) {
                               return "You are already added this project";
                             }
 
@@ -834,8 +898,28 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                             });
                           },
                           isEditable: true,
-                          onAddItem: (value) {
-                            if (skillsets.isEmpty) {}
+                          onAddItem: (value) async {
+                            try {
+                              setState(() {
+                                _isLoading = true;
+                              });
+
+                              Map<String, dynamic> newSkillSet =
+                                  await _userService.createSkillset(
+                                      token: _userInfoStore.token,
+                                      skillsetName: value.toString());
+
+                              setState(() {
+                                _defaultSkillSet.add(newSkillSet);
+                                skillsets.add(newSkillSet);
+                              });
+                            } catch (e) {
+                              print(e);
+                            } finally {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
                           },
                         ),
 
@@ -845,7 +929,9 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                           children: [
                             ElevatedButton(
                                 onPressed: () {
-                                  Navigator.pop(context);
+                                  if (!_isLoading) {
+                                    Navigator.pop(context);
+                                  }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.blue,
@@ -861,7 +947,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                             const SizedBox(width: 10),
                             ElevatedButton(
                                 onPressed: () {
-                                  if (formKey.currentState!.validate()) {
+                                  if (formKey.currentState!.validate() &&
+                                      !_isLoading) {
                                     !isEdited
                                         ? addProject({
                                             "title": capitalize(
@@ -1015,11 +1102,10 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                         userId: _userInfoStore.roleId,
                                         experience:
                                             _loadedExperience.map((experience) {
-                                          print(experience);
                                           return experience["id"] != null
                                               ? StudentExperienceDto(
-                                                  id: experience["id"]
-                                                      .toString(),
+                                                  id: BigInt.from(
+                                                      experience["id"]),
                                                   title: experience["title"],
                                                   startMonth:
                                                       experience["startMonth"],
@@ -1132,7 +1218,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: cvFileName != null ? null : _uploadCV,
+              onPressed: _uploadResumeFunc,
               style: ElevatedButton.styleFrom(
                 // backgroundColor: Colors.white, // Màu nền
                 elevation: 0, // Loại bỏ đổ bóng
@@ -1148,14 +1234,62 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                 width: double.infinity, // Tự động mở rộng chiều rộng
                 height: 40, // Đặt chiều cao
                 alignment: Alignment.center, // Canh giữa nội dung
-                child: Text(
-                  cvFileName != null
-                      ? 'Upload Success: $cvFileName'
-                      : 'Upload CV',
-                  style: TextStyle(
-                    color: cvFileName != null ? Colors.black : null,
-                  ),
-                ),
+                child: _uploadResume.isNotEmpty
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            'Uploaded resume: ${_uploadResume.split('/').last}',
+                            style: TextStyle(
+                                color: _loadedResume.isNotEmpty
+                                    ? Colors.black
+                                    : null,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                          IconButton(
+                              onPressed: () async {
+                                setState(() {
+                                  _uploadResume = '';
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.cancel,
+                                color: Colors.blue,
+                              ))
+                        ],
+                      )
+                    : _loadedResume.isNotEmpty
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                'Your resume: ${_loadedResume.split('/').last}',
+                                style: TextStyle(
+                                    color: _loadedTranscript.isNotEmpty
+                                        ? Colors.black
+                                        : null,
+                                    overflow: TextOverflow.ellipsis),
+                              ),
+                              IconButton(
+                                  onPressed: () async {
+                                    await _userService.downloadUserResume(
+                                        token: _userInfoStore.token,
+                                        userId: _userInfoStore.roleId);
+                                  },
+                                  icon: const Icon(
+                                    Icons.download,
+                                    color: Colors.blue,
+                                  ))
+                            ],
+                          )
+                        : Text(
+                            'Upload your resume',
+                            style: TextStyle(
+                                color: _loadedResume.isNotEmpty
+                                    ? Colors.black
+                                    : null,
+                                overflow: TextOverflow.ellipsis),
+                          ),
               ),
             ),
             const SizedBox(height: 16.0),
@@ -1168,7 +1302,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: transcriptFileName != null ? null : _uploadTranscript,
+              onPressed: _uploadTranscriptFunc,
               style: ElevatedButton.styleFrom(
                 // backgroundColor: Colors.white, // Màu nền
                 elevation: 0, // Loại bỏ đổ bóng
@@ -1180,18 +1314,65 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                 fixedSize: const Size.fromHeight(80),
               ),
               child: Container(
-                width: double.infinity, // Tự động mở rộng chiều rộng
-                height: 40, // Đặt chiều cao
-                alignment: Alignment.center, // Canh giữa nội dung
-                child: Text(
-                  transcriptFileName != null
-                      ? 'Upload Success: $transcriptFileName'
-                      : 'Upload Transcript',
-                  style: TextStyle(
-                    color: transcriptFileName != null ? Colors.black : null,
-                  ),
-                ),
-              ),
+                  width: double.infinity, // Tự động mở rộng chiều rộng
+                  height: 40, // Đặt chiều cao
+                  alignment: Alignment.center, // Canh giữa nội dung
+                  child: _uploadTranscript.isNotEmpty
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              'Uploaded transcript: ${_uploadTranscript.split('/').last}',
+                              style: TextStyle(
+                                  color: _loadedTranscript.isNotEmpty
+                                      ? Colors.black
+                                      : null,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                            IconButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    _uploadTranscript = '';
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.cancel,
+                                  color: Colors.blue,
+                                ))
+                          ],
+                        )
+                      : _loadedTranscript.isNotEmpty
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  'Your transcript: ${_loadedTranscript.split('/').last}',
+                                  style: TextStyle(
+                                      color: _loadedTranscript.isNotEmpty
+                                          ? Colors.black
+                                          : null,
+                                      overflow: TextOverflow.ellipsis),
+                                ),
+                                IconButton(
+                                    onPressed: () async {
+                                      await _userService.downloadUserTranscript(
+                                          token: _userInfoStore.token,
+                                          userId: _userInfoStore.roleId);
+                                    },
+                                    icon: const Icon(
+                                      Icons.download,
+                                      color: Colors.blue,
+                                    ))
+                              ],
+                            )
+                          : Text(
+                              'Upload your transcript',
+                              style: TextStyle(
+                                  color: _loadedTranscript.isNotEmpty
+                                      ? Colors.black
+                                      : null,
+                                  overflow: TextOverflow.ellipsis),
+                            )),
             ),
             const SizedBox(height: 16.0),
             // Widget chứa nút nằm ở cuối màn hình bên phải
@@ -1222,8 +1403,56 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
-                      onPressed: () {
-                        routerConfig.go('/project');
+                      onPressed: () async {
+                        try {
+                          setState(() {
+                            _isLoading = true;
+                          });
+
+                          if (_uploadResume.isNotEmpty) {
+                            Map<String, dynamic> resumeRes =
+                                await _userService.updateUserResume(
+                                    token: _userInfoStore.token,
+                                    userId: _userInfoStore.roleId,
+                                    resume: _uploadResume);
+
+                            setState(() {
+                              if (resumeRes["resume"] != null) {
+                                _loadedResume = resumeRes["resume"];
+                                _uploadResume = '';
+                              }
+                            });
+                          }
+
+                          if (_uploadTranscript.isNotEmpty) {
+                            Map<String, dynamic> transcriptRes =
+                                await _userService.updateUserTranscript(
+                                    token: _userInfoStore.token,
+                                    userId: _userInfoStore.roleId,
+                                    transcript: _uploadTranscript);
+
+                            setState(() {
+                              if (transcriptRes["transcript"] != null) {
+                                _loadedTranscript = transcriptRes["transcript"];
+                                _uploadTranscript = '';
+                              }
+                            });
+                          }
+
+                          routerConfig.go('/welcome',
+                              extra: _userInfoStore.username);
+                        } catch (e) {
+                          print(e);
+                          if (mounted) {
+                            showDangerToast(
+                                context: context,
+                                message: "Fail to update CV and Transcript");
+                          }
+                        } finally {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,

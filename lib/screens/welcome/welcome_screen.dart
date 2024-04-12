@@ -3,7 +3,8 @@ import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/app_routes.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+  final String userName;
+  const WelcomeScreen({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +33,10 @@ class WelcomeScreen extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 18),
-                child: const Text(
-                  "Welcome, Suni!",
+                child: Text(
+                  "Welcome, $userName!",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 24,
                     color: Colors.white,
                     fontWeight: FontWeight.w600,

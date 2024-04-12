@@ -45,9 +45,6 @@ class ExperienceFormField extends FormField<List<Map<String, dynamic>>> {
                             onDeleted: () {
                               onDelete(index);
                             },
-                            onSetSkillsets:
-                                (List<Map<String, dynamic>> value) {},
-                            onAddSkillsets: (Map<String, dynamic> value) {},
                           );
                         })
                       : [
