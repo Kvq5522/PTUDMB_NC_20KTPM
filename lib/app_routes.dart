@@ -85,24 +85,31 @@ GoRouter routerConfig = GoRouter(
       path: '/dashboard',
       builder: (context, state) => const Layout(page: 1),
     ),
+
     GoRoute(
-      path: '/test',
+      path: '/project-overview/:project_id/:title/:naviFilter',
       builder: (context, state) {
-        final String? projectId = state.pathParameters["project_id"];
+        final String? projectId = state.pathParameters['project_id'];
+        final String? title = state.pathParameters['title'];
+        final String? naviFilter = state.pathParameters['naviFilter'];
 
-        // print(projectId);
-
-        return DashboardDetailScreen(id: projectId ?? "");
+        return DashboardDetailScreen(
+            id: projectId ?? "",
+            title: title ?? "",
+            naviFilter: naviFilter ?? "");
       },
     ),
+
     GoRoute(
       path: '/project',
       builder: (context, state) => const Layout(page: 0),
     ),
     GoRoute(
-      path: '/project-post',
-      builder: (context, state) => const ProjectPosting(),
-    ),
+        path: '/project-post/:project_id',
+        builder: (context, state) {
+          final String? projectId = state.pathParameters['project_id'];
+          return ProjectPosting(projectId: projectId);
+        }),
     GoRoute(
       path: '/project-detail',
       builder: (context, state) => const DetailProjectScreen(),

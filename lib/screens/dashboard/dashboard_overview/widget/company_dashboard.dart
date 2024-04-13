@@ -1,9 +1,17 @@
+// ignore_for_file: prefer_const_constructors
+
 import "package:flutter/material.dart";
+import "package:mobx/mobx.dart";
+import "package:provider/provider.dart";
 import "package:studenthub/app_routes.dart";
+import "package:studenthub/screens/dashboard/dashboard_overview/widget/edit_project.dart";
+import 'package:flutter/services.dart';
+import "package:studenthub/services/dashboard.service.dart";
+import "package:studenthub/stores/user_info/user_info.dart";
 
 class CompanyDashboard extends StatefulWidget {
   final List projectLists;
-  final String filter;
+  final int filter;
 
   const CompanyDashboard(
       {super.key, required this.projectLists, required this.filter});
@@ -13,39 +21,42 @@ class CompanyDashboard extends StatefulWidget {
 }
 
 class _CompanyDashboardState extends State<CompanyDashboard> {
+  final DashBoardService _dashBoardService = DashBoardService();
+  late UserInfoStore userInfoStore;
+  String token = '';
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    userInfoStore = Provider.of<UserInfoStore>(context);
+    token = userInfoStore.token;
+  }
+
   @override
   Widget build(BuildContext context) {
     switch (widget.filter) {
-      case "All":
-        return Container(
-            child: Column(
+      case 2:
+        return Column(
           children: [
             collapsibleList(
-                list: widget.projectLists,
-                title: "Pending Project",
-                status: "pending"),
+                list: widget.projectLists, title: "Pending Project", status: 3),
             collapsibleList(
-                list: widget.projectLists,
-                title: "Working Project",
-                status: "working"),
+                list: widget.projectLists, title: "Working Project", status: 0),
             collapsibleList(
                 list: widget.projectLists,
                 title: "Archived Project",
-                status: "archived"),
+                status: 1),
           ],
-        ));
-      case "Working":
+        );
+      case 0:
         return Container(
-            child: collapsibleList(
-                list: widget.projectLists,
-                title: "Working Project",
-                status: "working"));
-      case "Archived":
+          child: collapsibleList(
+              list: widget.projectLists, title: "Working Project", status: 0),
+        );
+      case 1:
         return Container(
-            child: collapsibleList(
-                list: widget.projectLists,
-                title: "Archived Project",
-                status: "archived"));
+          child: collapsibleList(
+              list: widget.projectLists, title: "Archived Project", status: 1),
+        );
       default:
         return const SizedBox(
           child: Center(
@@ -56,20 +67,20 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
   }
 
   Widget collapsibleList(
-      {required List list, required String title, required String status}) {
+      {required List list, required String title, required int status}) {
     bool isCollapsed = false;
 
-    int countIf(List list, String status) {
+    int countIf(List list, int status) {
       int count = 0;
       for (var i = 0; i < list.length; i++) {
-        if (list[i]["status"] == status) {
+        if (list[i]["typeFlag"] == status) {
           count++;
         }
       }
       return count;
     }
 
-    void showOptionsBottomModal() async {
+    void showOptionsBottomModal(var project) async {
       await showModalBottomSheet<void>(
         context: context,
         shape: const RoundedRectangleBorder(
@@ -120,32 +131,81 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                       ListTile(
                         leading: const Icon(Icons.assignment),
                         title: const Text("View Proposals"),
-                        onTap: () {},
+                        onTap: () {
+                          final projectId = project["id"];
+                          final title = project["title"];
+                          final naviFilter = "Proposals";
+                          routerConfig.push(
+                              '/project-overview/$projectId/$title/$naviFilter');
+                        },
                       ),
                       ListTile(
                         leading: const Icon(Icons.message),
                         title: const Text("View Messages"),
-                        onTap: () {},
+                        onTap: () {
+                          final projectId = project["id"];
+                          final title = project["title"];
+                          final naviFilter = "Message";
+                          routerConfig.push(
+                              '/project-overview/$projectId/$title/$naviFilter');
+                        },
                       ),
                       ListTile(
                         leading: const Icon(Icons.work),
                         title: const Text("View Hired"),
-                        onTap: () {},
+                        onTap: () {
+                          final projectId = project["id"];
+                          final title = project["title"];
+                          final naviFilter = "Hired";
+                          routerConfig.push(
+                              '/project-overview/$projectId/$title/$naviFilter');
+                        },
                       ),
                       ListTile(
                         leading: const Icon(Icons.assignment_turned_in),
                         title: const Text("View Project"),
-                        onTap: () {},
+                        onTap: () {
+                          final projectId = project["id"];
+                          final title = project["title"];
+                          final naviFilter = "Detail";
+                          routerConfig.push(
+                              '/project-overview/$projectId/$title/$naviFilter');
+                        },
                       ),
                       ListTile(
                         leading: const Icon(Icons.edit),
                         title: const Text("Edit Project"),
-                        onTap: () {},
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => EditProjectDialog(
+                                projectInfo: project, token: token),
+                          );
+                        },
                       ),
                       ListTile(
                         leading: const Icon(Icons.delete),
                         title: const Text("Remove Project"),
-                        onTap: () {},
+                        onTap: () async {
+                          print("object");
+                          try {
+                            await _dashBoardService.deleteProject(
+                                project["id"], token);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Project removed successfully."),
+                              ),
+                            );
+                            routerConfig.push('/dashboard');
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(e.toString()),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -191,14 +251,21 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                   (index) {
                     if (isCollapsed) return const SizedBox();
 
-                    return list[index]["status"] == status
+                    final createdDate = DateTime.parse(
+                        list[index]["createdAt"] ?? DateTime.now().toString());
+
+                    final difference = DateTime.now().difference(createdDate);
+                    final timeAgo = difference.inDays == 0
+                        ? '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago'
+                        : '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
+
+                    return list[index]["typeFlag"] == status
                         ? GestureDetector(
                             onTap: () {
-                              routerConfig.push(Uri(
-                                  path: "/test",
-                                  queryParameters: {
-                                    "project_id": list[index]["id"],
-                                  }).toString());
+                              final projectId = list[index]["id"];
+                              final title = list[index]["title"];
+                              routerConfig.push(
+                                  '/project-overview/$projectId/$title/Proposals');
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -217,26 +284,26 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      //Created date
                                       Text(
-                                        "Created ${DateTime.now().difference(DateTime.parse(list[index]["createdDate"])).inDays} days ago",
+                                        "Created $timeAgo",
                                         style: const TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey,
                                         ),
                                       ),
-                                      //More options
                                       IconButton(
-                                          onPressed: () {
-                                            showOptionsBottomModal();
-                                          },
-                                          icon: const Icon(Icons.more_vert))
+                                        onPressed: () {
+                                          showOptionsBottomModal(
+                                              widget.projectLists[index]);
+                                        },
+                                        icon: const Icon(Icons.more_vert),
+                                      )
                                     ],
                                   ),
                                   const SizedBox(height: 5),
                                   // Project name
                                   Text(
-                                    list[index]["name"],
+                                    list[index]["title"],
                                     style: const TextStyle(
                                       color: Color(0xFF008ABD),
                                       fontWeight: FontWeight.bold,
@@ -248,7 +315,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                   const SizedBox(height: 10),
                                   // Description
                                   Text(
-                                    list[index]["description"],
+                                    "Student are looking for: \n\t ${list[index]["description"]}",
                                     style: const TextStyle(
                                       overflow: TextOverflow.visible,
                                     ),
@@ -260,15 +327,15 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        "Proposals: ${list[index]["proposals"]}",
+                                        "Proposals: ${list[index]["proposals"].length}",
                                       ),
                                       const SizedBox(width: 20),
                                       Text(
-                                        "Messages: ${list[index]["messages"]}",
+                                        "Messages: ${list[index]["messages"] ?? 0}",
                                       ),
                                       const SizedBox(width: 20),
                                       Text(
-                                        "Hired: ${list[index]["hired"]}",
+                                        "Hired: ${list[index]["hired"] ?? 0}",
                                       ),
                                     ],
                                   )

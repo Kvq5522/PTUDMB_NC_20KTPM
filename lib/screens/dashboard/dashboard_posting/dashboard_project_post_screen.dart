@@ -1,12 +1,16 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
+import 'package:studenthub/services/dashboard.service.dart';
+import 'package:studenthub/stores/user_info/user_info.dart';
 // import '../'
 
 class ProjectPosting extends StatefulWidget {
-  const ProjectPosting({super.key});
+  final projectId;
+  const ProjectPosting({super.key, required this.projectId});
 
   @override
   State<ProjectPosting> createState() => _ProjectPostingState();
@@ -14,12 +18,49 @@ class ProjectPosting extends StatefulWidget {
 
 class _ProjectPostingState extends State<ProjectPosting> {
   int step = 1;
-  String projectTime = '';
   String errorMessage = '';
   String errorMessage2 = '';
+  String projectTime = '';
   final studentNum = TextEditingController();
   final jobTitle = TextEditingController();
   final projectDescribe = TextEditingController();
+  final DashBoardService _dashBoardService = DashBoardService();
+  late UserInfoStore userInfoStore;
+
+  Future<void> postProject(
+    int companyId,
+    int projectScopeFlag,
+    String title,
+    int numberOfStudents,
+    String description,
+    int typeFlag,
+    BuildContext context,
+  ) async {
+    try {
+      await _dashBoardService.postProject(
+        companyId,
+        projectScopeFlag,
+        title,
+        numberOfStudents,
+        description,
+        typeFlag,
+        userInfoStore.token,
+      );
+
+      String message = 'Project posted successfully';
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    } catch (e) {
+      print('Failed to update project: $e');
+    }
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    userInfoStore = Provider.of<UserInfoStore>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +243,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                 Text('1 to 3 months'),
               ],
             ),
-            value: '1-3',
+            value: '1',
             groupValue: projectTime,
             onChanged: (value) {
               setState(() {
@@ -212,9 +253,9 @@ class _ProjectPostingState extends State<ProjectPosting> {
                 projectTime = value as String;
               });
             },
-            selected: projectTime == '1-3',
+            selected: projectTime == '1',
             controlAffinity: ListTileControlAffinity.leading,
-            tileColor: projectTime == '1-3'
+            tileColor: projectTime == '1'
                 ? const Color(0xFF008ABD).withOpacity(0.1)
                 : null,
             shape:
@@ -227,7 +268,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                 Text('3 to 6 months'),
               ],
             ),
-            value: '3-6',
+            value: '2',
             groupValue: projectTime,
             onChanged: (value) {
               setState(() {
@@ -237,9 +278,9 @@ class _ProjectPostingState extends State<ProjectPosting> {
                 projectTime = value as String;
               });
             },
-            selected: projectTime == '3-6',
+            selected: projectTime == '2',
             controlAffinity: ListTileControlAffinity.leading,
-            tileColor: projectTime == '3-6'
+            tileColor: projectTime == '2'
                 ? const Color(0xFF008ABD).withOpacity(0.1)
                 : null,
             shape:
@@ -554,28 +595,14 @@ class _ProjectPostingState extends State<ProjectPosting> {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  "Student are looking for ",
+                  "Description: ",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 4,
                 ),
                 Text(
-                  "\u2022 Clear expectation about your project or deleverables",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                ),
-                SizedBox(
-                  height: 2,
-                ),
-                Text(
-                  "\u2022 The skills required for your project",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                ),
-                SizedBox(
-                  height: 2,
-                ),
-                Text(
-                  "\u2022 Details about your project:",
+                  "\u2022 ${projectDescribe.text}",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
@@ -607,7 +634,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                           ),
                         ),
                         Text(
-                          "\u2022 $projectTime months",
+                          "\u2022 ${projectTime == '1' ? '1 - 3 months' : '3 - 6 months'}",
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w300,
@@ -672,11 +699,18 @@ class _ProjectPostingState extends State<ProjectPosting> {
                       ),
                       SizedBox(width: 10),
                       ElevatedButton(
-                        onPressed: () {
-                          print("Job title: " + jobTitle.text);
-                          print("Project time: " + studentNum.text);
-                          print("Describe: " + projectDescribe.text);
-                          routerConfig.go("/dashboard");
+                        onPressed: () async {
+                          await postProject(
+                            int.parse(widget.projectId),
+                            int.parse(projectTime),
+                            jobTitle.text,
+                            int.parse(studentNum.text),
+                            projectDescribe.text,
+                            0,
+                            context,
+                          );
+
+                          routerConfig.push("/dashboard");
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF008ABD),
