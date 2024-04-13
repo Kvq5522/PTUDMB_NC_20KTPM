@@ -1,17 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:studenthub/components/appbars/app_bar.dart';
+import 'package:studenthub/services/project.service.dart';
+import 'package:studenthub/stores/user_info/user_info.dart';
+import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
 
-import 'package:studenthub/components/appbars/app_bar.dart';
-
 class DetailProjectScreen extends StatefulWidget {
-  const DetailProjectScreen({super.key});
+  final String projectId;
+
+  const DetailProjectScreen({Key? key, required this.projectId})
+      : super(key: key);
 
   @override
   State<DetailProjectScreen> createState() => _DetailProjectScreenState();
 }
 
 class _DetailProjectScreenState extends State<DetailProjectScreen> {
+  final ProjectService _projectService = ProjectService();
+  late UserInfoStore _userInfoStore;
+  Map<String, dynamic> projectDetail = {};
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    _userInfoStore = Provider.of<UserInfoStore>(context);
+    fetchProjectDetail();
+  }
+
+  Future<void> fetchProjectDetail() async {
+    try {
+      final Map<String, dynamic> detail =
+          await _projectService.getProjectDetail(
+        projectId: widget.projectId,
+        token: _userInfoStore.token,
+      );
+
+      setState(() {
+        projectDetail = detail;
+      });
+    } catch (error) {
+      print('Error fetching project detail: $error');
+    }
+  }
+
+  String calculateTimeDifference() {
+    final DateTime now = DateTime.now();
+    final String createdAtString = projectDetail['createdAt'] ?? "";
+
+    if (createdAtString.isNotEmpty && createdAtString.length >= 19) {
+      final String formattedCreatedAtString = createdAtString.substring(0, 19);
+      final DateTime createdAt =
+          DateTime.tryParse(formattedCreatedAtString) ?? DateTime.now();
+      final Duration difference = now.difference(createdAt);
+
+      if (difference.inDays > 0) {
+        return 'created ${difference.inDays} days ago';
+      } else if (difference.inHours > 0) {
+        return 'created ${difference.inHours} hours ago';
+      } else {
+        return 'created ${difference.inMinutes} minutes ago';
+      }
+    } else {
+      return 'Invalid date format';
+    }
+  }
+
+  String getProjectScope() {
+    final int projectScopeFlag = projectDetail['projectScopeFlag'] ?? -1;
+
+    switch (projectScopeFlag) {
+      case 0:
+        return 'Less than one month';
+      case 1:
+        return 'One to three months';
+      case 2:
+        return 'Three to six months';
+      default:
+        return 'More than six months';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,8 +93,8 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
               decoration: const BoxDecoration(
                 color: Color(0xFF008ABD),
               ),
-              child: const Padding(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,29 +105,28 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Senior Front End",
-                            style: TextStyle(
-                              fontSize: 56,
+                            projectDetail['title'] ?? "",
+                            style: const TextStyle(
+                              fontSize: 46,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              // overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.access_time,
                                 color: Colors.white,
-                                size: 18,
+                                size: 15,
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Text(
-                                "Created 5 days ago",
-                                style: TextStyle(
-                                  fontSize: 18,
+                                calculateTimeDifference(),
+                                style: const TextStyle(
+                                  fontSize: 15,
                                   fontWeight: FontWeight.w300,
                                   color: Colors.white,
                                 ),
@@ -73,65 +140,47 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Student are looking for ",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 6,
                   ),
                   Text(
-                    "\u2022 Clear expectation about your project or deleverables",
-                    style: TextStyle(
-                      fontSize: 18,
+                    '\u2022 ${projectDetail['description'] ?? ""}',
+                    style: const TextStyle(
+                      fontSize: 16,
                     ),
                   ),
-                  SizedBox(
-                    height: 3,
-                  ),
-                  Text(
-                    "\u2022 The skills required for your project",
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 3,
-                  ),
-                  Text(
-                    "\u2022 Detail about your project",
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Divider(
+                  const Divider(
                     color: Color.fromARGB(255, 223, 223, 223),
                     height: 0.5,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.access_alarm_rounded,
                         size: 36,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Project scope",
                             style: TextStyle(
                               fontSize: 16,
@@ -139,8 +188,8 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                             ),
                           ),
                           Text(
-                            "\u2022 3 to 6 month",
-                            style: TextStyle(
+                            '\u2022 ${getProjectScope()}',
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w300,
                             ),
@@ -149,21 +198,21 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 14,
                   ),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.people_outline_rounded,
                         size: 36,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Student required",
                             style: TextStyle(
                               fontSize: 16,
@@ -171,8 +220,8 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                             ),
                           ),
                           Text(
-                            "\u2022 6 student",
-                            style: TextStyle(
+                            '\u2022 ${projectDetail['numberOfStudents'] ?? ""} student',
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w300,
                             ),

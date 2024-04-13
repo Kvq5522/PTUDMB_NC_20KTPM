@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/dashboard_detail_screen.dart';
+import 'package:studenthub/screens/interviews/interview.dart';
 
 import 'package:studenthub/screens/project/project_apply/project_apply_screen.dart';
 import 'package:studenthub/screens/project/project_detail/project_detail_screen.dart';
@@ -111,20 +112,30 @@ GoRouter routerConfig = GoRouter(
           return ProjectPosting(projectId: projectId);
         }),
     GoRoute(
-      path: '/project-detail',
-      builder: (context, state) => const DetailProjectScreen(),
+      path: '/project/:projectId',
+      builder: (context, state) {
+        final projectId = state.pathParameters['projectId'] as String;
+        return DetailProjectScreen(projectId: projectId);
+      },
     ),
+
     GoRoute(
         path: '/project-apply',
         builder: ((context, state) => ProjectApplyScreen())),
     GoRoute(
       path: '/saved-project',
-      builder: (context, state) => const SavedProjectScreen(),
+      builder: (context, state) => SavedProjectScreen(),
     ),
     GoRoute(
       path: '/search-result',
-      builder: (context, state) => const SearchResultScreen(),
+      builder: (context, state) {
+        final selectedOption = state.extra as String;
+        return SearchResultScreen(
+          searchQuery: selectedOption,
+        );
+      },
     ),
+
     GoRoute(
       path: '/video-call',
       builder: (context, state) => VideoCallScreen(),
