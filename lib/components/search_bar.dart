@@ -19,7 +19,7 @@ class _MySearchBarState extends State<MySearchBar> {
         height: MediaQuery.of(context).size.height * 0.065,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(99),
-          border: Border.all(color: const Color.fromARGB(255, 243, 243, 243)),
+          border: Border.all(color: const Color.fromARGB(255, 202, 202, 202)),
           // color: const Color.fromARGB(255, 243, 243, 243),
           color: Colors.white,
         ),
@@ -29,7 +29,7 @@ class _MySearchBarState extends State<MySearchBar> {
             children: [
               Icon(
                 Icons.search,
-                color: const Color(0xFF008ABD),
+                color: Color(0xFF008ABD),
               ),
               SizedBox(
                 width: 10,
@@ -57,8 +57,7 @@ class _MySearchBarState extends State<MySearchBar> {
       isScrollControlled: true,
       backgroundColor: Colors.white,
       builder: (BuildContext context) {
-        List<String> searchResults =
-            suggestions; // Kết quả tìm kiếm ban đầu là danh sách gợi ý
+        List<String> searchResults = suggestions;
 
         return Container(
           width: double.infinity,
@@ -75,17 +74,17 @@ class _MySearchBarState extends State<MySearchBar> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.close_rounded,
-                        color: const Color(0xFF008ABD),
+                        color: Color(0xFF008ABD),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.08,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(99),
                     border: Border.all(color: Colors.grey),
@@ -96,12 +95,12 @@ class _MySearchBarState extends State<MySearchBar> {
                       const SizedBox(width: 10),
                       Expanded(
                         child: TextField(
-                          decoration: InputDecoration(
+                          controller: _searchController,
+                          decoration: const InputDecoration(
                             hintText: 'Search...',
                             border: InputBorder.none,
                           ),
                           onChanged: (value) {
-                            // Lọc kết quả tìm kiếm dựa trên từ gợi ý và nội dung nhập vào
                             setState(() {
                               searchResults = suggestions
                                   .where((suggestion) => suggestion
@@ -113,12 +112,15 @@ class _MySearchBarState extends State<MySearchBar> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.send,
-                          color: const Color(0xFF008ABD),
+                          color: Color(0xFF008ABD),
                         ),
                         onPressed: () {
-                          routerConfig.push('/search-result');
+                          String searchText = _searchController.text;
+                          routerConfig.push('/search-result',
+                              extra:
+                                  searchText == searchText ? searchText : "");
                         },
                       ),
                     ],

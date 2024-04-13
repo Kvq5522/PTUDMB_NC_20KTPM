@@ -1442,7 +1442,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                             setState(() {
                               _isLoading = true;
                             });
-                
+
                             if (step3FormKey.currentState!.validate()) {
                               if (_uploadResume.isNotEmpty) {
                                 Map<String, dynamic> resumeRes =
@@ -1450,7 +1450,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                         token: _userInfoStore.token,
                                         userId: _userInfoStore.roleId,
                                         resume: _uploadResume);
-                
+
                                 setState(() {
                                   if (resumeRes["resume"] != null) {
                                     _loadedResume = resumeRes["resume"];
@@ -1458,14 +1458,14 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                   }
                                 });
                               }
-                
+
                               if (_uploadTranscript.isNotEmpty) {
                                 Map<String, dynamic> transcriptRes =
                                     await _userService.updateUserTranscript(
                                         token: _userInfoStore.token,
                                         userId: _userInfoStore.roleId,
                                         transcript: _uploadTranscript);
-                
+
                                 setState(() {
                                   if (transcriptRes["transcript"] != null) {
                                     _loadedTranscript =
@@ -1474,7 +1474,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                   }
                                 });
                               }
-                
+
                               routerConfig.go('/welcome',
                                   extra: _userInfoStore.username);
                             }

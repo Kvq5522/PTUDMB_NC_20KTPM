@@ -58,7 +58,7 @@ class _MessageScreenState extends State<MessageScreen> {
                       color: const Color(0xFF008ABD),
                     ),
                     onPressed: () {
-                      routerConfig.push('/search-result');
+                      // routerConfig.push('/search-result');
                     },
                   ),
                 ],

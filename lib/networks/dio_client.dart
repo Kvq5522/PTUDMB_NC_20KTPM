@@ -128,7 +128,9 @@ class DioClient {
     try {
       return await _dio.patch(path,
           data: body,
-          options: Options(headers: {"Authorization": "Bearer $token"}));
+          options: Options(
+            headers: {"Authorization": "Bearer $token"},
+          ));
     } on DioException catch (e) {
       debugPrint(e.toString());
 
