@@ -1,25 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
-import 'package:studenthub/constants/proposals_mock.dart';
+import 'package:provider/provider.dart';
+// import 'package:studenthub/constants/proposals_mock.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/widget/dashboard_detail_hired_list.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/widget/dashboard_detail_proposal_list.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/widget/dashboard_project_detail.dart';
+import 'package:studenthub/services/dashboard.service.dart';
+import 'package:studenthub/stores/user_info/user_info.dart';
 
 class DashboardDetailScreen extends StatefulWidget {
   final String id;
+  final String title;
+  final String naviFilter;
 
-  const DashboardDetailScreen({
-    super.key,
-    required this.id,
-  });
+  const DashboardDetailScreen(
+      {super.key,
+      required this.id,
+      required this.title,
+      required this.naviFilter});
 
   @override
   State<DashboardDetailScreen> createState() => _DashboardDetailScreenState();
 }
 
 class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
-  final project = companyProposals[0];
   String filter = "Proposals";
+  final DashBoardService _dashBoardService = DashBoardService();
+  late UserInfoStore userInfoStore;
+  List proposals = [];
+  late Map<String, dynamic> project;
+  Map<int, String> projectScopeFlagMap = {
+    0: '<1',
+    1: '1-3',
+    2: '3-6',
+    3: '>6',
+  };
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    userInfoStore = Provider.of<UserInfoStore>(context);
+
+    try {
+      var proposalsData =
+          await _dashBoardService.getProposals(widget.id, userInfoStore.token);
+
+      var projectData = await _dashBoardService.getProjectDetails(
+          int.parse(widget.id), userInfoStore.token);
+
+      setState(() {
+        proposals = proposalsData;
+        project = projectData;
+        if (widget.naviFilter.isNotEmpty) {
+          filter = widget.naviFilter;
+        }
+      });
+    } catch (e) {
+      print('Failed to load data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +71,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${project['name']}",
+                widget.title,
                 style: const TextStyle(
                   color: Color(0xFF008ABD),
                   fontWeight: FontWeight.bold,
@@ -157,21 +196,21 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                   children: [
                     filter == "Proposals"
                         ? DashboardDetailProposalList(
-                            proposalList:
-                                project['proposalDetails'] as List<dynamic>,
+                            proposalList: proposals,
                           )
                         : const SizedBox(),
                     filter == "Detail"
                         ? DashboardProjectDetail(
                             projectDescription:
                                 project['description'] as String,
-                            projectScope: project['projectScope'] as String,
-                            projectTeamNumber: project['teamNumber'] as int,
+                            projectScope:
+                                "${projectScopeFlagMap[project['projectScopeFlag']]!} months",
+                            projectTeamNumber:
+                                project['numberOfStudents'] as int,
                           )
                         : const SizedBox(),
                     filter == "Hired"
-                        ? DashboardDetailHiredList(
-                            hiredList: project["hiredDetails"] as List<dynamic>)
+                        ? DashboardDetailHiredList(hiredList: proposals)
                         : const SizedBox()
                   ],
                 )),

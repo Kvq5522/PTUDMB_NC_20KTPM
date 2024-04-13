@@ -124,6 +124,17 @@ class DioClient {
     }
   }
 
+  Future<Response> deleteQ(String path, {String token = ""}) async {
+    try {
+      return await _dio.delete(path,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+    } on DioException catch (e) {
+      debugPrint(e.toString());
+
+      rethrow;
+    }
+  }
+
   Future<Response> patch(String path, {dynamic body, String token = ""}) async {
     try {
       return await _dio.patch(path,
