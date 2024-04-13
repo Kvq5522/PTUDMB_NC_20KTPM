@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/widgets.dart";
 
 class StudentDashboard extends StatefulWidget {
   final List projectLists;
@@ -107,74 +108,80 @@ class _StudentDashboardState extends State<StudentDashboard> {
                     if (isCollapsed) return const SizedBox();
 
                     return list[index]["status"] == status
-                        ? Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey.shade300,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
+                        ? Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  padding: const EdgeInsets.all(20),
+                                  margin: const EdgeInsets.only(bottom: 20),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Created ${DateTime.now().difference(DateTime.parse(list[index]["createdDate"])).inDays} days ago",
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      Text(
+                                        list[index]["name"],
+                                        style: const TextStyle(
+                                          color: Color(0xFF008ABD),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          overflow: TextOverflow.visible,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      //Status
+                                      Text(
+                                        "${status.toUpperCase()[0] + status.substring(1)} ${DateTime.now().difference(DateTime.parse(list[index]["submittedDate"])).inDays} days ago",
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      //Time
+                                      Text(
+                                        "Time: ${list[index]["projectScope"]}",
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      //Team Number
+                                      Text(
+                                        "Team Number: ${list[index]["teamNumber"]}",
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      //Description
+                                      Text(
+                                        list[index]["description"],
+                                        style: const TextStyle(
+                                          overflow: TextOverflow.visible,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                    ],
+                                  ),
+                                ),
                             ),
-                            padding: const EdgeInsets.all(20),
-                            margin: const EdgeInsets.only(bottom: 20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Created ${DateTime.now().difference(DateTime.parse(list[index]["createdDate"])).inDays} days ago",
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                Text(
-                                  list[index]["name"],
-                                  style: const TextStyle(
-                                    color: Color(0xFF008ABD),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    overflow: TextOverflow.visible,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                //Status
-                                Text(
-                                  "${status.toUpperCase()[0] + status.substring(1)} ${DateTime.now().difference(DateTime.parse(list[index]["submittedDate"])).inDays} days ago",
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                //Time
-                                Text(
-                                  "Time: ${list[index]["projectScope"]}",
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                //Team Number
-                                Text(
-                                  "Team Number: ${list[index]["teamNumber"]}",
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                //Description
-                                Text(
-                                  list[index]["description"],
-                                  style: const TextStyle(
-                                    overflow: TextOverflow.visible,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                              ],
-                            ),
-                          )
+                          ],
+                        )
                         : const SizedBox();
                   },
                 ),

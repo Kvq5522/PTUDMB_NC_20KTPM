@@ -42,7 +42,10 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                 Row(
                                   children: [
                                     IconButton(
-                                      icon: const Icon(Icons.edit),
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        color: Color(0xFF008ABD),
+                                      ),
                                       onPressed: () {
                                         // Handle onPressed for editing education
                                         var formKey = GlobalKey<FormState>();
@@ -218,7 +221,10 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                       },
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.delete),
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Color(0xFF008ABD),
+                                      ),
                                       onPressed: () async {
                                         await showDialog(
                                             context: context,
@@ -234,6 +240,19 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                                       Navigator.of(context)
                                                           .pop();
                                                     },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          Colors.blue,
+                                                      foregroundColor:
+                                                          Colors.white,
+                                                      textStyle:
+                                                          const TextStyle(
+                                                        fontSize: 16.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
                                                     child: const Text('Cancel'),
                                                   ),
                                                   ElevatedButton(
@@ -243,6 +262,19 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                                       Navigator.of(context)
                                                           .pop();
                                                     },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          Colors.blue,
+                                                      foregroundColor:
+                                                          Colors.white,
+                                                      textStyle:
+                                                          const TextStyle(
+                                                        fontSize: 16.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
                                                     child: const Text('Delete'),
                                                   ),
                                                 ],

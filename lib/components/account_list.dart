@@ -48,6 +48,8 @@ class _AccountListState extends State<AccountList> {
         _userInfoStore.setHasProfile(true);
       }
     }
+
+    _userInfoStore.setUsername(widget.accountList[chosenIndex]['username']);
   }
 
   @override

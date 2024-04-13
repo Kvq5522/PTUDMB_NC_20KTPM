@@ -1,6 +1,4 @@
 import "package:flutter/material.dart";
-import "package:studenthub/constants/language_mock.dart";
-import "package:studenthub/utils/string.dart";
 
 class LanguageTraitFormField extends FormField<List<dynamic>> {
   final List<dynamic> languageData;
@@ -14,14 +12,13 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
     required this.languageData,
     this.labelField = "",
     required this.context,
-    required FormFieldSetter<List<dynamic>>? onSaved,
+    required super.onSaved,
     required FormFieldValidator<List<dynamic>>? validator,
     required this.onEdit,
     required this.onDelete,
     List<String>? initialValue,
     bool autovalidate = false,
   }) : super(
-          onSaved: onSaved,
           validator: (value) {
             return validator!([...languageData]);
           },
@@ -44,7 +41,7 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                               Row(
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.edit),
+                                    icon: const Icon(Icons.edit, color: Color(0xFF008ABD)),
                                     onPressed: () {
                                       var formKey = GlobalKey<FormState>();
                                       TextEditingController languageController =
@@ -111,7 +108,7 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                                     },
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.delete),
+                                    icon: const Icon(Icons.delete, color: Color(0xFF008ABD)),
                                     onPressed: () async {
                                       await showDialog(
                                           context: context,
@@ -126,6 +123,18 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.blue,
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    textStyle: const TextStyle(
+                                                      fontSize: 16.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
                                                   child: const Text('Cancel'),
                                                 ),
                                                 ElevatedButton(
@@ -134,6 +143,18 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                                                         .indexOf(language));
                                                     Navigator.of(context).pop();
                                                   },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.blue,
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    textStyle: const TextStyle(
+                                                      fontSize: 16.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
                                                   child: const Text('Delete'),
                                                 ),
                                               ],
