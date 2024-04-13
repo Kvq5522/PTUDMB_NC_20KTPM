@@ -4,15 +4,13 @@ import "package:intl/intl.dart";
 class DateTimeFormField extends FormField<DateTime> {
   final BuildContext context;
 
-  DateTimeFormField({
+  DateTimeFormField({super.key, 
     required this.context,
-    FormFieldSetter<DateTime>? onSaved,
-    FormFieldValidator<DateTime>? validator,
+    super.onSaved,
+    super.validator,
     DateTime? initialValue,
     bool autovalidate = false,
   }) : super(
-          onSaved: onSaved,
-          validator: validator,
           initialValue: initialValue ?? DateTime.now(),
           autovalidateMode: autovalidate
               ? AutovalidateMode.always
