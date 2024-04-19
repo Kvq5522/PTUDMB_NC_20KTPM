@@ -53,19 +53,30 @@ class _DashboardDetailProposalListState
 
   @override
   Widget build(BuildContext context) {
-    if (widget.proposalList.isEmpty) {
-      return Padding(
-        padding: EdgeInsets.only(top: 50.0), // Adjust the value as needed
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    } else {
-      return Column(
-        children: List.generate(widget.proposalList.length,
-            (index) => proposalDetail(widget.proposalList[index])),
-      );
-    }
+    return FutureBuilder(
+      future: Future.delayed(Duration(seconds: 1)),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Padding(
+            padding: EdgeInsets.only(top: 50.0),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else {
+          if (widget.proposalList.isEmpty) {
+            return Center(
+              child: Text('No items found!'),
+            );
+          } else {
+            return Column(
+              children: List.generate(widget.proposalList.length,
+                  (index) => proposalDetail(widget.proposalList[index])),
+            );
+          }
+        }
+      },
+    );
   }
 
   Widget proposalDetail(proposal) {
