@@ -181,7 +181,7 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                     child: Text('Working'),
                   ),
                   DropdownMenuItem<int>(
-                    value: 1,
+                    value: 2,
                     child: Text('Archived'),
                   ),
                 ],

@@ -12,8 +12,6 @@ class ProjectService {
     try {
       Response res = await _dioClient.get("/api/project", token: token);
 
-      print(res.data?["result"]);
-
       if (res.statusCode! >= 400) {
         // List errors = res.data?["errorDetails"];
         String errorMessage = res.data?["errorDetails"];
@@ -138,5 +136,33 @@ class ProjectService {
     } catch (error) {
       throw Exception('Failed to update favorite project: $error');
     }
+  }
+
+  Future<Map<String, dynamic>> postStudentProposal(
+    String projectId,
+    String studentId,
+    String coverLetter,
+    int statusFlag,
+    int disableFlag,
+    String token,
+  ) async {
+    Response res = await _dioClient.post("/api/proposal",
+        body: {
+          "projectId": projectId,
+          "studentId": studentId,
+          "coverLetter": coverLetter,
+          "statusFlag": statusFlag,
+          "disableFlag": disableFlag,
+        },
+        token: token);
+    if (res.statusCode! >= 400) {
+      String errorMessage = res.data?["errorDetails"];
+      throw Exception(errorMessage);
+    }
+
+    Map<String, dynamic> result =
+        Map<String, dynamic>.from(res.data?["result"] ?? {});
+
+    return result;
   }
 }

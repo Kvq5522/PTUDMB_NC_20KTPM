@@ -129,6 +129,46 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                   child: ListView(
                     children: <Widget>[
                       ListTile(
+                        leading: const Icon(Icons.settings),
+                        title: project["typeFlag"] == 1
+                            ? const Text("Start working this project")
+                            : const Text("Archiving this project"),
+                        onTap: () async {
+                          try {
+                            int typeFlag;
+                            if (project["typeFlag"] == 1) {
+                              typeFlag = 0;
+                            } else {
+                              typeFlag = 1;
+                            }
+
+                            await _dashBoardService.patchProjectDetails(
+                                project["id"],
+                                project["projectScopeFlag"],
+                                project["title"],
+                                project["description"],
+                                project["numberOfStudents"],
+                                typeFlag,
+                                token);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: project["typeFlag"] == 1
+                                    ? Text("Project started successfully!")
+                                    : Text("Project archived successfully!"),
+                              ),
+                            );
+                            routerConfig.push('/dashboard');
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(e.toString()),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      ListTile(
                         leading: const Icon(Icons.assignment),
                         title: const Text("View Proposals"),
                         onTap: () {
@@ -187,7 +227,6 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                         leading: const Icon(Icons.delete),
                         title: const Text("Remove Project"),
                         onTap: () async {
-                          print("object");
                           try {
                             await _dashBoardService.deleteProject(
                                 project["id"], token);

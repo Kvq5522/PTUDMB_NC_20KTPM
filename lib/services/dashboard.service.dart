@@ -3,7 +3,7 @@ import 'package:studenthub/networks/dio_client.dart';
 
 class DashBoardService {
   final DioClient _dioClient = DioClient();
-
+  //Company Dashboard
   Future<List<Map<String, dynamic>>> getCompanyProjectsDashBoard(
       BigInt companyId, int typeFlag, String token) async {
     Response res = await _dioClient.get(
@@ -168,7 +168,6 @@ class DashBoardService {
       },
       token: token,
     );
-    print(res);
     if (res.statusCode! >= 400) {
       String errorMessage = res.data?["errorDetails"];
       throw Exception(errorMessage);
@@ -178,5 +177,45 @@ class DashBoardService {
         Map<String, dynamic>.from(res.data?["result"] ?? {});
 
     return result;
+  }
+
+  Future<Map<String, dynamic>> getProposalById(
+    int id,
+    String token,
+  ) async {
+    Response res = await _dioClient.get(
+      "/api/proposal/$id",
+      token: token,
+    );
+
+    if (res.statusCode! >= 400) {
+      String errorMessage = res.data?["errorDetails"];
+      throw Exception(errorMessage);
+    }
+
+    Map<String, dynamic> result =
+        Map<String, dynamic>.from(res.data?["result"] ?? {});
+
+    return result;
+  }
+
+  //Student Dashboard
+  Future<List<Map<String, dynamic>>> getStudentProposals(
+      BigInt studentId, int typeFlag, String token) async {
+    Response res = await _dioClient.get(
+      "/api/proposal/project/$studentId",
+      queries: {
+        "studentId": studentId,
+        "typeFlag": typeFlag,
+      },
+      token: token,
+    );
+    if (res.statusCode! >= 400) {
+      String errorMessage = res.data?["errorDetails"];
+
+      throw Exception(errorMessage);
+    }
+
+    return List<Map<String, dynamic>>.from(res.data?["result"]);
   }
 }

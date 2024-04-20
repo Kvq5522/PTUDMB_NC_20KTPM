@@ -138,7 +138,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
                                   _proposalCount = int.tryParse(proposalCount);
                                 });
-                                print(_selectedOption);
                               },
                             );
                           });
@@ -190,7 +189,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                               _proposalCount))
                                   .map((project) {
                                 return ProjectItem(
-                                  projectId: project['projectId'],
+                                  projectId: project['id'],
                                   createdAt: project['createdAt'],
                                   updatedAt: project['updatedAt'],
                                   deletedAt: project['deletedAt'],

@@ -63,7 +63,7 @@ class _ProjectListState extends State<ProjectList> {
                   : Column(
                       children: _projects.map((project) {
                         return ProjectItem(
-                          projectId: project['projectId'],
+                          projectId: project['id'],
                           createdAt: project['createdAt'],
                           updatedAt: project['updatedAt'],
                           deletedAt: project['deletedAt'],

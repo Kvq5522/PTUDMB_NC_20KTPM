@@ -36,7 +36,7 @@ class _DashboardDetailProposalListState
         userInfoStore.token,
       );
 
-      String message = statusFlag == 1 ? 'Hire cancelled' : 'Hire successfully';
+      String message = statusFlag == 0 ? 'Hire cancelled' : 'Hire successfully';
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
       );
@@ -54,7 +54,7 @@ class _DashboardDetailProposalListState
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.delayed(Duration(seconds: 1)),
+      future: Future.delayed(Duration(milliseconds: 550)),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Padding(
@@ -167,25 +167,62 @@ class _DashboardDetailProposalListState
               Expanded(
                   child: ElevatedButton(
                       onPressed: () async {
-                        setState(() {
-                          proposal["statusFlag"] =
-                              proposal["statusFlag"] == 1 ? 0 : 1;
-                        });
+                        bool? shouldContinue = await showDialog<bool>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Confirmation'),
+                              content: Text(
+                                proposal["statusFlag"] == 2
+                                    ? 'Do you want to cancel hiring?'
+                                    : 'Do you really want to send hire offer for student to this project?',
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('Yes'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(true);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
 
-                        try {
-                          await updateProject(
-                            proposal["id"],
-                            proposal["coverLetter"],
-                            proposal["statusFlag"],
-                            proposal["disableFlag"],
-                            context,
-                          );
-                        } catch (e) {
-                          print('Failed to update project: $e');
+                        if (shouldContinue == true) {
                           setState(() {
                             proposal["statusFlag"] =
-                                proposal["statusFlag"] == 1 ? 0 : 1;
+                                proposal["statusFlag"] == 2 ? 0 : 2;
                           });
+
+                          try {
+                            await updateProject(
+                              proposal["id"],
+                              proposal["coverLetter"],
+                              proposal["statusFlag"],
+                              proposal["disableFlag"],
+                              context,
+                            );
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(e.toString()),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+
+                            print('Failed to update project: $e');
+                            setState(() {
+                              proposal["statusFlag"] =
+                                  proposal["statusFlag"] == 2 ? 0 : 2;
+                            });
+                          }
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -196,7 +233,7 @@ class _DashboardDetailProposalListState
                         ),
                       ),
                       child: Text(
-                        proposal["statusFlag"] == 1
+                        proposal["statusFlag"] == 0
                             ? "Hire"
                             : "Sent hired offer",
                         style: TextStyle(color: Colors.blue),

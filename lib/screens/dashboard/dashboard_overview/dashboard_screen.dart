@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:studenthub/constants/proposals_mock.dart';
 import 'package:studenthub/screens/dashboard/dashboard_overview/widget/company_dashboard.dart';
 import 'package:studenthub/screens/dashboard/dashboard_overview/widget/student_dashboard.dart';
 import 'package:studenthub/services/dashboard.service.dart';
@@ -21,16 +20,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final DashBoardService _dashBoardService = DashBoardService();
   int filter = 2;
   List<Map<String, dynamic>> companyProject = [];
+  List<Map<String, dynamic>> studentProposals = [];
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
     userInfoStore = Provider.of<UserInfoStore>(context);
-    var data = await _dashBoardService.getCompanyProjectsDashBoard(
-        userInfoStore.roleId, filter, userInfoStore.token);
-    setState(() {
-      companyProject = data;
-    });
+    try {
+      if (userInfoStore.userType == "Company") {
+        var companyData = await _dashBoardService.getCompanyProjectsDashBoard(
+            userInfoStore.roleId, 0, userInfoStore.token);
+        setState(() {
+          companyProject = companyData;
+        });
+      } else {
+        var studentData = await _dashBoardService.getStudentProposals(
+            userInfoStore.roleId, 0, userInfoStore.token);
+        setState(() {
+          studentProposals = studentData;
+          // print(studentProposals);
+        });
+      }
+    } catch (e) {
+      print('Failed to get data: $e');
+      // You can also show a message to the user or handle the error in some other way
+    }
   }
 
   @override
@@ -133,7 +147,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ? CompanyDashboard(
                         projectLists: companyProject, filter: filter)
                     : StudentDashboard(
-                        projectLists: studentProposals,
+                        proposalLists: studentProposals,
                         filter: filter,
                       ),
               ],

@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/dashboard_detail_screen.dart';
+import 'package:studenthub/screens/dashboard/dashboard_overview/widget/proposals_active.dart';
 import 'package:studenthub/screens/interviews/interview.dart';
 
 import 'package:studenthub/screens/project/project_apply/project_apply_screen.dart';
@@ -75,7 +76,6 @@ GoRouter routerConfig = GoRouter(
       path: '/welcome',
       builder: (context, state) {
         final userName = state.extra as String;
-        print("username $userName");
         return WelcomeScreen(
           userName: userName.isEmpty ? "User" : userName,
         );
@@ -120,8 +120,14 @@ GoRouter routerConfig = GoRouter(
     ),
 
     GoRoute(
-        path: '/project-apply',
-        builder: ((context, state) => ProjectApplyScreen())),
+        path: '/project-apply/:projectId',
+        builder: (context, state) {
+          final String? projectId = state.pathParameters['projectId'];
+
+          return ProjectApplyScreen(
+            projectId: projectId ?? "",
+          );
+        }),
     GoRoute(
       path: '/saved-project',
       builder: (context, state) => SavedProjectScreen(),
@@ -140,5 +146,14 @@ GoRouter routerConfig = GoRouter(
       path: '/video-call',
       builder: (context, state) => VideoCallScreen(),
     ),
+    GoRoute(
+      path: '/active-proposal/:projectId/:proposalId',
+      builder: (context, state) {
+        final projectId = state.pathParameters['projectId'] as String;
+        final proposalId = state.pathParameters['proposalId'] as String;
+        return ActiveProposalScreen(
+            projectId: projectId, proposalId: proposalId);
+      },
+    )
   ],
 );

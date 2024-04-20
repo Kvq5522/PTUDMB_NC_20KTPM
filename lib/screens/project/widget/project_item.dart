@@ -78,7 +78,7 @@ class _ProjectItemState extends State<ProjectItem> {
       var userInfo = await _authService.getUserInfo(_userInfoStore.token);
       setState(() {
         _studentId = (userInfo["student"]["id"]).toString();
-        print(_studentId);
+        // print(_studentId);
         _isLoading = false;
       });
     } catch (e) {
