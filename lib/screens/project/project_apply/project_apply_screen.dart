@@ -35,14 +35,14 @@ class _ProjectApplyScreenState extends State<ProjectApplyScreen> {
       print("===========");
       print(disableFlag);
       print("===========");
-      // await _projectService.postStudentProposal(
-      //   projectId,
-      //   studentId,
-      //   coverLetter,
-      //   statusFlag,
-      //   disableFlag,
-      //   _userInfoStore.token,
-      // );
+      await _projectService.postStudentProposal(
+        projectId,
+        studentId,
+        coverLetter,
+        statusFlag,
+        disableFlag,
+        _userInfoStore.token,
+      );
 
       String message = 'Proposal posted successfully';
       ScaffoldMessenger.of(context).showSnackBar(
