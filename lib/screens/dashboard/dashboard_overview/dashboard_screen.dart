@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:studenthub/constants/proposals_mock.dart';
 import 'package:studenthub/screens/dashboard/dashboard_overview/widget/company_dashboard.dart';
 import 'package:studenthub/screens/dashboard/dashboard_overview/widget/student_dashboard.dart';
+import 'package:studenthub/services/dashboard.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:studenthub/app_routes.dart';
 
@@ -17,13 +17,34 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   late UserInfoStore userInfoStore;
-
-  String filter = "All";
+  final DashBoardService _dashBoardService = DashBoardService();
+  int filter = 2;
+  List<Map<String, dynamic>> companyProject = [];
+  List<Map<String, dynamic>> studentProposals = [];
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
     userInfoStore = Provider.of<UserInfoStore>(context);
+    try {
+      if (userInfoStore.userType == "Company") {
+        var companyData = await _dashBoardService.getCompanyProjectsDashBoard(
+            userInfoStore.roleId, 0, userInfoStore.token);
+        setState(() {
+          companyProject = companyData;
+        });
+      } else {
+        var studentData = await _dashBoardService.getStudentProposals(
+            userInfoStore.roleId, 0, userInfoStore.token);
+        setState(() {
+          studentProposals = studentData;
+          // print(studentProposals);
+        });
+      }
+    } catch (e) {
+      print('Failed to get data: $e');
+      // You can also show a message to the user or handle the error in some other way
+    }
   }
 
   @override
@@ -53,7 +74,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        filter = "All";
+                        filter = 2;
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -62,14 +83,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             topLeft: Radius.circular(4),
                             bottomLeft: Radius.circular(4)),
                       ),
-                      backgroundColor: filter == "All"
-                          ? const Color(0xFF008ABD)
-                          : Colors.white,
+                      backgroundColor:
+                          filter == 2 ? const Color(0xFF008ABD) : Colors.white,
                     ),
                     child: Text("All",
                         style: TextStyle(
-                            color:
-                                filter == "All" ? Colors.white : Colors.black)),
+                            color: filter == 2 ? Colors.white : Colors.black)),
                   ),
                 ),
                 //Filter Working
@@ -77,22 +96,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        filter = "Working";
+                        filter = 0;
                       });
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(0),
                       ),
-                      backgroundColor: filter == "Working"
-                          ? const Color(0xFF008ABD)
-                          : Colors.white,
+                      backgroundColor:
+                          filter == 0 ? const Color(0xFF008ABD) : Colors.white,
                     ),
                     child: Text("Working",
                         style: TextStyle(
-                            color: filter == "Working"
-                                ? Colors.white
-                                : Colors.black)),
+                            color: filter == 0 ? Colors.white : Colors.black)),
                   ),
                 ),
                 //Filter Archived
@@ -100,7 +116,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        filter = "Archived";
+                        filter = 1;
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -109,15 +125,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             topRight: Radius.circular(4),
                             bottomRight: Radius.circular(4)),
                       ),
-                      backgroundColor: filter == "Archived"
-                          ? const Color(0xFF008ABD)
-                          : Colors.white,
+                      backgroundColor:
+                          filter == 1 ? const Color(0xFF008ABD) : Colors.white,
                     ),
                     child: Text("Archived",
                         style: TextStyle(
-                            color: filter == "Archived"
-                                ? Colors.white
-                                : Colors.black)),
+                            color: filter == 1 ? Colors.white : Colors.black)),
                   ),
                 ),
               ],
@@ -128,18 +141,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
             // LIST JOBS
             Expanded(
                 child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  userInfoStore.userType == "Company"
-                      ? CompanyDashboard(
-                          projectLists: companyProposals, filter: filter)
-                      : StudentDashboard(
-                          projectLists: studentProposals,
-                          filter: filter,
-                        ),
-                ],
-              ),
-            )),
+                    child: Column(
+              children: [
+                userInfoStore.userType == "Company"
+                    ? CompanyDashboard(
+                        projectLists: companyProject, filter: filter)
+                    : StudentDashboard(
+                        proposalLists: studentProposals,
+                        filter: filter,
+                      ),
+              ],
+            ))),
           ],
         ),
       ),
@@ -154,7 +166,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               label: const Text("Post a jobs",
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
               onPressed: () {
-                routerConfig.push('/project-post');
+                final projectId = userInfoStore.roleId;
+                routerConfig.push('/project-post/$projectId');
               },
             )
           : null,

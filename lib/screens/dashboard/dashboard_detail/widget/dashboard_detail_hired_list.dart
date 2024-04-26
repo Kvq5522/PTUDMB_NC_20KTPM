@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import "package:flutter/material.dart";
 
 class DashboardDetailHiredList extends StatelessWidget {
@@ -7,11 +9,12 @@ class DashboardDetailHiredList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: List.generate(
-            hiredList.length, (index) => hiredDetail(hiredList[index])),
-      ),
+    var filteredHiredList =
+        hiredList.where((item) => item["statusFlag"] == 3).toList();
+
+    return Column(
+      children: List.generate(filteredHiredList.length,
+          (index) => hiredDetail(filteredHiredList[index])),
     );
   }
 
@@ -33,7 +36,7 @@ class DashboardDetailHiredList extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundImage: NetworkImage(hired['avatar']),
+                backgroundImage: AssetImage("assets/images/avatar.png"),
               ),
               const SizedBox(
                 width: 20,
@@ -42,7 +45,7 @@ class DashboardDetailHiredList extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    hired['name'],
+                    hired["student"]["user"]['fullname'],
                     style: const TextStyle(
                       color: Color(0xFF008ABD),
                       fontWeight: FontWeight.bold,
@@ -51,7 +54,7 @@ class DashboardDetailHiredList extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    hired['yearInSchool'],
+                    "4th year student",
                     style: const TextStyle(
                       color: Colors.grey,
                     ),
@@ -65,13 +68,16 @@ class DashboardDetailHiredList extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Text(hired['techStack']), Text(hired['skills'])],
+            children: [
+              Text(hired["student"]['techStack']['name']),
+              Text("Excellent"),
+            ],
           ),
           const SizedBox(
             height: 10,
           ),
           Text(
-            hired['description'],
+            hired['coverLetter'],
             style: const TextStyle(
               overflow: TextOverflow.visible,
             ),

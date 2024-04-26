@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import '../../app_routes.dart';
-import '../../components/appbar_auth.dart';
+import '../../components/appbars/appbar_auth.dart';
 
 class SignUpOptions extends StatefulWidget {
   const SignUpOptions({super.key});

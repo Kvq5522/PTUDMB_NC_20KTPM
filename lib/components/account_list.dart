@@ -15,27 +15,41 @@ class _AccountListState extends State<AccountList> {
   bool toggle = false;
   int chosenIndex = 0;
 
-  late UserInfoStore userInfoStore;
+  late UserInfoStore _userInfoStore;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    userInfoStore = Provider.of<UserInfoStore>(context);
+    _userInfoStore = Provider.of<UserInfoStore>(context);
 
-    if (userInfoStore.userType.isNotEmpty) {
+    if (_userInfoStore.userType.isNotEmpty) {
       final index = widget.accountList.indexWhere(
-          (element) => element['userType'] == userInfoStore.userType);
+          (element) => element['userType'] == _userInfoStore.userType);
 
       if (index != -1) {
         setState(() {
           chosenIndex = index;
         });
       }
+
+      if (widget.accountList[index]?["hasProfile"] == true) {
+        _userInfoStore
+            .setRoleId(BigInt.from(widget.accountList[index]["roleId"]));
+        _userInfoStore.setHasProfile(true);
+      }
     } else {
-      userInfoStore.setUserType(widget.accountList.isNotEmpty
+      _userInfoStore.setUserType(widget.accountList.isNotEmpty
           ? widget.accountList?[chosenIndex]?['userType']
           : "Student");
+
+      if (widget.accountList[0]?["hasProfile"] == true) {
+        _userInfoStore
+            .setRoleId(BigInt.from(widget.accountList[0]["roleId"]));
+        _userInfoStore.setHasProfile(true);
+      }
     }
+
+    _userInfoStore.setUsername(widget.accountList[chosenIndex]['username']);
   }
 
   @override
@@ -74,16 +88,15 @@ class _AccountListState extends State<AccountList> {
           });
 
           print(account);
-          userInfoStore.setUserType(account['userType']);
-          userInfoStore.setUsername(account['username']);
-          
+          _userInfoStore.setUserType(account['userType']);
+          _userInfoStore.setUsername(account['username']);
 
           if (account["hasProfile"]) {
-            userInfoStore.setHasProfile(account['hasProfile']);
-            userInfoStore.setRoleId(BigInt.from(account['roleId']));
+            _userInfoStore.setHasProfile(account['hasProfile']);
+            _userInfoStore.setRoleId(BigInt.from(account['roleId']));
           } else {
-            userInfoStore.setHasProfile(false);
-            userInfoStore.setRoleId(BigInt.zero);
+            _userInfoStore.setHasProfile(false);
+            _userInfoStore.setRoleId(BigInt.zero);
           }
         }
       },

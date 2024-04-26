@@ -39,6 +39,8 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
   late IO.Socket socket;
   late UserInfoStore _userInfoStore;
 
+  final _notificationService = NotificationService();
+
   @override
   void initState() {
     super.initState();
@@ -231,9 +233,11 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         showDangerToast(context: context, message: e.toString());
       }
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

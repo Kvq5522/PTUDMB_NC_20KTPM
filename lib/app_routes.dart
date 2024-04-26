@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/dashboard_detail_screen.dart';
+import 'package:studenthub/screens/dashboard/dashboard_overview/widget/proposals_active.dart';
+import 'package:studenthub/screens/interviews/interview.dart';
 
 import 'package:studenthub/screens/project/project_apply/project_apply_screen.dart';
 import 'package:studenthub/screens/project/project_detail/project_detail_screen.dart';
@@ -72,49 +74,86 @@ GoRouter routerConfig = GoRouter(
     ),
     GoRoute(
       path: '/welcome',
-      builder: (context, state) => const WelcomeScreen(),
+      builder: (context, state) {
+        final userName = state.extra as String;
+        return WelcomeScreen(
+          userName: userName.isEmpty ? "User" : userName,
+        );
+      },
     ),
     //
     GoRoute(
       path: '/dashboard',
       builder: (context, state) => const Layout(page: 1),
     ),
+
     GoRoute(
-      path: '/test',
+      path: '/project-overview/:project_id/:title/:naviFilter',
       builder: (context, state) {
-        final String? projectId = state.pathParameters["project_id"];
+        final String? projectId = state.pathParameters['project_id'];
+        final String? title = state.pathParameters['title'];
+        final String? naviFilter = state.pathParameters['naviFilter'];
 
-        // print(projectId);
-
-        return DashboardDetailScreen(id: projectId ?? "");
+        return DashboardDetailScreen(
+            id: projectId ?? "",
+            title: title ?? "",
+            naviFilter: naviFilter ?? "");
       },
     ),
+
     GoRoute(
       path: '/project',
       builder: (context, state) => const Layout(page: 0),
     ),
     GoRoute(
-      path: '/project-post',
-      builder: (context, state) => const ProjectPosting(),
-    ),
+        path: '/project-post/:project_id',
+        builder: (context, state) {
+          final String? projectId = state.pathParameters['project_id'];
+          return ProjectPosting(projectId: projectId);
+        }),
     GoRoute(
-      path: '/project-detail',
-      builder: (context, state) => const DetailProjectScreen(),
+      path: '/project/:projectId',
+      builder: (context, state) {
+        final projectId = state.pathParameters['projectId'] as String;
+        return DetailProjectScreen(projectId: projectId);
+      },
     ),
+
     GoRoute(
-        path: '/project-apply',
-        builder: ((context, state) => ProjectApplyScreen())),
+        path: '/project-apply/:projectId',
+        builder: (context, state) {
+          final String? projectId = state.pathParameters['projectId'];
+
+          return ProjectApplyScreen(
+            projectId: projectId ?? "",
+          );
+        }),
     GoRoute(
       path: '/saved-project',
-      builder: (context, state) => const SavedProjectScreen(),
+      builder: (context, state) => SavedProjectScreen(),
     ),
     GoRoute(
       path: '/search-result',
-      builder: (context, state) => const SearchResultScreen(),
+      builder: (context, state) {
+        final selectedOption = state.extra as String;
+        return SearchResultScreen(
+          searchQuery: selectedOption,
+        );
+      },
     ),
+
     GoRoute(
       path: '/video-call',
       builder: (context, state) => VideoCallScreen(),
     ),
+    GoRoute(
+      path: '/active-proposal/:projectId/:proposalId',
+      builder: (context, state) {
+        final projectId = state.pathParameters['projectId'] as String;
+        final proposalId = state.pathParameters['proposalId'] as String;
+        return ActiveProposalScreen(
+            projectId: projectId, proposalId: proposalId);
+      },
+    )
   ],
 );

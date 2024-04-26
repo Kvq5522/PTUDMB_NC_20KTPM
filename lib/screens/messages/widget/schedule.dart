@@ -184,7 +184,7 @@ class _MyScheduleState extends State<MySchedule> {
                               ),
                             ),
                             backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.transparent, // màu nền
+                              Colors.transparent,
                             ),
                           ),
                           child: Text(

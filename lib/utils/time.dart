@@ -14,3 +14,17 @@ String formatMessageTime(BuildContext context, DateTime time) {
     return DateFormat('MMM d').format(time);
   }
 }
+
+String formatYear(dynamic year) {
+  if (year is int) {
+    return year.toString();
+  } else if (year is String) {
+    if (year.contains("-")) {
+      return DateTime.parse(year).year.toString();
+    } else {
+      return year;
+    }
+  } else {
+    return '';
+  }
+}

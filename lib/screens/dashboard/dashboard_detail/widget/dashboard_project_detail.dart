@@ -54,7 +54,7 @@ class DashboardProjectDetail extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "$projectScope",
+                    projectScope,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w300,

@@ -3,7 +3,7 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/components/account_list.dart';
 import 'package:studenthub/app_routes.dart';
-import 'package:studenthub/components/app_bar.dart';
+import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/services/auth.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 
@@ -72,12 +72,16 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
           };
         });
       }
+
+      print(accountList);
     } catch (e) {
       routerConfig.go("/login");
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -96,7 +100,9 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
                     children: [
                       // Display account list
                       _isLoading
-                          ? const Center(child: CircularProgressIndicator())
+                          ? const Center(child: const CircularProgressIndicator(
+                            color: Color(0xFF008ABD),
+                          ))
                           : AccountList(accountList: accountList),
 
                       // Display feature buttons

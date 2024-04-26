@@ -1,14 +1,36 @@
 import 'package:flutter/material.dart';
 
 class MyFillTer extends StatefulWidget {
-  const MyFillTer({super.key});
+  final Function(int, String, String) onApply;
+
+  const MyFillTer({Key? key, required this.onApply}) : super(key: key);
 
   @override
-  State<MyFillTer> createState() => _MyFillTerState();
+  State<StatefulWidget> createState() => _MyFillTerState();
 }
 
 class _MyFillTerState extends State<MyFillTer> {
-  int selectedOption = 0;
+  int selectedOption = -1;
+  TextEditingController studentController = TextEditingController();
+  TextEditingController proposalController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    selectedOption = -1;
+    studentController.text = '';
+    proposalController.text = '';
+  }
+
+  String? _validateNumberInput(String? value) {
+    if (value != null && value.isNotEmpty) {
+      final validNumber = int.tryParse(value);
+      if (validNumber == null) {
+        return 'Please enter a valid number';
+      }
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,9 +49,9 @@ class _MyFillTerState extends State<MyFillTer> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close_rounded,
-                      color: const Color(0xFF008ABD),
+                      color: Color(0xFF008ABD),
                     ),
                   ),
                 ],
@@ -68,7 +90,7 @@ class _MyFillTerState extends State<MyFillTer> {
                         ListTile(
                           title: const Text('Less than one month'),
                           leading: Radio<int>(
-                            value: 1,
+                            value: 0,
                             groupValue: selectedOption,
                             activeColor: Colors.blue,
                             fillColor: MaterialStateProperty.all(Colors.blue),
@@ -83,7 +105,7 @@ class _MyFillTerState extends State<MyFillTer> {
                         ListTile(
                           title: const Text('1 to 3 months'),
                           leading: Radio<int>(
-                            value: 2,
+                            value: 1,
                             groupValue: selectedOption,
                             activeColor: Colors.blue,
                             fillColor: MaterialStateProperty.all(Colors.blue),
@@ -98,7 +120,7 @@ class _MyFillTerState extends State<MyFillTer> {
                         ListTile(
                           title: const Text('3 to 6 months'),
                           leading: Radio<int>(
-                            value: 3,
+                            value: 2,
                             groupValue: selectedOption,
                             activeColor: Colors.blue,
                             fillColor: MaterialStateProperty.all(Colors.blue),
@@ -113,7 +135,7 @@ class _MyFillTerState extends State<MyFillTer> {
                         ListTile(
                           title: const Text('More than 6 months'),
                           leading: Radio<int>(
-                            value: 4,
+                            value: 3,
                             groupValue: selectedOption,
                             activeColor: Colors.blue,
                             fillColor: MaterialStateProperty.all(Colors.blue),
@@ -137,19 +159,20 @@ class _MyFillTerState extends State<MyFillTer> {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      controller: studentController,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: 'Enter number of students',
                         filled: true,
-                        fillColor: Colors.grey[200], // Màu nền
+                        fillColor: Colors.grey[200],
                         border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(10), // Độ cong viền
-                          borderSide: BorderSide.none, // Không có đường viền
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
                         ),
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 14), // Khoảng cách giữa nội dung và viền
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 14),
                       ),
+                      validator: _validateNumberInput,
                     ),
                     const SizedBox(height: 16),
                     const Text(
@@ -161,19 +184,20 @@ class _MyFillTerState extends State<MyFillTer> {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      controller: proposalController,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: 'Enter proposals less than',
                         filled: true,
-                        fillColor: Colors.grey[200], // Màu nền
+                        fillColor: Colors.grey[200],
                         border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(10), // Độ cong viền
-                          borderSide: BorderSide.none, // Không có đường viền
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
                         ),
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 14), // Khoảng cách giữa nội dung và viền
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 14),
                       ),
+                      validator: _validateNumberInput,
                     ),
                     const SizedBox(
                       height: 40,
@@ -192,7 +216,13 @@ class _MyFillTerState extends State<MyFillTer> {
                                 const EdgeInsets.all(16),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              setState(() {
+                                selectedOption = -1;
+                                studentController.clear();
+                                proposalController.clear();
+                              });
+                            },
                             child: const Text(
                               "Clear filters",
                               style: TextStyle(
@@ -215,7 +245,16 @@ class _MyFillTerState extends State<MyFillTer> {
                                 const EdgeInsets.all(16),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              // Call the callback function and pass the selectedOption, studentController.text, and proposalController.text
+                              widget.onApply(
+                                selectedOption,
+                                studentController.text,
+                                proposalController.text,
+                              );
+                              // Close the bottom sheet
+                              Navigator.of(context).pop();
+                            },
                             child: const Text(
                               "Apply",
                               style: TextStyle(

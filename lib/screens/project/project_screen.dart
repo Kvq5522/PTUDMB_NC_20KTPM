@@ -9,14 +9,14 @@ class ProjectScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 246, 246, 246),
+      backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            // decoration: const BoxDecoration(
-            //   color: Colors.white,
-            // ),
+            decoration: const BoxDecoration(
+                // color: Colors.white,
+                ),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 15, 20, 10),
               child: Row(
@@ -37,8 +37,7 @@ class ProjectScreen extends StatelessWidget {
                       ),
                       fixedSize: Size.fromHeight(
                           MediaQuery.of(context).size.height * 0.065),
-                      foregroundColor: Colors.transparent,
-                      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                      backgroundColor: Colors.white,
                     ),
                     child: const Icon(
                       Icons.favorite_border_rounded,
@@ -50,7 +49,7 @@ class ProjectScreen extends StatelessWidget {
             ),
           ),
           // ProjectList(),
-          Expanded(
+          const Expanded(
             child: ProjectList(),
           ),
         ],

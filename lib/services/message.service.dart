@@ -16,7 +16,7 @@ class MessageService {
         queries: {
           "projectId": projectId,
           "receiverId": receiverId,
-          "pageSize": 30,
+          "pageSize": 15,
           "page": page,
         },
         token: token,

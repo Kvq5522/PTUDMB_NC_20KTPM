@@ -1,42 +1,77 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
+import 'package:studenthub/services/dashboard.service.dart';
 import 'package:studenthub/services/project.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
 
-class DetailProjectScreen extends StatefulWidget {
+class ActiveProposalScreen extends StatefulWidget {
   final String projectId;
+  final String proposalId;
 
-  const DetailProjectScreen({Key? key, required this.projectId})
+  const ActiveProposalScreen(
+      {Key? key, required this.projectId, required this.proposalId})
       : super(key: key);
 
   @override
-  State<DetailProjectScreen> createState() => _DetailProjectScreenState();
+  State<ActiveProposalScreen> createState() => _ActiveProposalScreenState();
 }
 
-class _DetailProjectScreenState extends State<DetailProjectScreen> {
+class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
+  final DashBoardService _dashBoardService = DashBoardService();
   final ProjectService _projectService = ProjectService();
   late UserInfoStore _userInfoStore;
   Map<String, dynamic> projectDetail = {};
+  Map<String, dynamic> proposalDetail = {};
+
+  Future<void> acceptOffer(
+    int? id,
+    String coverLetter,
+    int statusFlag,
+    int disableFlag,
+    BuildContext context,
+  ) async {
+    try {
+      print(id);
+      await _dashBoardService.patchProposalDetails(
+        id!,
+        coverLetter,
+        statusFlag,
+        disableFlag,
+        _userInfoStore.token,
+      );
+
+      String message = "Join project successfully";
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    } catch (e) {
+      print('Failed to update project: $e');
+    }
+  }
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
     _userInfoStore = Provider.of<UserInfoStore>(context);
-    fetchProjectDetail();
-  }
-
-  Future<void> fetchProjectDetail() async {
     try {
       final Map<String, dynamic> detail =
           await _projectService.getProjectDetail(
         projectId: widget.projectId,
         token: _userInfoStore.token,
       );
+      final Map<String, dynamic> proposal =
+          await _dashBoardService.getProposalById(
+        int.parse(widget.proposalId),
+        _userInfoStore.token,
+      );
 
       setState(() {
         projectDetail = detail;
+        proposalDetail = proposal;
       });
     } catch (error) {
       print('Error fetching project detail: $error');
@@ -72,9 +107,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
       case 0:
         return 'Less than one month';
       case 1:
-        return 'One to three months';
+        return '1 - 3 months';
       case 2:
-        return 'Three to six months';
+        return '3 - 6 months';
       default:
         return 'More than six months';
     }
@@ -251,37 +286,58 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                           const EdgeInsets.all(16),
                         ),
                       ),
-                      onPressed: () {
-                        final projectId = widget.projectId;
+                      onPressed: () async {
+                        bool? shouldContinue = await showDialog<bool>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Confirmation'),
+                              content: Text(
+                                'Do you really want to accept this hire offer ?',
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('Yes'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(true);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
 
-                        routerConfig.push('/project-apply/$projectId');
+                        if (shouldContinue == true) {
+                          try {
+                            await acceptOffer(
+                              int.parse(widget.proposalId),
+                              proposalDetail['coverLetter'] ?? '',
+                              3,
+                              0,
+                              context,
+                            );
+                            routerConfig.push('/dashboard');
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(e.toString()),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                            print('Failed to update project: $e');
+                          }
+                        }
                       },
                       child: const Text(
-                        "Apply Now",
+                        "Accept Offer",
                         style: TextStyle(
                           color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromARGB(255, 255, 255, 255)),
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.all(16),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: const Text(
-                        "Saved",
-                        style: TextStyle(
-                          color: Color(0xFF008ABD),
                           fontWeight: FontWeight.w600,
                         ),
                       ),
