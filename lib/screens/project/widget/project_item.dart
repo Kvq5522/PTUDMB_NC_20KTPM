@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:studenthub/app_routes.dart';
+import 'package:studenthub/components/loading_screen.dart';
 import 'package:studenthub/services/project.service.dart';
 import 'package:studenthub/services/auth.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
@@ -20,7 +21,7 @@ class ProjectItem extends StatefulWidget {
   final bool isFavorite;
 
   const ProjectItem({
-    Key? key,
+    super.key,
     required this.projectId,
     required this.createdAt,
     required this.updatedAt,
@@ -33,7 +34,7 @@ class ProjectItem extends StatefulWidget {
     this.typeFlag,
     required this.countProposals,
     required this.isFavorite,
-  }) : super(key: key);
+  });
 
   @override
   _ProjectItemState createState() => _ProjectItemState();
@@ -43,7 +44,7 @@ class _ProjectItemState extends State<ProjectItem> {
   bool isLiked = false;
 
   final AuthenticationService _authService = AuthenticationService();
-  late ProjectService _projectService = ProjectService();
+  late final ProjectService _projectService = ProjectService();
   late UserInfoStore _userInfoStore;
   String _studentId = "";
   bool _isLoading = false;
@@ -83,9 +84,12 @@ class _ProjectItemState extends State<ProjectItem> {
       });
     } catch (e) {
       print(e);
-      setState(() {
-        _isLoading = false;
-      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -140,6 +144,10 @@ class _ProjectItemState extends State<ProjectItem> {
                     onPressed: () async {
                       await _loadUserInfo();
                       try {
+                        setState(() {
+                          _isLoading = true;
+                        });
+
                         await _projectService.updateFavoriteProject(
                           studentId: _studentId,
                           projectId: widget.projectId,
@@ -152,13 +160,27 @@ class _ProjectItemState extends State<ProjectItem> {
                         });
                       } catch (e) {
                         print('Error updating favorite status: $e');
+                      } finally {
+                        if (mounted) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        }
                       }
                     },
-                    icon: Icon(
-                      isLiked
-                          ? Icons.favorite_rounded
-                          : Icons.favorite_outline_rounded,
-                    ),
+                    icon: _isLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Color(0xFF008ABD),
+                            ),
+                          )
+                        : Icon(
+                            isLiked
+                                ? Icons.favorite_rounded
+                                : Icons.favorite_outline_rounded,
+                          ),
                   ),
                 ],
               ),

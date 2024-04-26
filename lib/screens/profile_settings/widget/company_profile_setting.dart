@@ -76,9 +76,11 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
           }
         }
       } finally {
-        setState(() {
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       }
     }
   }
@@ -258,9 +260,11 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                                   }
                                 }
                               } finally {
-                                setState(() {
-                                  _isLoading = false;
-                                });
+                                if (mounted) {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(

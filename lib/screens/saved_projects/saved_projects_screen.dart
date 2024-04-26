@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:studenthub/app_routes.dart';
+import 'package:studenthub/components/loading_screen.dart';
 import 'package:studenthub/screens/project/widget/project_item.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +10,7 @@ import 'package:studenthub/services/project.service.dart';
 import 'package:studenthub/services/auth.service.dart';
 
 class SavedProjectScreen extends StatefulWidget {
-  const SavedProjectScreen({Key? key}) : super(key: key);
+  const SavedProjectScreen({super.key});
 
   @override
   State<SavedProjectScreen> createState() => _SavedProjectScreenState();
@@ -18,7 +19,7 @@ class SavedProjectScreen extends StatefulWidget {
 class _SavedProjectScreenState extends State<SavedProjectScreen> {
   final AuthenticationService _authService = AuthenticationService();
 
-  late ProjectService _projectService = ProjectService();
+  late final ProjectService _projectService = ProjectService();
   late UserInfoStore _userInfoStore;
   String _studentId = "";
   List<Map<String, dynamic>> _savedProjects = [];
@@ -29,33 +30,43 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
     super.didChangeDependencies();
     _userInfoStore = Provider.of<UserInfoStore>(context);
     try {
+      setState(() {
+        _isLoading = true;
+      });
+
       var userInfo = await _authService.getUserInfo(_userInfoStore.token);
 
       setState(() {
         _studentId = (userInfo["student"]["id"]).toString();
-        _isLoading = false;
       });
     } catch (e) {
       print(e);
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
 
     try {
       List<Map<String, dynamic>> projects =
           await _projectService.getAllSavedProject(
-              studentId: _studentId, token: _userInfoStore.token);
+              studentId: _userInfoStore.userId.toString(),
+              token: _userInfoStore.token);
+
+      print("projects length: ${projects.length}");
 
       setState(() {
-        _savedProjects = projects;
         _isLoading = false;
+        _savedProjects = projects;
       });
     } catch (e) {
       print(e);
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -93,9 +104,7 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
           ],
         ),
         body: _isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
+            ? const LoadingScreen()
             : SingleChildScrollView(
                 child: Padding(
                   padding:
@@ -103,7 +112,7 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
                   child: _savedProjects.isEmpty
                       ? const Center(
                           // child: Text('Không có dự án nào.'),
-                          child: CircularProgressIndicator(),
+                          child: Text('No project found.'),
                         )
                       : Column(
                           children: _savedProjects.map((item) {
@@ -125,7 +134,7 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
                                 isFavorite: isFavorite,
                               );
                             } else {
-                              return SizedBox(); // Hoặc bất kỳ widget nào bạn muốn trả về khi dữ liệu không hợp lệ
+                              return const SizedBox(); // Hoặc bất kỳ widget nào bạn muốn trả về khi dữ liệu không hợp lệ
                             }
                           }).toList(),
                         ),

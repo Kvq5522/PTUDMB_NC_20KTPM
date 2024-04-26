@@ -10,7 +10,7 @@ class DashboardDetailHiredList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var filteredHiredList =
-        hiredList.where((item) => item["statusFlag"] == 2).toList();
+        hiredList.where((item) => item["statusFlag"] == 3).toList();
 
     return Column(
       children: List.generate(filteredHiredList.length,

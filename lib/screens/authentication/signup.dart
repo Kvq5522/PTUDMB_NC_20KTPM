@@ -265,9 +265,11 @@ class _SignUpFormState extends State<SignUpForm> {
                       _errorMessage = e.toString();
                     });
                   } finally {
-                    setState(() {
-                      _isLoading = false;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    }
                   }
                 }
               },

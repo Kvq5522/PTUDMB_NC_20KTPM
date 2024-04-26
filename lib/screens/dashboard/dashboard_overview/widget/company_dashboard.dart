@@ -1,11 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import "package:flutter/material.dart";
-import "package:mobx/mobx.dart";
 import "package:provider/provider.dart";
 import "package:studenthub/app_routes.dart";
 import "package:studenthub/screens/dashboard/dashboard_overview/widget/edit_project.dart";
-import 'package:flutter/services.dart';
 import "package:studenthub/services/dashboard.service.dart";
 import "package:studenthub/stores/user_info/user_info.dart";
 
@@ -174,7 +172,8 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                         onTap: () {
                           final projectId = project["id"];
                           final title = project["title"];
-                          final naviFilter = "Proposals";
+                          const naviFilter = "Proposals";
+
                           routerConfig.push(
                               '/project-overview/$projectId/$title/$naviFilter');
                         },
@@ -185,7 +184,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                         onTap: () {
                           final projectId = project["id"];
                           final title = project["title"];
-                          final naviFilter = "Message";
+                          const naviFilter = "Message";
                           routerConfig.push(
                               '/project-overview/$projectId/$title/$naviFilter');
                         },
@@ -196,7 +195,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                         onTap: () {
                           final projectId = project["id"];
                           final title = project["title"];
-                          final naviFilter = "Hired";
+                          const naviFilter = "Hired";
                           routerConfig.push(
                               '/project-overview/$projectId/$title/$naviFilter');
                         },
@@ -207,7 +206,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                         onTap: () {
                           final projectId = project["id"];
                           final title = project["title"];
-                          final naviFilter = "Detail";
+                          const naviFilter = "Detail";
                           routerConfig.push(
                               '/project-overview/$projectId/$title/$naviFilter');
                         },
@@ -258,136 +257,134 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
-        return Container(
-          child: Column(
-            children: [
-              // Title and collapse button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "$title (${countIf(list, status)})",
-                    style: const TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                    ),
+        return Column(
+          children: [
+            // Title and collapse button
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "$title (${countIf(list, status)})",
+                  style: const TextStyle(
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        isCollapsed = !isCollapsed;
-                      });
-                    },
-                    icon: isCollapsed
-                        ? const Icon(Icons.arrow_drop_down)
-                        : const Icon(Icons.arrow_drop_up),
-                  ),
-                ],
-              ),
-              // List of projects
-              Column(
-                children: List.generate(
-                  list.length,
-                  (index) {
-                    if (isCollapsed) return const SizedBox();
-
-                    final createdDate = DateTime.parse(
-                        list[index]["createdAt"] ?? DateTime.now().toString());
-
-                    final difference = DateTime.now().difference(createdDate);
-                    final timeAgo = difference.inDays == 0
-                        ? '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago'
-                        : '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
-
-                    return list[index]["typeFlag"] == status
-                        ? GestureDetector(
-                            onTap: () {
-                              final projectId = list[index]["id"];
-                              final title = list[index]["title"];
-                              routerConfig.push(
-                                  '/project-overview/$projectId/$title/Proposals');
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey.shade300,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding: const EdgeInsets.all(20),
-                              margin: const EdgeInsets.only(bottom: 20),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Created $timeAgo",
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          showOptionsBottomModal(
-                                              widget.projectLists[index]);
-                                        },
-                                        icon: const Icon(Icons.more_vert),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(height: 5),
-                                  // Project name
-                                  Text(
-                                    list[index]["title"],
-                                    style: const TextStyle(
-                                      color: Color(0xFF008ABD),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      overflow: TextOverflow.visible,
-                                    ),
-                                  ),
-
-                                  const SizedBox(height: 10),
-                                  // Description
-                                  Text(
-                                    "Student are looking for: \n\t ${list[index]["description"]}",
-                                    style: const TextStyle(
-                                      overflow: TextOverflow.visible,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  // number of proposals, messages, hired
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Proposals: ${list[index]["proposals"].length}",
-                                      ),
-                                      const SizedBox(width: 20),
-                                      Text(
-                                        "Messages: ${list[index]["messages"] ?? 0}",
-                                      ),
-                                      const SizedBox(width: 20),
-                                      Text(
-                                        "Hired: ${list[index]["hired"] ?? 0}",
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        : const SizedBox();
-                  },
                 ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isCollapsed = !isCollapsed;
+                    });
+                  },
+                  icon: isCollapsed
+                      ? const Icon(Icons.arrow_drop_down)
+                      : const Icon(Icons.arrow_drop_up),
+                ),
+              ],
+            ),
+            // List of projects
+            Column(
+              children: List.generate(
+                list.length,
+                (index) {
+                  if (isCollapsed) return const SizedBox();
+
+                  final createdDate = DateTime.parse(
+                      list[index]["createdAt"] ?? DateTime.now().toString());
+
+                  final difference = DateTime.now().difference(createdDate);
+                  final timeAgo = difference.inDays == 0
+                      ? '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago'
+                      : '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
+
+                  return list[index]["typeFlag"] == status
+                      ? GestureDetector(
+                          onTap: () {
+                            final projectId = list[index]["id"];
+                            final title = list[index]["title"];
+                            routerConfig.push(
+                                '/project-overview/$projectId/$title/Proposals');
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey.shade300,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: const EdgeInsets.all(20),
+                            margin: const EdgeInsets.only(bottom: 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Created $timeAgo",
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        showOptionsBottomModal(
+                                            widget.projectLists[index]);
+                                      },
+                                      icon: const Icon(Icons.more_vert),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 5),
+                                // Project name
+                                Text(
+                                  list[index]["title"],
+                                  style: const TextStyle(
+                                    color: Color(0xFF008ABD),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    overflow: TextOverflow.visible,
+                                  ),
+                                ),
+
+                                const SizedBox(height: 10),
+                                // Description
+                                Text(
+                                  "Student are looking for: \n\t ${list[index]["description"]}",
+                                  style: const TextStyle(
+                                    overflow: TextOverflow.visible,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                // number of proposals, messages, hired
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Proposals: ${list[index]["proposals"].where((element) => element["statusFlag"] == 0).length ?? 0}",
+                                    ),
+                                    const SizedBox(width: 20),
+                                    Text(
+                                      "Messages: ${list[index]["messages"] ?? 0}",
+                                    ),
+                                    const SizedBox(width: 20),
+                                    Text(
+                                      "Hired: ${list[index]["proposals"].where((element) => element["statusFlag"] == 3).length ?? 0}",
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      : const SizedBox();
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );

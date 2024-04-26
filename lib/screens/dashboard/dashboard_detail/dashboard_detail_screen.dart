@@ -48,6 +48,8 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
       var projectData = await _dashBoardService.getProjectDetails(
           int.parse(widget.id), userInfoStore.token);
 
+      print(projectData.toString());
+
       setState(() {
         proposals = proposalsData;
         project = projectData;

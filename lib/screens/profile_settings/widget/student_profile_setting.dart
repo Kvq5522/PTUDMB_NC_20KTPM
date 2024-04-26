@@ -130,9 +130,11 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
         showDangerToast(context: context, message: "Failed to load data");
       }
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -303,9 +305,11 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                 message: "Cannot add skillset");
                           }
                         } finally {
-                          setState(() {
-                            _isLoading = false;
-                          });
+                          if (mounted) {
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          }
                         }
                       },
                     ),
@@ -719,9 +723,11 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                               } catch (e) {
                                 print(e);
                               } finally {
-                                setState(() {
-                                  _isLoading = false;
-                                });
+                                if (mounted) {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                }
                               }
                             }
                           },
@@ -925,9 +931,11 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                             } catch (e) {
                               print(e);
                             } finally {
-                              setState(() {
-                                _isLoading = false;
-                              });
+                              if (mounted) {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              }
                             }
                           },
                         ),
@@ -1199,9 +1207,11 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                               "Failed to update experience");
                                     }
                                   } finally {
-                                    setState(() {
-                                      _isLoading = false;
-                                    });
+                                    if (mounted) {
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                    }
                                   }
                                 }
                               },
@@ -1486,9 +1496,11 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                   message: "Fail to update CV and Transcript");
                             }
                           } finally {
-                            setState(() {
-                              _isLoading = false;
-                            });
+                            if (mounted) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(

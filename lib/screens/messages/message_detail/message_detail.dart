@@ -233,9 +233,11 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         showDangerToast(context: context, message: e.toString());
       }
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

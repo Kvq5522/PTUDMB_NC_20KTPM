@@ -84,6 +84,8 @@ class DashBoardService {
       token: token,
     );
 
+    print(res.toString());
+
     if (res.statusCode! >= 400) {
       String errorMessage = res.data?["errorDetails"];
       throw Exception(errorMessage);

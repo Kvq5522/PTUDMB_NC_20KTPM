@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:studenthub/services/project.service.dart';
 
 class ProjectList extends StatefulWidget {
-  const ProjectList({Key? key}) : super(key: key);
+  const ProjectList({super.key});
 
   @override
   State<ProjectList> createState() => _ProjectListState();
@@ -41,9 +41,11 @@ class _ProjectListState extends State<ProjectList> {
       });
     } catch (e) {
       print(e);
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -51,7 +53,9 @@ class _ProjectListState extends State<ProjectList> {
   Widget build(BuildContext context) {
     return _isLoading
         ? const Center(
-            child: CircularProgressIndicator(),
+            child: const CircularProgressIndicator(
+                            color: Color(0xFF008ABD),
+                          ),
           )
         : SingleChildScrollView(
             child: Padding(

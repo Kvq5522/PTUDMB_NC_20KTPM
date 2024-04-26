@@ -175,9 +175,11 @@ class _LoginFormState extends State<LoginForm> {
                       _errorMessage = e.toString();
                     });
                   } finally {
-                    setState(() {
-                      _isLoading = false;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    }
                   }
                 }
               },

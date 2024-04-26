@@ -28,16 +28,9 @@ class _ProjectApplyScreenState extends State<ProjectApplyScreen> {
     BuildContext context,
   ) async {
     try {
-      print(projectId);
-      print(studentId);
-      print(coverLetter);
-      print(statusFlag);
-      print("===========");
-      print(disableFlag);
-      print("===========");
       await _projectService.postStudentProposal(
-        projectId,
-        studentId,
+        int.parse(projectId),
+        int.parse(studentId),
         coverLetter,
         statusFlag,
         disableFlag,

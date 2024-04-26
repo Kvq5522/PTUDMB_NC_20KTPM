@@ -164,7 +164,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           Expanded(
             child: _isLoading
                 ? const Center(
-                    child: CircularProgressIndicator(),
+                    child: const CircularProgressIndicator(
+                            color: Color(0xFF008ABD),
+                          ),
                   )
                 : SingleChildScrollView(
                     child: Padding(

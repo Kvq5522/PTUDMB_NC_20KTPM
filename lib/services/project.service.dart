@@ -139,13 +139,18 @@ class ProjectService {
   }
 
   Future<Map<String, dynamic>> postStudentProposal(
-    String projectId,
-    String studentId,
+    int projectId,
+    int studentId,
     String coverLetter,
     int statusFlag,
     int disableFlag,
     String token,
   ) async {
+    print("projectId: $projectId");
+    print("studentId: $studentId");
+    print("coverLetter: $coverLetter");
+    print("statusFlag: $statusFlag");
+    print("disableFlag: $disableFlag");
     Response res = await _dioClient.post("/api/proposal",
         body: {
           "projectId": projectId,

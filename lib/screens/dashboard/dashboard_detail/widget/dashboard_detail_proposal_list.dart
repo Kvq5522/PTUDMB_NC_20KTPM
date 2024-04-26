@@ -53,6 +53,8 @@ class _DashboardDetailProposalListState
 
   @override
   Widget build(BuildContext context) {
+    var filteredList =
+        widget.proposalList.where((item) => item["statusFlag"] == 0).toList();
     return FutureBuilder(
       future: Future.delayed(Duration(milliseconds: 550)),
       builder: (context, snapshot) {
@@ -60,17 +62,19 @@ class _DashboardDetailProposalListState
           return Padding(
             padding: EdgeInsets.only(top: 50.0),
             child: Center(
-              child: CircularProgressIndicator(),
+              child: const CircularProgressIndicator(
+                color: Color(0xFF008ABD),
+              ),
             ),
           );
         } else {
-          if (widget.proposalList.isEmpty) {
+          if (filteredList.isEmpty) {
             return Center(
               child: Text('No items found!'),
             );
           } else {
             return Column(
-              children: List.generate(widget.proposalList.length,
+              children: List.generate(filteredList.length,
                   (index) => proposalDetail(widget.proposalList[index])),
             );
           }

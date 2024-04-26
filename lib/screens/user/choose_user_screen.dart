@@ -77,9 +77,11 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
     } catch (e) {
       routerConfig.go("/login");
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -98,7 +100,9 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
                     children: [
                       // Display account list
                       _isLoading
-                          ? const Center(child: CircularProgressIndicator())
+                          ? const Center(child: const CircularProgressIndicator(
+                            color: Color(0xFF008ABD),
+                          ))
                           : AccountList(accountList: accountList),
 
                       // Display feature buttons

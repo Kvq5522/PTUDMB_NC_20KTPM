@@ -49,7 +49,7 @@ class ProjectScreen extends StatelessWidget {
             ),
           ),
           // ProjectList(),
-          Expanded(
+          const Expanded(
             child: ProjectList(),
           ),
         ],
