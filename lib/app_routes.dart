@@ -34,10 +34,6 @@ GoRouter routerConfig = GoRouter(
       builder: (context, state) => LoginScreen(),
     ),
     GoRoute(
-      path: '/project',
-      builder: (context, state) => const Layout(page: 0),
-    ),
-    GoRoute(
       path: '/signup_options',
       builder: (context, state) => const SignUpOptions(),
     ),
@@ -57,7 +53,15 @@ GoRouter routerConfig = GoRouter(
     ),
     GoRoute(
       path: '/message_detail',
-      builder: (context, state) => const MessageDetailScreen(),
+      builder: (context, state) {
+        final extraInfo = state.extra as Map<String, dynamic>;
+
+        return MessageDetailScreen(
+          projectId: extraInfo["projectId"].toString(),
+          receiverId: extraInfo["receiverId"].toString(),
+          receiverName: extraInfo["receiverName"],
+        );
+      },
     ),
     GoRoute(
       path: '/notification',
@@ -115,7 +119,9 @@ GoRouter routerConfig = GoRouter(
       path: '/project/:projectId',
       builder: (context, state) {
         final projectId = state.pathParameters['projectId'] as String;
-        return DetailProjectScreen(projectId: projectId);
+        final isInfo = (state.extra as Map<String, dynamic>)['isInfo'] as bool;
+
+        return DetailProjectScreen(projectId: projectId, isInfo: isInfo);
       },
     ),
 
@@ -130,7 +136,7 @@ GoRouter routerConfig = GoRouter(
         }),
     GoRoute(
       path: '/saved-project',
-      builder: (context, state) => SavedProjectScreen(),
+      builder: (context, state) => const SavedProjectScreen(),
     ),
     GoRoute(
       path: '/search-result',
@@ -144,15 +150,21 @@ GoRouter routerConfig = GoRouter(
 
     GoRoute(
       path: '/video-call',
-      builder: (context, state) => VideoCallScreen(),
+      builder: (context, state) => const VideoCallScreen(),
     ),
     GoRoute(
       path: '/active-proposal/:projectId/:proposalId',
       builder: (context, state) {
         final projectId = state.pathParameters['projectId'] as String;
         final proposalId = state.pathParameters['proposalId'] as String;
+        final isActive =
+            (state.extra as Map<String, dynamic>)['isActive'] as bool;
+
         return ActiveProposalScreen(
-            projectId: projectId, proposalId: proposalId);
+          projectId: projectId,
+          proposalId: proposalId,
+          isActive: isActive,
+        );
       },
     )
   ],

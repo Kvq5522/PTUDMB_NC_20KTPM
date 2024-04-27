@@ -212,7 +212,10 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                           )
                         : const SizedBox(),
                     filter == "Hired"
-                        ? DashboardDetailHiredList(hiredList: proposals)
+                        ? DashboardDetailHiredList(
+                            hiredList: proposals,
+                            projectId: widget.id,
+                          )
                         : const SizedBox()
                   ],
                 )),

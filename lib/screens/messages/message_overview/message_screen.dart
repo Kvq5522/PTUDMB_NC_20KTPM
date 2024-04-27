@@ -71,9 +71,11 @@ class _MessageScreenState extends State<MessageScreen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      routerConfig.push(
-                        "/message_detail",
-                      );
+                      routerConfig.push("/message_detail", extra: {
+                        "projectId": "1",
+                        "receiverId": "1",
+                        "receiverName": "hi",
+                      });
                     },
                     child: Container(
                       decoration: BoxDecoration(

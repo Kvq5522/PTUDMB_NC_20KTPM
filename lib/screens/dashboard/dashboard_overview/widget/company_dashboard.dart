@@ -8,11 +8,11 @@ import "package:studenthub/services/dashboard.service.dart";
 import "package:studenthub/stores/user_info/user_info.dart";
 
 class CompanyDashboard extends StatefulWidget {
-  final List projectLists;
+  final List projectList;
   final int filter;
 
   const CompanyDashboard(
-      {super.key, required this.projectLists, required this.filter});
+      {super.key, required this.projectList, required this.filter});
 
   @override
   State<CompanyDashboard> createState() => _CompanyDashboardState();
@@ -36,24 +36,24 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
         return Column(
           children: [
             collapsibleList(
-                list: widget.projectLists, title: "Pending Project", status: 3),
+                list: widget.projectList, title: "Pending Project", status:0),
             collapsibleList(
-                list: widget.projectLists, title: "Working Project", status: 0),
+                list: widget.projectList, title: "Working Project", status: 1),
             collapsibleList(
-                list: widget.projectLists,
+                list: widget.projectList,
                 title: "Archived Project",
-                status: 1),
+                status: 2),
           ],
         );
       case 0:
         return Container(
           child: collapsibleList(
-              list: widget.projectLists, title: "Working Project", status: 0),
+              list: widget.projectList, title: "Working Project", status: 0),
         );
       case 1:
         return Container(
           child: collapsibleList(
-              list: widget.projectLists, title: "Archived Project", status: 1),
+              list: widget.projectList, title: "Archived Project", status: 1),
         );
       default:
         return const SizedBox(
@@ -128,14 +128,14 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                     children: <Widget>[
                       ListTile(
                         leading: const Icon(Icons.settings),
-                        title: project["typeFlag"] == 1
+                        title: project["typeFlag"] == 0 || project["typeFlag"] == 2
                             ? const Text("Start working this project")
                             : const Text("Archiving this project"),
                         onTap: () async {
                           try {
                             int typeFlag;
                             if (project["typeFlag"] == 1) {
-                              typeFlag = 0;
+                              typeFlag = 2;
                             } else {
                               typeFlag = 1;
                             }
@@ -331,7 +331,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                     IconButton(
                                       onPressed: () {
                                         showOptionsBottomModal(
-                                            widget.projectLists[index]);
+                                            widget.projectList[index]);
                                       },
                                       icon: const Icon(Icons.more_vert),
                                     )

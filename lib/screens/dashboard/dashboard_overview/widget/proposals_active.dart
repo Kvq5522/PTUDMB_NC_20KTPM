@@ -11,10 +11,13 @@ import 'package:studenthub/app_routes.dart';
 class ActiveProposalScreen extends StatefulWidget {
   final String projectId;
   final String proposalId;
+  final bool isActive;
 
   const ActiveProposalScreen(
-      {Key? key, required this.projectId, required this.proposalId})
-      : super(key: key);
+      {super.key,
+      required this.projectId,
+      required this.proposalId,
+      required this.isActive});
 
   @override
   State<ActiveProposalScreen> createState() => _ActiveProposalScreenState();
@@ -27,6 +30,12 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
   Map<String, dynamic> projectDetail = {};
   Map<String, dynamic> proposalDetail = {};
 
+  @override
+  void initState() {
+    super.initState();
+    print("isActive: ${widget.isActive}");
+  }
+
   Future<void> acceptOffer(
     int? id,
     String coverLetter,
@@ -35,7 +44,6 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
     BuildContext context,
   ) async {
     try {
-      print(id);
       await _dashBoardService.patchProposalDetails(
         id!,
         coverLetter,
@@ -271,81 +279,83 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
             const SizedBox(
               height: 20,
             ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color(0xFF008ABD)),
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.all(16),
+            if (widget.isActive)
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFF008ABD)),
+                          padding:
+                              MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            const EdgeInsets.all(16),
+                          ),
                         ),
-                      ),
-                      onPressed: () async {
-                        bool? shouldContinue = await showDialog<bool>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Confirmation'),
-                              content: Text(
-                                'Do you really want to accept this hire offer ?',
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text('Cancel'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop(false);
-                                  },
+                        onPressed: () async {
+                          bool? shouldContinue = await showDialog<bool>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Confirmation'),
+                                content: Text(
+                                  'Do you really want to accept this hire offer ?',
                                 ),
-                                TextButton(
-                                  child: Text('Yes'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop(true);
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('Cancel'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop(false);
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: Text('Yes'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop(true);
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
 
-                        if (shouldContinue == true) {
-                          try {
-                            await acceptOffer(
-                              int.parse(widget.proposalId),
-                              proposalDetail['coverLetter'] ?? '',
-                              3,
-                              0,
-                              context,
-                            );
-                            routerConfig.push('/dashboard');
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(e.toString()),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                            print('Failed to update project: $e');
+                          if (shouldContinue == true) {
+                            try {
+                              await acceptOffer(
+                                int.parse(widget.proposalId),
+                                proposalDetail['coverLetter'] ?? '',
+                                3,
+                                0,
+                                context,
+                              );
+                              routerConfig.push('/dashboard');
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(e.toString()),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              print('Failed to update project: $e');
+                            }
                           }
-                        }
-                      },
-                      child: const Text(
-                        "Accept Offer",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
+                        },
+                        child: const Text(
+                          "Accept Offer",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),

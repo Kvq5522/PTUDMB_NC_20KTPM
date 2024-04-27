@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import "package:flutter/material.dart";
+import "package:studenthub/app_routes.dart";
 
 class DashboardDetailHiredList extends StatelessWidget {
   final List hiredList;
+  final String projectId;
 
-  const DashboardDetailHiredList({super.key, required this.hiredList});
+  const DashboardDetailHiredList(
+      {super.key, required this.hiredList, required this.projectId});
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +85,31 @@ class DashboardDetailHiredList extends StatelessWidget {
               overflow: TextOverflow.visible,
             ),
           ),
+          Row(
+            children: [
+              Expanded(
+                  child: ElevatedButton(
+                onPressed: () {
+                  routerConfig.push('/message_detail', extra: {
+                    "projectId": projectId,
+                    "receiverId": hired["student"]["userId"],
+                    "receiverName": hired["student"]["user"]['fullname'],
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  textStyle: const TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                child: const Text(
+                  "Message",
+                  style: TextStyle(color: Colors.blue),
+                ),
+              )),
+            ],
+          )
         ],
       ),
     );

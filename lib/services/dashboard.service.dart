@@ -220,4 +220,28 @@ class DashBoardService {
 
     return List<Map<String, dynamic>>.from(res.data?["result"]);
   }
+
+  Future<List<Map<String, dynamic>>> getStudentProjects(
+      BigInt studentId, int typeFlag, String token) async {
+    try {
+      Response res = await _dioClient.get(
+        "/api/project/student/$studentId",
+        queries: {
+          "studentId": studentId,
+          "typeFlag": typeFlag,
+        },
+        token: token,
+      );
+
+      if (res.statusCode! >= 400) {
+        String errorMessage = res.data?["errorDetails"];
+
+        throw Exception(errorMessage);
+      }
+
+      return List<Map<String, dynamic>>.from(res.data?["result"]);
+    } catch (_) {
+      rethrow;
+    }
+  }
 }

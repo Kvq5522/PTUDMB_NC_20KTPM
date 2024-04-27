@@ -113,7 +113,8 @@ class _ProjectItemState extends State<ProjectItem> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: GestureDetector(
         onTap: () {
-          routerConfig.push('/project/${widget.projectId}');
+          routerConfig
+              .push('/project/${widget.projectId}', extra: {"isInfo": false});
         },
         child: Container(
           width: double.infinity,

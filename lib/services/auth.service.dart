@@ -68,8 +68,6 @@ class AuthenticationService {
         throw Exception("Failed to get user info.");
       }
 
-      print(res.data?["result"]);
-
       return res.data?["result"];
     } catch (_) {
       rethrow;

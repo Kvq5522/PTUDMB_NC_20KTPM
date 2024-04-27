@@ -53,9 +53,9 @@ class _ProjectListState extends State<ProjectList> {
   Widget build(BuildContext context) {
     return _isLoading
         ? const Center(
-            child: const CircularProgressIndicator(
-                            color: Color(0xFF008ABD),
-                          ),
+            child: CircularProgressIndicator(
+              color: Color(0xFF008ABD),
+            ),
           )
         : SingleChildScrollView(
             child: Padding(

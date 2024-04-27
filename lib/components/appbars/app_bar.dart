@@ -27,7 +27,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: const Color(0xFF008ABD),
       // elevation: 2,
       // shadowColor: Colors.black,
-      leading: GoRouter.of(context).canPop()
+      leading: routerConfig.canPop()
           ? IconButton(
               icon: const Icon(
                 Icons.arrow_back_ios_rounded,
@@ -35,7 +35,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onPressed: () {
                 try {
-                  GoRouter.of(context).pop();
+                  routerConfig.pop(context);
                 } catch (e) {
                   print(e);
                 }
@@ -74,6 +74,11 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ))
             : IconButton(
                 onPressed: () {
+                  print(GoRouter.of(context)
+                      .routerDelegate
+                      .currentConfiguration
+                      .uri
+                      .toString());
                   routerConfig.go('/choose-user');
                 },
                 icon: const Icon(

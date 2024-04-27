@@ -2,6 +2,7 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:studenthub/services/dashboard.service.dart';
 
@@ -154,7 +155,13 @@ class _DashboardDetailProposalListState
             children: [
               Expanded(
                   child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  routerConfig.push('/message_detail', extra: {
+                    "projectId": proposal["id"],
+                    "receiverId": proposal["student"]["userId"],
+                    "receiverName": proposal["student"]["user"]["fullname"],
+                  });
+                },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   textStyle: const TextStyle(

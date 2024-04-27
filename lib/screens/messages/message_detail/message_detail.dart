@@ -17,7 +17,15 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:studenthub/utils/toast.dart';
 
 class MessageDetailScreen extends StatefulWidget {
-  const MessageDetailScreen({super.key});
+  final String projectId;
+  final String receiverId;
+  final String receiverName;
+
+  const MessageDetailScreen(
+      {super.key,
+      required this.projectId,
+      required this.receiverId,
+      required this.receiverName});
 
   @override
   State<MessageDetailScreen> createState() => _MessageDetailScreen();
@@ -27,36 +35,27 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
   // final MessageService _messageService = MessageService();
   List<Message> _messageList = [];
   bool _isLoading = false;
-  FocusNode myFocusNode = FocusNode();
   int page = 1;
   bool hasNewMessageScrollToBottom = false;
   bool noMoreMessage = false;
 
-  final TextEditingController _messageController = TextEditingController();
   final MessageService _messageService = MessageService();
-  final ScrollController _scrollController = ScrollController();
+  late final FocusNode myFocusNode;
+  late final TextEditingController _messageController;
+  late final ScrollController _scrollController;
 
   late IO.Socket socket;
   late UserInfoStore _userInfoStore;
 
-  final _notificationService = NotificationService();
-
   @override
   void initState() {
-    super.initState();
-  }
+    print(widget.projectId);
+    print(widget.receiverId);
+    print(widget.receiverName);
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    _userInfoStore = Provider.of<UserInfoStore>(context);
-
-    _loadMessages(
-      token: _userInfoStore.token,
-      projectId: BigInt.one,
-      receiverId: BigInt.from(_userInfoStore.userId == BigInt.one ? 2 : 1),
-    );
+    myFocusNode = FocusNode();
+    _messageController = TextEditingController();
+    _scrollController = ScrollController();
 
     // Load more messages when scroll to bottom
     _scrollController.addListener(() async {
@@ -71,8 +70,8 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
 
         await _loadMessages(
           token: _userInfoStore.token,
-          projectId: BigInt.one,
-          receiverId: BigInt.from(_userInfoStore.userId == BigInt.one ? 2 : 1),
+          projectId: BigInt.parse(widget.projectId),
+          receiverId: BigInt.parse(widget.receiverId),
           page: newPage,
         );
       }
@@ -82,26 +81,40 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
     myFocusNode.addListener(() {
       if (myFocusNode.hasFocus) {
         setState(() {
-          //
-          Future.delayed(
-            const Duration(milliseconds: 500),
-            () => _scrollToBottom(),
-          );
+          Future.delayed(Duration(seconds: 1), () {
+            if (mounted) {
+              _scrollToBottom();
+            }
+          });
         });
       }
     });
 
-    Future.delayed(
-      const Duration(milliseconds: 500),
-      () => _scrollToBottom(),
+    Future.delayed(Duration(seconds: 1), () {
+      if (mounted) {
+        _scrollToBottom();
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    _userInfoStore = Provider.of<UserInfoStore>(context);
+
+    await _loadMessages(
+      token: _userInfoStore.token,
+      projectId: BigInt.parse(widget.projectId),
+      receiverId: BigInt.parse(widget.receiverId),
     );
 
     // Init socket
     socket = IO.io(
         dotenv.env["BASE_URL"],
         OptionBuilder()
-            .setTransports(['websocket']) // for Flutter or Dart VM
-            .disableAutoConnect() // disable auto-connection
+            .setTransports(['websocket'])
+            .disableAutoConnect()
             .build());
 
     socket.io.options?['extraHeaders'] = {
@@ -109,7 +122,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
     };
 
     socket.io.options?['query'] = {
-      'project_id': BigInt.from(1),
+      'project_id': widget.projectId,
     };
 
     socket.onConnectTimeout((data) => print('Connect Timeout: $data'));
@@ -130,6 +143,12 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
             }
         });
     socket.onError((data) => print(data));
+
+    socket.on("ERROR", (data) {
+      showDangerToast(
+          context: context, message: "Please check your connection!");
+    });
+
     socket.on('RECEIVE_MESSAGE', (data) {
       final message = Message(
         isSender: BigInt.from(data?["senderId"]) == _userInfoStore.userId
@@ -137,7 +156,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
             : false,
         name: BigInt.from(data?["senderId"]) == _userInfoStore.userId
             ? "You"
-            : "Luis Pham",
+            : widget.receiverName,
         avatarUrl: 'assets/images/avatar.png',
         text: data?['content'],
         time: DateTime.now(),
@@ -153,29 +172,28 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         _messageList.insert(0, message);
       });
     });
-
-    socket.on("ERROR", (data) {
-      showDangerToast(
-          context: context, message: "Please check your connection!");
-    });
+    super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    super.dispose();
-
-    _messageController.dispose();
     socket.off("RECEIVE_MESSAGE");
     socket.disconnect();
+    _messageController.dispose();
+    _scrollController.dispose();
     myFocusNode.dispose();
+
+    super.dispose();
   }
 
   void _scrollToBottom() {
-    _scrollController.animateTo(
-      _scrollController.position.minScrollExtent,
-      duration: Duration(seconds: 1),
-      curve: Curves.fastOutSlowIn,
-    );
+    if (_scrollController != null && _scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.minScrollExtent,
+        duration: Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
   }
 
   Future<void> _loadMessages(
@@ -214,7 +232,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
                   name:
                       BigInt.from(message["senderId"]) == _userInfoStore.userId
                           ? "You"
-                          : "Luis Pham",
+                          : widget.receiverName,
                   avatarUrl: 'assets/images/avatar.png',
                   text: message["content"],
                   time: DateTime.parse(message["createdAt"]),
@@ -244,9 +262,9 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
   void _sendMessage(String message) {
     socket.emit("SEND_MESSAGE", {
       "content": message,
-      "projectId": 1,
-      "senderId": _userInfoStore.userId == BigInt.one ? 1 : 2,
-      "receiverId": _userInfoStore.userId == BigInt.one ? 2 : 1,
+      "projectId": int.parse(widget.projectId),
+      "senderId": _userInfoStore.userId.toInt(),
+      "receiverId": int.parse(widget.receiverId),
       "messageFlag": 0
     });
 
@@ -380,7 +398,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Luis Pham',
+            widget.receiverName,
             style: TextStyle(color: Colors.white),
           )
         ],

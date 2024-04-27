@@ -7,9 +7,10 @@ import 'package:studenthub/app_routes.dart';
 
 class DetailProjectScreen extends StatefulWidget {
   final String projectId;
+  final bool isInfo;
 
-  const DetailProjectScreen({Key? key, required this.projectId})
-      : super(key: key);
+  const DetailProjectScreen(
+      {super.key, required this.projectId, required this.isInfo});
 
   @override
   State<DetailProjectScreen> createState() => _DetailProjectScreenState();
@@ -236,60 +237,63 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
             const SizedBox(
               height: 20,
             ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color(0xFF008ABD)),
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.all(16),
+            if (!widget.isInfo)
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFF008ABD)),
+                          padding:
+                              MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            const EdgeInsets.all(16),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        final projectId = widget.projectId;
+                        onPressed: () {
+                          final projectId = widget.projectId;
 
-                        routerConfig.push('/project-apply/$projectId');
-                      },
-                      child: const Text(
-                        "Apply Now",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
+                          routerConfig.push('/project-apply/$projectId');
+                        },
+                        child: const Text(
+                          "Apply Now",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromARGB(255, 255, 255, 255)),
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.all(16),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color.fromARGB(255, 255, 255, 255)),
+                          padding:
+                              MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            const EdgeInsets.all(16),
+                          ),
                         ),
-                      ),
-                      onPressed: () {},
-                      child: const Text(
-                        "Saved",
-                        style: TextStyle(
-                          color: Color(0xFF008ABD),
-                          fontWeight: FontWeight.w600,
+                        onPressed: () {},
+                        child: const Text(
+                          "Saved",
+                          style: TextStyle(
+                            color: Color(0xFF008ABD),
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),
