@@ -29,7 +29,7 @@ class MessageBubble extends StatelessWidget {
         children: [
           if (!isSender)
             CircleAvatar(
-              backgroundImage: AssetImage(avatarUrl),
+              backgroundImage: NetworkImage(avatarUrl),
               radius: 20,
             ),
           if (!isSender) const SizedBox(width: 8),
@@ -78,7 +78,7 @@ class MessageBubble extends StatelessWidget {
           if (isSender) SizedBox(width: 8),
           if (isSender)
             CircleAvatar(
-              backgroundImage: AssetImage(avatarUrl),
+              backgroundImage: NetworkImage(avatarUrl),
               radius: 20,
             ),
         ],

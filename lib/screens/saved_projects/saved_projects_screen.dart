@@ -39,20 +39,10 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
       setState(() {
         _studentId = (userInfo["student"]["id"]).toString();
       });
-    } catch (e) {
-      print(e);
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
 
-    try {
       List<Map<String, dynamic>> projects =
           await _projectService.getAllSavedProject(
-              studentId: _userInfoStore.userId.toString(),
-              token: _userInfoStore.token);
+              studentId: _studentId, token: _userInfoStore.token);
 
       print("projects length: ${projects.length}");
 
@@ -62,6 +52,12 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
       });
     } catch (e) {
       print(e);
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } finally {
       if (mounted) {
         setState(() {
           _isLoading = false;

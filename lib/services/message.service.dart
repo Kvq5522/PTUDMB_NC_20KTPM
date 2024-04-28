@@ -4,6 +4,24 @@ import 'package:studenthub/networks/dio_client.dart';
 class MessageService {
   final DioClient _dioClient = DioClient();
 
+  Future<List<Map<String, dynamic>>> getChatroom({required token}) async {
+    try {
+      Response res = await _dioClient.get(
+        "/api/message",
+        token: token,
+      );
+
+      if (res.statusCode! >= 400) {
+        String errorMessage = res.data?["errorDetails"];
+        throw Exception(errorMessage);
+      }
+
+      return List<Map<String, dynamic>>.from(res.data?["result"]);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
   Future<List<Map<String, dynamic>>> getMessages({
     required String token,
     required BigInt projectId,

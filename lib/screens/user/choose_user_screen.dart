@@ -100,9 +100,10 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
                     children: [
                       // Display account list
                       _isLoading
-                          ? const Center(child: const CircularProgressIndicator(
-                            color: Color(0xFF008ABD),
-                          ))
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                              color: Color(0xFF008ABD),
+                            ))
                           : AccountList(accountList: accountList),
 
                       // Display feature buttons

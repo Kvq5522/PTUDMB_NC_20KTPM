@@ -24,6 +24,8 @@ Future<void> initSocket(String token, String userId) async {
     'Authorization': 'Bearer $token',
   };
 
+  print('User ID: $userId');
+
   socket.connect();
 
   socket.onConnectTimeout((data) => print('Connect Timeout: $data'));
@@ -49,7 +51,7 @@ Future<void> initSocket(String token, String userId) async {
       _notificationService.showNotification(
           title: data?["title"], body: data?['content']);
     } catch (e) {
-      print(e.toString());
+      print("Error: ${e.toString()}");
     }
   });
 }

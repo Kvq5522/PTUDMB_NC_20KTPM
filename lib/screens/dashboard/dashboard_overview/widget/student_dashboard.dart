@@ -1,13 +1,16 @@
 import "package:flutter/material.dart";
-import "package:flutter/widgets.dart";
 import "package:studenthub/app_routes.dart";
 
 class StudentDashboard extends StatefulWidget {
-  final List proposalLists;
+  final List proposalList;
+  final List projectList;
   final int filter;
 
   const StudentDashboard(
-      {super.key, required this.proposalLists, required this.filter});
+      {super.key,
+      required this.proposalList,
+      required this.projectList,
+      required this.filter});
 
   @override
   State<StudentDashboard> createState() => _StudentDashboardState();
@@ -15,46 +18,59 @@ class StudentDashboard extends StatefulWidget {
 
 class _StudentDashboardState extends State<StudentDashboard> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // print(widget.proposalLists);
     switch (widget.filter) {
       case 2:
-        return Container(
-          child: Column(
-            children: [
-              collapsibleList(
-                  list: widget.proposalLists,
-                  title: "Active Proposals",
-                  status: 2),
-              collapsibleList(
-                  list: widget.proposalLists,
-                  title: "Submitted Proposals",
-                  status: 0),
-              // collapsibleList(
-              //     list: widget.projectLists,
-              //     title: "Working Projects",
-              //     status: "working"),
-              // collapsibleList(
-              //     list: widget.projectLists,
-              //     title: "Archived Projects",
-              //     status: "archived"),
-            ],
-          ),
+        return Column(
+          children: [
+            collapsibleList(
+                list: widget.proposalList,
+                title: "Active Proposals",
+                status: 2,
+                field: "statusFlag"),
+            collapsibleList(
+                list: widget.proposalList,
+                title: "Submitted Proposals",
+                status: 0,
+                field: "statusFlag"),
+            collapsibleList(
+                list: widget.projectList,
+                title: "Pending Projects",
+                status: 0,
+                field: "typeFlag"),
+            collapsibleList(
+                list: widget.projectList,
+                title: "Working Projects",
+                status: 1,
+                field: "typeFlag"),
+            collapsibleList(
+                list: widget.projectList,
+                title: "Archived Projects",
+                status: 2,
+                field: "typeFlag"),
+          ],
         );
-
-      // case 0:
-      //   return Container(
-      //       child: collapsibleList(
-      //           list: widget.projectLists,
-      //           title: "Working Projects",
-      //           status: "working"));
-      // case 1:
-      //   return Container(
-      //     child: collapsibleList(
-      //         list: widget.projectLists,
-      //         title: "Archived Projects",
-      //         status: "archived"),
-      //   );
+      case 0:
+        return Container(
+            child: collapsibleList(
+                list: widget.projectList,
+                title: "Working Projects",
+                status: 1,
+                field: "typeFlag"));
+      case 1:
+        return Container(
+          child: collapsibleList(
+              list: widget.projectList,
+              title: "Archived Projects",
+              status: 2,
+              field: "typeFlag"),
+        );
       default:
         return const SizedBox(
           child: Center(
@@ -65,13 +81,16 @@ class _StudentDashboardState extends State<StudentDashboard> {
   }
 
   Widget collapsibleList(
-      {required List list, required String title, required int status}) {
+      {required List list,
+      required String title,
+      required int status,
+      required String field}) {
     bool isCollapsed = false;
 
     int countIf(List list, int status) {
       int count = 0;
       for (var i = 0; i < list.length; i++) {
-        if (list[i]["statusFlag"] == status) {
+        if (list[i][field] == status) {
           count++;
         }
       }
@@ -123,15 +142,22 @@ class _StudentDashboardState extends State<StudentDashboard> {
                   (index) {
                     if (isCollapsed) return const SizedBox();
 
-                    return list[index]["statusFlag"] == status
+                    return list[index][field] == status
                         ? GestureDetector(
                             onTap: () {
-                              if (status == 2) {
+                              if (field == "statusFlag") {
                                 final projectId = list[index]["project"]["id"];
                                 final prososalId = list[index]["id"];
 
                                 routerConfig.push(
-                                    '/active-proposal/$projectId/$prososalId');
+                                    '/active-proposal/$projectId/$prososalId',
+                                    extra: {
+                                      "isActive": list[index]["statusFlag"] == 2
+                                    });
+                              } else if (field == "typeFlag") {
+                                final projectId = list[index]["id"];
+                                routerConfig.push('/project/$projectId',
+                                    extra: {"isInfo": true});
                               }
                             },
                             child: Row(
@@ -153,14 +179,16 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Created ${DateTime.now().difference(DateTime.parse(list[index]["project"]["createdAt"])).inDays} days ago",
+                                          "Created ${field == "statusFlag" ? DateTime.now().difference(DateTime.parse(list[index]["project"]["createdAt"])).inDays : DateTime.now().difference(DateTime.parse(list[index]["createdAt"])).inDays} days ago",
                                           style: const TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey,
                                           ),
                                         ),
                                         Text(
-                                          list[index]["project"]["title"],
+                                          field == "statusFlag"
+                                              ? list[index]["project"]["title"]
+                                              : list[index]["title"],
                                           style: const TextStyle(
                                             color: Color(0xFF008ABD),
                                             fontWeight: FontWeight.bold,
@@ -170,17 +198,18 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                         ),
                                         const SizedBox(height: 5),
                                         //Status
-                                        Text(
-                                          "Proposed ${DateTime.now().difference(DateTime.parse(list[index]["createdAt"])).inDays} days ago",
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey,
+                                        if (field == "statusFlag")
+                                          Text(
+                                            "Proposed ${DateTime.now().difference(DateTime.parse(list[index]["createdAt"])).inDays} days ago",
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey,
+                                            ),
                                           ),
-                                        ),
                                         const SizedBox(height: 5),
                                         //Time
                                         Text(
-                                          "Time: ${getProjectScopeText(list[index]["project"]["projectScopeFlag"])}",
+                                          "Time: ${getProjectScopeText(field == "statusFlag" ? list[index]["project"]["projectScopeFlag"] : list[index]["projectScopeFlag"])}",
                                           style: const TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey,
@@ -189,7 +218,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                         const SizedBox(height: 5),
                                         //Team Number
                                         Text(
-                                          "Team Number: ${list[index]["project"]["numberOfStudents"]}",
+                                          "Team Number: ${field == "statusFlag" ? list[index]["project"]["numberOfStudents"] : list[index]["numberOfStudents"]}",
                                           style: const TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey,
@@ -198,7 +227,10 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                         const SizedBox(height: 10),
                                         //Description
                                         Text(
-                                          list[index]["project"]["description"],
+                                          field == "statusFlag"
+                                              ? list[index]["project"]
+                                                  ["description"]
+                                              : list[index]["description"],
                                           style: const TextStyle(
                                             overflow: TextOverflow.visible,
                                           ),

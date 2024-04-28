@@ -8,11 +8,15 @@ import "package:studenthub/services/dashboard.service.dart";
 import "package:studenthub/stores/user_info/user_info.dart";
 
 class CompanyDashboard extends StatefulWidget {
+<<<<<<< HEAD
+  final List projectList;
+=======
   final List projectLists;
+>>>>>>> Phasing_3
   final int filter;
 
   const CompanyDashboard(
-      {super.key, required this.projectLists, required this.filter});
+      {super.key, required this.projectList, required this.filter});
 
   @override
   State<CompanyDashboard> createState() => _CompanyDashboardState();
@@ -36,24 +40,42 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
         return Column(
           children: [
             collapsibleList(
+<<<<<<< HEAD
+                list: widget.projectList, title: "Pending Project", status:0),
+            collapsibleList(
+                list: widget.projectList, title: "Working Project", status: 1),
+=======
                 list: widget.projectLists, title: "Pending Project", status: 3),
             collapsibleList(
                 list: widget.projectLists, title: "Working Project", status: 0),
+>>>>>>> Phasing_3
             collapsibleList(
-                list: widget.projectLists,
+                list: widget.projectList,
                 title: "Archived Project",
+<<<<<<< HEAD
+                status: 2),
+=======
                 status: 1),
+>>>>>>> Phasing_3
           ],
         );
       case 0:
         return Container(
           child: collapsibleList(
+<<<<<<< HEAD
+              list: widget.projectList, title: "Working Project", status: 0),
+=======
               list: widget.projectLists, title: "Working Project", status: 0),
+>>>>>>> Phasing_3
         );
       case 1:
         return Container(
           child: collapsibleList(
+<<<<<<< HEAD
+              list: widget.projectList, title: "Archived Project", status: 1),
+=======
               list: widget.projectLists, title: "Archived Project", status: 1),
+>>>>>>> Phasing_3
         );
       default:
         return const SizedBox(
@@ -128,14 +150,22 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                     children: <Widget>[
                       ListTile(
                         leading: const Icon(Icons.settings),
+<<<<<<< HEAD
+                        title: project["typeFlag"] == 0 || project["typeFlag"] == 2
+=======
                         title: project["typeFlag"] == 1
+>>>>>>> Phasing_3
                             ? const Text("Start working this project")
                             : const Text("Archiving this project"),
                         onTap: () async {
                           try {
                             int typeFlag;
                             if (project["typeFlag"] == 1) {
+<<<<<<< HEAD
+                              typeFlag = 2;
+=======
                               typeFlag = 0;
+>>>>>>> Phasing_3
                             } else {
                               typeFlag = 1;
                             }
@@ -331,7 +361,11 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                     IconButton(
                                       onPressed: () {
                                         showOptionsBottomModal(
+<<<<<<< HEAD
+                                            widget.projectList[index]);
+=======
                                             widget.projectLists[index]);
+>>>>>>> Phasing_3
                                       },
                                       icon: const Icon(Icons.more_vert),
                                     )

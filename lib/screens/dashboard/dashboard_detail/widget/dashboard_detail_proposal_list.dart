@@ -2,6 +2,7 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:studenthub/services/dashboard.service.dart';
 
@@ -100,11 +101,9 @@ class _DashboardDetailProposalListState
           Row(
             children: [
               CircleAvatar(
-                radius: 30,
-                // backgroundImage: NetworkImage(proposal['avatar'])
-                //         as ImageProvider<Object>? ??
-                backgroundImage: AssetImage("assets/images/avatar.png"),
-              ),
+                  radius: 30,
+                  backgroundImage: NetworkImage(
+                      "https://cdn-icons-png.flaticon.com/512/147/147142.png")),
               const SizedBox(
                 width: 20,
               ),
@@ -154,7 +153,13 @@ class _DashboardDetailProposalListState
             children: [
               Expanded(
                   child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  routerConfig.push('/message_detail', extra: {
+                    "projectId": proposal["id"],
+                    "receiverId": proposal["student"]["userId"],
+                    "receiverName": proposal["student"]["user"]["fullname"],
+                  });
+                },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   textStyle: const TextStyle(

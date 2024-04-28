@@ -231,12 +231,16 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                                           message: "Company profile updated.");
                                     }
                                   } else if (res.isNotEmpty) {
+                                    print("res: $res");
                                     _userInfoStore.setHasProfile(true);
+                                    _userInfoStore.setRoleId(
+                                        BigInt.parse(res["id"].toString()));
 
                                     showSuccessToast(
                                         context: context,
                                         message: "Company profile created.");
                                   }
+
                                   routerConfig.go('/welcome',
                                       extra: res["companyName"]);
                                 }
