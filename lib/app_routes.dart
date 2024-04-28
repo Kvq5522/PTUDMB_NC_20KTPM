@@ -136,7 +136,7 @@ GoRouter routerConfig = GoRouter(
         }),
     GoRoute(
       path: '/saved-project',
-      builder: (context, state) => const SavedProjectScreen(),
+      builder: (context, state) => SavedProjectScreen(),
     ),
     GoRoute(
       path: '/search-result',

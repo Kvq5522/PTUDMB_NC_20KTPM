@@ -24,6 +24,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
 
   @override
   Widget build(BuildContext context) {
+    // print(widget.proposalLists);
     switch (widget.filter) {
       case 2:
         return Column(

@@ -46,6 +46,8 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
   late IO.Socket socket;
   late UserInfoStore _userInfoStore;
 
+  final _notificationService = NotificationService();
+
   @override
   void initState() {
     myFocusNode = FocusNode();

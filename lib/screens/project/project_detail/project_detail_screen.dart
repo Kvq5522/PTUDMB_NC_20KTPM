@@ -7,10 +7,16 @@ import 'package:studenthub/app_routes.dart';
 
 class DetailProjectScreen extends StatefulWidget {
   final String projectId;
+<<<<<<< HEAD
   final bool isInfo;
 
   const DetailProjectScreen(
       {super.key, required this.projectId, required this.isInfo});
+=======
+
+  const DetailProjectScreen({Key? key, required this.projectId})
+      : super(key: key);
+>>>>>>> Phasing_3
 
   @override
   State<DetailProjectScreen> createState() => _DetailProjectScreenState();
@@ -254,6 +260,7 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                             const EdgeInsets.all(16),
                           ),
                         ),
+<<<<<<< HEAD
                         onPressed: () {
                           final projectId = widget.projectId;
 
@@ -265,6 +272,19 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
                           ),
+=======
+                      ),
+                      onPressed: () {
+                        final projectId = widget.projectId;
+
+                        routerConfig.push('/project-apply/$projectId');
+                      },
+                      child: const Text(
+                        "Apply Now",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+>>>>>>> Phasing_3
                         ),
                       ),
                     ),

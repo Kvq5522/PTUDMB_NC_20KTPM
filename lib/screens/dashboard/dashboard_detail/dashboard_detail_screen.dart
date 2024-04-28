@@ -14,6 +14,8 @@ class DashboardDetailScreen extends StatefulWidget {
   final String id;
   final String title;
   final String naviFilter;
+  final String title;
+  final String naviFilter;
 
   const DashboardDetailScreen(
       {super.key,
