@@ -3,10 +3,12 @@ import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:provider/provider.dart';
 // import 'package:studenthub/constants/proposals_mock.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/widget/dashboard_detail_hired_list.dart';
+import 'package:studenthub/screens/dashboard/dashboard_detail/widget/dashboard_detail_message_list.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/widget/dashboard_detail_proposal_list.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/widget/dashboard_project_detail.dart';
 import 'package:studenthub/services/dashboard.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
+import 'package:studenthub/utils/toast.dart';
 
 class DashboardDetailScreen extends StatefulWidget {
   final String id;
@@ -26,8 +28,9 @@ class DashboardDetailScreen extends StatefulWidget {
 class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
   String filter = "Proposals";
   final DashBoardService _dashBoardService = DashBoardService();
-  late UserInfoStore userInfoStore;
-  List proposals = [];
+  late UserInfoStore _userInfoStore;
+  List<Map<String, dynamic>> proposals = [];
+  List<Map<String, dynamic>> messages = [];
   late Map<String, dynamic> project;
   Map<int, String> projectScopeFlagMap = {
     0: '<1',
@@ -39,26 +42,34 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    userInfoStore = Provider.of<UserInfoStore>(context);
+    _userInfoStore = Provider.of<UserInfoStore>(context);
 
     try {
       var proposalsData =
-          await _dashBoardService.getProposals(widget.id, userInfoStore.token);
+          await _dashBoardService.getProposals(widget.id, _userInfoStore.token);
 
       var projectData = await _dashBoardService.getProjectDetails(
-          int.parse(widget.id), userInfoStore.token);
+          int.parse(widget.id), _userInfoStore.token);
 
-      print(projectData.toString());
+      var messageList = await _dashBoardService.getProjectMessages(
+          BigInt.parse(widget.id), _userInfoStore.token);
+
+      print(messageList);
 
       setState(() {
         proposals = proposalsData;
         project = projectData;
+        messages = messageList;
         if (widget.naviFilter.isNotEmpty) {
           filter = widget.naviFilter;
         }
       });
     } catch (e) {
       print('Failed to load data: $e');
+      if (mounted) {
+        showDangerToast(
+            context: context, message: "Failed to load data, please try again");
+      }
     }
   }
 
@@ -216,7 +227,12 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                             hiredList: proposals,
                             projectId: widget.id,
                           )
-                        : const SizedBox()
+                        : filter == "Message"
+                            ? DashboardDetailMessageList(
+                                messageList: messages,
+                                projectId: widget.id,
+                              )
+                            : const SizedBox(),
                   ],
                 )),
               ),

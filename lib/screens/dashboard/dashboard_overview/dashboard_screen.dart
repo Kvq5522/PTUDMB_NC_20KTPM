@@ -56,7 +56,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       } else {
         var studentInfo = await Future.wait([
           _dashBoardService.getStudentProposals(
-              userInfoStore.roleId, 0, userInfoStore.token),
+              studentId: userInfoStore.roleId,
+              typeFlag: 0,
+              token: userInfoStore.token),
           _dashBoardService.getStudentProjects(
               userInfoStore.roleId, 0, userInfoStore.token),
           _dashBoardService.getStudentProjects(

@@ -67,6 +67,18 @@ class DashBoardService {
     return result;
   }
 
+  Future<List<Map<String, dynamic>>> getProjectMessages(
+      BigInt projectId, String token) async {
+    Response res = await _dioClient.get(
+      "/api/message/$projectId",
+      token: token,
+    );
+
+    return (res.data?["result"] as List)
+        .map((item) => item as Map<String, dynamic>)
+        .toList();
+  }
+
   Future<Map<String, dynamic>> patchProposalDetails(
     int id,
     String coverLetter,
@@ -203,13 +215,28 @@ class DashBoardService {
 
   //Student Dashboard
   Future<List<Map<String, dynamic>>> getStudentProposals(
-      BigInt studentId, int typeFlag, String token) async {
+      {required BigInt studentId,
+      int? typeFlag,
+      int? statusFlag,
+      int? disableFlag,
+      required String token}) async {
+    Map<String, dynamic> queries = {
+      "studentId": studentId,
+    };
+
+    if (typeFlag != null) {
+      queries["typeFlag"] = typeFlag;
+    }
+    if (statusFlag != null) {
+      queries["statusFlag"] = statusFlag;
+    }
+    if (disableFlag != null) {
+      queries["disableFlag"] = disableFlag;
+    }
+
     Response res = await _dioClient.get(
       "/api/proposal/project/$studentId",
-      queries: {
-        "studentId": studentId,
-        "typeFlag": typeFlag,
-      },
+      queries: queries,
       token: token,
     );
     if (res.statusCode! >= 400) {

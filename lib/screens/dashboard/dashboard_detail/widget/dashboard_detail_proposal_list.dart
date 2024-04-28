@@ -101,11 +101,9 @@ class _DashboardDetailProposalListState
           Row(
             children: [
               CircleAvatar(
-                radius: 30,
-                // backgroundImage: NetworkImage(proposal['avatar'])
-                //         as ImageProvider<Object>? ??
-                backgroundImage: AssetImage("assets/images/avatar.png"),
-              ),
+                  radius: 30,
+                  backgroundImage: NetworkImage(
+                      "https://cdn-icons-png.flaticon.com/512/147/147142.png")),
               const SizedBox(
                 width: 20,
               ),

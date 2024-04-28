@@ -1,16 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:studenthub/components/loading_screen.dart';
 import 'package:studenthub/components/message_bubble.dart';
 import 'package:studenthub/screens/messages/widget/schedule.dart';
 import 'package:studenthub/screens/messages/widget/schedule_item.dart';
 import 'package:studenthub/services/message.service.dart';
-import 'package:studenthub/services/notification.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import '../../../constants/conservation_mock.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -49,10 +48,6 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
 
   @override
   void initState() {
-    print(widget.projectId);
-    print(widget.receiverId);
-    print(widget.receiverName);
-
     myFocusNode = FocusNode();
     _messageController = TextEditingController();
     _scrollController = ScrollController();
@@ -157,7 +152,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         name: BigInt.from(data?["senderId"]) == _userInfoStore.userId
             ? "You"
             : widget.receiverName,
-        avatarUrl: 'assets/images/avatar.png',
+        avatarUrl: 'https://cdn-icons-png.flaticon.com/512/147/147142.png',
         text: data?['content'],
         time: DateTime.now(),
         messageFlag: data?['messageFlag'],
@@ -233,7 +228,8 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
                       BigInt.from(message["senderId"]) == _userInfoStore.userId
                           ? "You"
                           : widget.receiverName,
-                  avatarUrl: 'assets/images/avatar.png',
+                  avatarUrl:
+                      'https://cdn-icons-png.flaticon.com/512/147/147142.png',
                   text: message["content"],
                   time: DateTime.parse(message["createdAt"]),
                   messageFlag: message["messageFlag"],
@@ -302,6 +298,12 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
+            if (_isLoading)
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFF008ABD),
+                ),
+              ),
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
