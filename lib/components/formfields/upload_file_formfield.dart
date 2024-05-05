@@ -29,7 +29,6 @@ class FileUploadFormField extends FormField<String> {
               ? AutovalidateMode.always
               : AutovalidateMode.disabled,
           builder: (FormFieldState<String> state) {
-            print(state.errorText);
             return Container(
               margin: const EdgeInsets.only(bottom: 10),
               child: Column(
@@ -40,6 +39,7 @@ class FileUploadFormField extends FormField<String> {
                       state.didChange(uploadFile);
                     },
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
                       elevation: 0,
                       side: const BorderSide(
                         color: Color.fromARGB(255, 215, 215, 215),
@@ -57,7 +57,7 @@ class FileUploadFormField extends FormField<String> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  'Uploaded $name: ${uploadFile.split('/').last}',
+                                  '${uploadFile.split('/').last}',
                                   style: TextStyle(
                                     color: loadedFile.isNotEmpty
                                         ? Colors.black
@@ -80,7 +80,7 @@ class FileUploadFormField extends FormField<String> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
-                                      'Your $name: ${loadedFile.split('/').last}',
+                                      '${loadedFile.split('/').last}',
                                       style: const TextStyle(
                                         color: Colors.black,
                                         overflow: TextOverflow.ellipsis,

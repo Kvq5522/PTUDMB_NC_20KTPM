@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/services/project.service.dart';
@@ -91,8 +92,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFF008ABD),
+              decoration: BoxDecoration(
+                // color: Color(0xFF008ABD),
+                color: Theme.of(context).colorScheme.secondary,
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -259,9 +261,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
 
                           routerConfig.push('/project-apply/$projectId');
                         },
-                        child: const Text(
-                          "Apply Now",
-                          style: TextStyle(
+                        child: Text(
+                          'Apply Now'.tr(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
                           ),
@@ -282,9 +284,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                           ),
                         ),
                         onPressed: () {},
-                        child: const Text(
-                          "Saved",
-                          style: TextStyle(
+                        child: Text(
+                          'Saved'.tr(),
+                          style: const TextStyle(
                             color: Color(0xFF008ABD),
                             fontWeight: FontWeight.w600,
                           ),

@@ -1,3 +1,4 @@
+import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:studenthub/app_routes.dart";
 
@@ -31,27 +32,27 @@ class _StudentDashboardState extends State<StudentDashboard> {
           children: [
             collapsibleList(
                 list: widget.proposalList,
-                title: "Active Proposals",
+                title: 'Active Proposals'.tr(),
                 status: 2,
                 field: "statusFlag"),
             collapsibleList(
                 list: widget.proposalList,
-                title: "Submitted Proposals",
+                title: 'Submitted Proposals'.tr(),
                 status: 0,
                 field: "statusFlag"),
             collapsibleList(
                 list: widget.projectList,
-                title: "Pending Projects",
+                title: 'Pending Projects'.tr(),
                 status: 0,
                 field: "typeFlag"),
             collapsibleList(
                 list: widget.projectList,
-                title: "Working Projects",
+                title: 'Working Projects'.tr(),
                 status: 1,
                 field: "typeFlag"),
             collapsibleList(
                 list: widget.projectList,
-                title: "Archived Projects",
+                title: 'Archived Projects'.tr(),
                 status: 2,
                 field: "typeFlag"),
           ],
@@ -60,14 +61,14 @@ class _StudentDashboardState extends State<StudentDashboard> {
         return Container(
             child: collapsibleList(
                 list: widget.projectList,
-                title: "Working Projects",
+                title: 'Working Projects'.tr(),
                 status: 1,
                 field: "typeFlag"));
       case 1:
         return Container(
           child: collapsibleList(
               list: widget.projectList,
-              title: "Archived Projects",
+              title: 'Archived Projects'.tr(),
               status: 2,
               field: "typeFlag"),
         );
@@ -165,6 +166,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                 Expanded(
                                   child: Container(
                                     decoration: BoxDecoration(
+                                      color: Colors.white,
                                       border: Border.all(
                                         color: Colors.grey.shade300,
                                       ),
@@ -232,6 +234,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                                   ["description"]
                                               : list[index]["description"],
                                           style: const TextStyle(
+                                            color: Colors.black,
                                             overflow: TextOverflow.visible,
                                           ),
                                         ),

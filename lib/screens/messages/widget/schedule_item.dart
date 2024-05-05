@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/app_routes.dart';
 
@@ -57,7 +58,7 @@ class ScheduleItem extends StatelessWidget {
                   width: 1,
                 ),
               ),
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -74,16 +75,20 @@ class ScheduleItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          color: isSender
-                              ? const Color(0xFF008ABD)
-                              : const Color(0xFF008ABD),
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            color: isSender
+                                ? const Color(0xFF008ABD)
+                                : const Color(0xFF008ABD),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
+                      const SizedBox(width: 8),
                       Text(
                         duration,
                         style: TextStyle(
@@ -100,10 +105,10 @@ class ScheduleItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Start time",
+                        'Start time'.tr(),
                         style: TextStyle(
                           color: isSender ? Colors.black : Colors.black,
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -111,21 +116,21 @@ class ScheduleItem extends StatelessWidget {
                         day,
                         style: TextStyle(
                           color: isSender ? Colors.grey : Colors.grey,
-                          fontSize: 15,
+                          fontSize: 12,
                         ),
                       ),
                       Text(
                         date,
                         style: TextStyle(
                           color: isSender ? Colors.grey : Colors.grey,
-                          fontSize: 15,
+                          fontSize: 12,
                         ),
                       ),
                       Text(
                         timeMeeting,
                         style: TextStyle(
                           color: isSender ? Colors.grey : Colors.grey,
-                          fontSize: 15,
+                          fontSize: 12,
                         ),
                       ),
                     ],
@@ -136,10 +141,10 @@ class ScheduleItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "End time",
+                        'End time'.tr(),
                         style: TextStyle(
                           color: isSender ? Colors.black : Colors.black,
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -147,21 +152,21 @@ class ScheduleItem extends StatelessWidget {
                         endDay,
                         style: TextStyle(
                           color: isSender ? Colors.grey : Colors.grey,
-                          fontSize: 15,
+                          fontSize: 12,
                         ),
                       ),
                       Text(
                         endDate,
                         style: TextStyle(
                           color: isSender ? Colors.grey : Colors.grey,
-                          fontSize: 15,
+                          fontSize: 12,
                         ),
                       ),
                       Text(
                         endTimeMeeting,
                         style: TextStyle(
                           color: isSender ? Colors.grey : Colors.grey,
-                          fontSize: 15,
+                          fontSize: 12,
                         ),
                       ),
                     ],
@@ -191,8 +196,8 @@ class ScheduleItem extends StatelessWidget {
                         onPressed: () {
                           routerConfig.push('/video-call');
                         },
-                        child: const Text(
-                          "Join",
+                        child: Text(
+                          'Join'.tr(),
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -259,9 +264,9 @@ class OptionsDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
-      title: const Text(
-        'Options',
-        style: TextStyle(
+      title: Text(
+        'Options'.tr(),
+        style: const TextStyle(
           color: Color(0xFF008ABD),
           fontSize: 18,
           fontWeight: FontWeight.bold,
@@ -271,9 +276,12 @@ class OptionsDialog extends StatelessWidget {
         child: ListBody(
           children: <Widget>[
             GestureDetector(
-              child: const Text(
-                'Re-schedule the meeting',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              child: Text(
+                'Re-schedule the meeting'.tr(),
+                style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey),
               ),
               onTap: () {
                 Navigator.of(context).pop(); // Close dialog
@@ -290,9 +298,12 @@ class OptionsDialog extends StatelessWidget {
               height: 10,
             ),
             GestureDetector(
-              child: const Text(
-                'Cancel the meeting',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              child: Text(
+                'Cancel the meeting'.tr(),
+                style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey),
               ),
               onTap: () {
                 Navigator.of(context).pop(); // Close dialog

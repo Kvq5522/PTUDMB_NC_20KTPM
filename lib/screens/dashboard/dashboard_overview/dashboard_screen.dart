@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/components/loading_screen.dart';
@@ -102,8 +103,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Your projects",
+                  Text(
+                    'Your projects'.tr(),
                     style: TextStyle(
                       fontSize: 18,
                     ),
@@ -135,7 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ? const Color(0xFF008ABD)
                                 : Colors.white,
                           ),
-                          child: Text("All",
+                          child: Text('All'.tr(),
                               style: TextStyle(
                                   color: filter == 2
                                       ? Colors.white
@@ -160,7 +161,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ? const Color(0xFF008ABD)
                                 : Colors.white,
                           ),
-                          child: Text("Working",
+                          child: Text('Working'.tr(),
                               style: TextStyle(
                                   color: filter == 0
                                       ? Colors.white
@@ -187,7 +188,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ? const Color(0xFF008ABD)
                                 : Colors.white,
                           ),
-                          child: Text("Archived",
+                          child: Text('Archived'.tr(),
                               style: TextStyle(
                                   color: filter == 1
                                       ? Colors.white
@@ -225,7 +226,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               backgroundColor: const Color(0xFF008ABD),
               foregroundColor: Colors.white,
               icon: const Icon(Icons.edit_rounded, size: 18),
-              label: const Text("Post a jobs",
+              label: Text('Post a jobs'.tr(),
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
               onPressed: () {
                 final projectId = userInfoStore.roleId;

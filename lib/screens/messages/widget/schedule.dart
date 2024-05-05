@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class MySchedule extends StatefulWidget {
@@ -101,6 +102,7 @@ class _MyScheduleState extends State<MySchedule> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Theme.of(context).colorScheme.background,
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.65,
       child: Padding(
@@ -115,18 +117,18 @@ class _MyScheduleState extends State<MySchedule> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Schedule a video call interview",
-                      style: TextStyle(
+                    Text(
+                      'Schedule a video call interview'.tr(),
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF008ABD),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      "Title",
-                      style: TextStyle(
+                    Text(
+                      'Title'.tr(),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF008ABD),
@@ -137,16 +139,20 @@ class _MyScheduleState extends State<MySchedule> {
                       controller: jobTitleController,
                       onChanged: _handleJobTitleChanged,
                       decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                        ),
                         focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF008ABD)),
                         ),
-                        hintText: 'Write a title for interview',
+                        hintText: 'Write a title for interview'.tr(),
+                        hintStyle: const TextStyle(color: Colors.grey),
                         contentPadding: const EdgeInsets.symmetric(
                           vertical: 15.0,
                           horizontal: 15,
                         ),
                       ),
+                      style: const TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 2),
                     isJobTitleEmpty
@@ -162,9 +168,9 @@ class _MyScheduleState extends State<MySchedule> {
                             height: 0,
                           ),
                     const SizedBox(height: 20),
-                    const Text(
-                      "Start time",
-                      style: TextStyle(
+                    Text(
+                      'Start time'.tr(),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF008ABD),
@@ -191,13 +197,14 @@ class _MyScheduleState extends State<MySchedule> {
                             "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}",
                             style: const TextStyle(
                               fontSize: 14.0,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                           ),
                         ),
                         const SizedBox(width: 20),
                         const Icon(
                           Icons.calendar_month_rounded,
+                          color: Colors.grey,
                           size: 32,
                         ),
                         const SizedBox(width: 20),
@@ -219,7 +226,7 @@ class _MyScheduleState extends State<MySchedule> {
                             "${selectedTime.hour}:${selectedTime.minute}",
                             style: const TextStyle(
                               fontSize: 14.0,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                           ),
                         ),
@@ -238,9 +245,9 @@ class _MyScheduleState extends State<MySchedule> {
                             height: 0,
                           ),
                     const SizedBox(height: 20),
-                    const Text(
-                      "End time",
-                      style: TextStyle(
+                    Text(
+                      'End time'.tr(),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF008ABD),
@@ -267,13 +274,14 @@ class _MyScheduleState extends State<MySchedule> {
                             "${selectedEndDate.day}/${selectedEndDate.month}/${selectedEndDate.year}",
                             style: const TextStyle(
                               fontSize: 14.0,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                           ),
                         ),
                         const SizedBox(width: 20),
                         const Icon(
                           Icons.calendar_month_rounded,
+                          color: Colors.grey,
                           size: 32,
                         ),
                         const SizedBox(width: 20),
@@ -295,7 +303,7 @@ class _MyScheduleState extends State<MySchedule> {
                             "${selectedEndTime.hour}:${selectedEndTime.minute}",
                             style: const TextStyle(
                               fontSize: 14.0,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                           ),
                         ),
@@ -340,9 +348,9 @@ class _MyScheduleState extends State<MySchedule> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: const Text(
-                              "Cancel",
-                              style: TextStyle(
+                            child: Text(
+                              'Cancel'.tr(),
+                              style: const TextStyle(
                                 color: Color(0xFF008ABD),
                                 fontWeight: FontWeight.w600,
                               ),
@@ -385,9 +393,9 @@ class _MyScheduleState extends State<MySchedule> {
                                 print('Invalid inputs');
                               }
                             },
-                            child: const Text(
-                              "Send Invite",
-                              style: TextStyle(
+                            child: Text(
+                              'Send invite'.tr(),
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
                               ),

@@ -29,7 +29,14 @@ class _NotificaitonScreenState extends State<NotificaitonScreen> {
                 itemBuilder: (context, index) {
                   return Container(
                     decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 246, 246, 246)),
+                      color: Theme.of(context).colorScheme.background,
+                      borderRadius:
+                          BorderRadius.circular(10), // Add border radius
+                      border: Border.all(
+                        color: Colors.grey.withOpacity(0.5), // Add border color
+                        width: 1, // Add border width
+                      ),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(

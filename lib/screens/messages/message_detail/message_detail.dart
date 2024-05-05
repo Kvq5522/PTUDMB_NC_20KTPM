@@ -10,6 +10,7 @@ import 'package:studenthub/components/message_bubble.dart';
 import 'package:studenthub/screens/messages/widget/schedule.dart';
 import 'package:studenthub/screens/messages/widget/schedule_item.dart';
 import 'package:studenthub/services/message.service.dart';
+import 'package:studenthub/services/notification.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import '../../../constants/conservation_mock.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -407,7 +408,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
           )
         ],
       ),
-      backgroundColor: const Color(0xFF008ABD),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       actions: [
         IconButton(
           onPressed: () {

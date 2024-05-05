@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:studenthub/app_routes.dart';
@@ -63,7 +64,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 246, 246, 246),
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         leading: GoRouter.of(context).canPop()
             ? IconButton(
@@ -76,12 +77,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                 },
               )
             : null,
-        title: const Text(
-          'Project search',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          'Project search'.tr(),
+          style: const TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF008ABD),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(
             onPressed: () {
@@ -99,14 +100,14 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFF008ABD),
-              boxShadow: [
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              boxShadow: const [
                 BoxShadow(
                   color: Colors.grey,
-                  spreadRadius: 0.5,
-                  blurRadius: 1,
-                  offset: Offset(0, 1),
+                  spreadRadius: 0.15,
+                  blurRadius: 0.15,
+                  offset: Offset(0, 0.15),
                 ),
               ],
             ),
@@ -165,8 +166,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             child: _isLoading
                 ? const Center(
                     child: const CircularProgressIndicator(
-                            color: Color(0xFF008ABD),
-                          ),
+                      color: Color(0xFF008ABD),
+                    ),
                   )
                 : SingleChildScrollView(
                     child: Padding(

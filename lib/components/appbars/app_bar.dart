@@ -24,7 +24,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         height: MediaQuery.of(context).size.width * 0.2,
         child: Image.asset('assets/images/logo.png'),
       ),
-      backgroundColor: const Color(0xFF008ABD),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       // elevation: 2,
       // shadowColor: Colors.black,
       leading: routerConfig.canPop()
@@ -35,7 +35,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onPressed: () {
                 try {
-                  routerConfig.pop(context);
+                  routerConfig.replace("/choose-user");
                 } catch (e) {
                   print(e);
                 }

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_literals_to_create_immutables
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../app_routes.dart';
 import '../../components/appbars/appbar_auth.dart';
@@ -27,11 +28,11 @@ class _SignUpOptionsState extends State<SignUpOptions> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Join as company or student",
+                "Join as company or student".tr(),
                 style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 20.0),
+              SizedBox(height: 40.0),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Container(
@@ -44,7 +45,7 @@ class _SignUpOptionsState extends State<SignUpOptions> {
                       children: [
                         Icon(Icons.business),
                         SizedBox(width: 10),
-                        Text('I am a company'),
+                        Text('I am a company'.tr()),
                       ],
                     ),
                     value: 'company',
@@ -78,7 +79,7 @@ class _SignUpOptionsState extends State<SignUpOptions> {
                       children: [
                         Icon(Icons.school),
                         SizedBox(width: 10),
-                        Text('I am a student'),
+                        Text('I am a student'.tr()),
                       ],
                     ),
                     value: 'student',
@@ -99,7 +100,7 @@ class _SignUpOptionsState extends State<SignUpOptions> {
                   ),
                 ),
               ),
-              SizedBox(height: 20.0),
+              SizedBox(height: 30.0),
               ElevatedButton(
                 onPressed: () {
                   if (selectedOption.isNotEmpty) {
@@ -124,10 +125,10 @@ class _SignUpOptionsState extends State<SignUpOptions> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF008ABD),
                   padding:
-                      EdgeInsets.symmetric(vertical: 15.0, horizontal: 100.0),
+                      EdgeInsets.symmetric(vertical: 18.0, horizontal: 90.0),
                 ),
-                child: Text('Create account',
-                    style: TextStyle(fontSize: 18.0, color: Colors.white)),
+                child: Text('Create account'.tr(),
+                    style: TextStyle(fontSize: 16.0, color: Colors.white)),
               ),
               errorMessage.isNotEmpty
                   ? Padding(
@@ -145,13 +146,16 @@ class _SignUpOptionsState extends State<SignUpOptions> {
       bottomNavigationBar: Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.background,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               "Already have an account ?",
-              style: TextStyle(fontSize: 16.0, color: Colors.black),
+              style: TextStyle(
+                fontSize: 16.0,
+                // color: Theme.of(context).colorScheme.primary,
+              ),
             ),
             SizedBox(height: 10.0),
             ElevatedButton(
@@ -161,7 +165,7 @@ class _SignUpOptionsState extends State<SignUpOptions> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF008ABD),
               ),
-              child: Text('Log In', style: TextStyle(color: Colors.white)),
+              child: Text('Login'.tr(), style: TextStyle(color: Colors.white)),
             ),
           ],
         ),

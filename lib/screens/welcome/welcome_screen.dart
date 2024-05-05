@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/app_routes.dart';
@@ -11,16 +12,7 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: MyAppBar(),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF008ABD),
-              Color(0xFF005587),
-            ],
-          ),
-        ),
+        color: Theme.of(context).colorScheme.secondary,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +26,7 @@ class WelcomeScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: Text(
-                  "Welcome, $userName!",
+                  "Welcome, $userName!".tr(),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 24,
@@ -50,10 +42,10 @@ class WelcomeScreen extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 18),
-                child: const Text(
-                  "Let's start with your first project post.",
+                child: Text(
+                  "Let's start with your first project post.".tr(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 22,
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -94,7 +86,7 @@ class WelcomeScreen extends StatelessWidget {
                   elevation: 8,
                   shadowColor: Colors.black,
                 ),
-                child: const Text("Get started"),
+                child: Text("Get started".tr()),
               ),
             ],
           ),

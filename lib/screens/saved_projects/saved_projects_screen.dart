@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/components/loading_screen.dart';
@@ -69,7 +70,7 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 246, 246, 246),
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(
@@ -80,12 +81,12 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
               routerConfig.push('/project');
             },
           ),
-          title: const Text(
-            'Saved project',
-            style: TextStyle(color: Colors.white),
+          title: Text(
+            'Saved project'.tr(),
+            style: const TextStyle(color: Colors.white),
           ),
           centerTitle: true,
-          backgroundColor: const Color(0xFF008ABD),
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           actions: [
             IconButton(
               onPressed: () {
@@ -98,6 +99,13 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
               ),
             )
           ],
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(1), // Adjust height as needed
+            child: Container(
+              color: Colors.grey.withOpacity(0.5), // Border color and opacity
+              height: 1, // Border thickness
+            ),
+          ),
         ),
         body: _isLoading
             ? const LoadingScreen()
@@ -107,7 +115,6 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   child: _savedProjects.isEmpty
                       ? const Center(
-                          // child: Text('Không có dự án nào.'),
                           child: Text('No project found.'),
                         )
                       : Column(

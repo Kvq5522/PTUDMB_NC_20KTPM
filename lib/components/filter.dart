@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class MyFillTer extends StatefulWidget {
@@ -34,6 +35,7 @@ class _MyFillTerState extends State<MyFillTer> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Theme.of(context).colorScheme.background,
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.9,
       child: Padding(
@@ -62,9 +64,9 @@ class _MyFillTerState extends State<MyFillTer> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Filter",
-                      style: TextStyle(
+                    Text(
+                      'Filter'.tr(),
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF008ABD),
@@ -76,9 +78,9 @@ class _MyFillTerState extends State<MyFillTer> {
                       height: 0.5,
                     ),
                     const SizedBox(height: 14),
-                    const Text(
-                      "Project length",
-                      style: TextStyle(
+                    Text(
+                      'Project length'.tr(),
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),
@@ -88,7 +90,7 @@ class _MyFillTerState extends State<MyFillTer> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         ListTile(
-                          title: const Text('Less than one month'),
+                          title: Text('Less than one month'.tr()),
                           leading: Radio<int>(
                             value: 0,
                             groupValue: selectedOption,
@@ -118,7 +120,7 @@ class _MyFillTerState extends State<MyFillTer> {
                           ),
                         ),
                         ListTile(
-                          title: const Text('3 to 6 months'),
+                          title: Text('3 to 6 months'.tr()),
                           leading: Radio<int>(
                             value: 2,
                             groupValue: selectedOption,
@@ -133,7 +135,7 @@ class _MyFillTerState extends State<MyFillTer> {
                           ),
                         ),
                         ListTile(
-                          title: const Text('More than 6 months'),
+                          title: Text('More than 6 months'.tr()),
                           leading: Radio<int>(
                             value: 3,
                             groupValue: selectedOption,
@@ -150,9 +152,9 @@ class _MyFillTerState extends State<MyFillTer> {
                       ],
                     ),
                     const SizedBox(height: 14),
-                    const Text(
-                      "Students needeed",
-                      style: TextStyle(
+                    Text(
+                      'Students needeed'.tr(),
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),
@@ -162,9 +164,10 @@ class _MyFillTerState extends State<MyFillTer> {
                       controller: studentController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        hintText: 'Enter number of students',
+                        hintText: 'Enter number of students'.tr(),
                         filled: true,
-                        fillColor: Colors.grey[200],
+                        fillColor: const Color.fromARGB(255, 232, 232, 232),
+                        hintStyle: const TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none,
@@ -172,12 +175,13 @@ class _MyFillTerState extends State<MyFillTer> {
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 14),
                       ),
+                      style: const TextStyle(color: Colors.black),
                       validator: _validateNumberInput,
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      "Proposals less than",
-                      style: TextStyle(
+                    Text(
+                      'Proposals less than'.tr(),
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),
@@ -187,9 +191,10 @@ class _MyFillTerState extends State<MyFillTer> {
                       controller: proposalController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        hintText: 'Enter proposals less than',
+                        hintText: 'Enter proposals less than'.tr(),
                         filled: true,
-                        fillColor: Colors.grey[200],
+                        fillColor: const Color.fromARGB(255, 232, 232, 232),
+                        hintStyle: const TextStyle(color: Colors.grey),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none,
@@ -197,6 +202,7 @@ class _MyFillTerState extends State<MyFillTer> {
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 14),
                       ),
+                      style: const TextStyle(color: Colors.black),
                       validator: _validateNumberInput,
                     ),
                     const SizedBox(
@@ -223,9 +229,9 @@ class _MyFillTerState extends State<MyFillTer> {
                                 proposalController.clear();
                               });
                             },
-                            child: const Text(
-                              "Clear filters",
-                              style: TextStyle(
+                            child: Text(
+                              'Clear filters'.tr(),
+                              style: const TextStyle(
                                 color: Color(0xFF008ABD),
                                 fontWeight: FontWeight.w600,
                               ),
@@ -255,9 +261,9 @@ class _MyFillTerState extends State<MyFillTer> {
                               // Close the bottom sheet
                               Navigator.of(context).pop();
                             },
-                            child: const Text(
-                              "Apply",
-                              style: TextStyle(
+                            child: Text(
+                              'Apply'.tr(),
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
                               ),

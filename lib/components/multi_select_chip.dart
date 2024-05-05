@@ -206,9 +206,9 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 12.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.background,
         borderRadius: BorderRadius.circular(10.0),
         border: Border.all(
           color: Colors.grey,

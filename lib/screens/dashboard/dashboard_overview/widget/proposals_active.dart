@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/services/dashboard.service.dart';
@@ -189,8 +190,8 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Student are looking for ",
+                  Text(
+                    'Student are looking for '.tr(),
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
@@ -223,8 +224,8 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Project scope",
+                          Text(
+                            'Project scope'.tr(),
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -255,8 +256,8 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Student required",
+                          Text(
+                            'Student required'.tr(),
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
