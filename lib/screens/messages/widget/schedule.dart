@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/screens/messages/widget/schedule_item.dart';
 
@@ -114,7 +114,8 @@ class _MyScheduleState extends State<MySchedule> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      color: Theme.of(context).colorScheme.background,
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.65,
       child: Padding(

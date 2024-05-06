@@ -38,22 +38,32 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
         return Column(
           children: [
             collapsibleList(
-                list: widget.projectList, title: "Pending Project", status: 0),
+                list: widget.projectList,
+                title: 'Pending Projects'.tr(),
+                status: 0),
             collapsibleList(
-                list: widget.projectList, title: "Working Project", status: 1),
+                list: widget.projectList,
+                title: 'Working Projects'.tr(),
+                status: 1),
             collapsibleList(
-                list: widget.projectList, title: "Archived Project", status: 2),
+                list: widget.projectList,
+                title: 'Archived Projects'.tr(),
+                status: 2),
           ],
         );
       case 0:
         return Container(
           child: collapsibleList(
-              list: widget.projectList, title: "Working Project", status: 0),
+              list: widget.projectList,
+              title: 'Working Projects'.tr(),
+              status: 0),
         );
       case 1:
         return Container(
           child: collapsibleList(
-              list: widget.projectList, title: "Archived Project", status: 1),
+              list: widget.projectList,
+              title: 'Archived Projects'.tr(),
+              status: 1),
         );
       default:
         return const SizedBox(
@@ -130,8 +140,8 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                         leading: const Icon(Icons.settings),
                         title:
                             project["typeFlag"] == 0 || project["typeFlag"] == 2
-                                ? const Text("Start working this project")
-                                : const Text("Archiving this project"),
+                                ? Text('Start working this project'.tr())
+                                : Text('Archiving this project'.tr()),
                         onTap: () async {
                           try {
                             int typeFlag;
