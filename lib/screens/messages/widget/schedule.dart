@@ -1,6 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 
 class MySchedule extends StatefulWidget {
