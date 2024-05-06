@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/app_routes.dart';
 
@@ -14,22 +15,45 @@ class ScheduleItem extends StatelessWidget {
   final String endDate;
   final String endTimeMeeting;
   final DateTime time;
+  final int messageFlag;
+  final String username;
+  final BigInt userId;
 
-  const ScheduleItem({
-    Key? key,
-    required this.isSender,
-    required this.name,
-    required this.avatarUrl,
-    required this.title,
-    required this.duration,
-    required this.day,
-    required this.date,
-    required this.timeMeeting,
-    required this.endDay,
-    required this.endDate,
-    required this.endTimeMeeting,
-    required this.time,
-  }) : super(key: key);
+  const ScheduleItem(
+      {super.key,
+      required this.isSender,
+      required this.name,
+      required this.avatarUrl,
+      required this.title,
+      required this.duration,
+      required this.day,
+      required this.date,
+      required this.timeMeeting,
+      required this.endDay,
+      required this.endDate,
+      required this.endTimeMeeting,
+      required this.time,
+      required this.messageFlag,
+      required this.username,
+      required this.userId});
+  Map<String, dynamic> toJson() {
+    return {
+      'isSender': isSender,
+      'name': name,
+      'avatarUrl': avatarUrl,
+      'title': title,
+      'duration': duration,
+      'day': day,
+      'date': date,
+      'timeMeeting': timeMeeting,
+      'endDay': endDay,
+      'endDate': endDate,
+      'endTimeMeeting': endTimeMeeting,
+      'time': time.toIso8601String(),
+      'messageFlag': messageFlag,
+      'username': username,
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +213,11 @@ class ScheduleItem extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          routerConfig.push('/video-call');
+                          routerConfig.push('/video-call', extra: {
+                            'conferenceID': title,
+                            'username': username,
+                            'userId': userId,
+                          });
                         },
                         child: const Text(
                           "Join",

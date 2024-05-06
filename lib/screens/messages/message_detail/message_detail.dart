@@ -5,11 +5,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
-import 'package:studenthub/components/loading_screen.dart';
 import 'package:studenthub/components/message_bubble.dart';
 import 'package:studenthub/screens/messages/widget/schedule.dart';
 import 'package:studenthub/screens/messages/widget/schedule_item.dart';
 import 'package:studenthub/services/message.service.dart';
+import 'package:studenthub/services/notification.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import '../../../constants/conservation_mock.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -269,6 +269,21 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
     _messageController.clear();
   }
 
+  void _sendInvite(ScheduleItem schedule) {
+    Map<String, dynamic> scheduleData = schedule.toJson();
+    socket.emit("SEND_MESSAGE", {
+      "content": scheduleData["title"],
+      "projectId": int.parse(widget.projectId),
+      "senderId": _userInfoStore.userId.toInt(),
+      "duration": scheduleData["duration"],
+      "receiverId": int.parse(widget.receiverId),
+      "messageFlag": 1
+    });
+
+    // Clear the message controller
+    _messageController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -337,6 +352,9 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
                         endDate: "13/3/2024",
                         endTimeMeeting: "16:00",
                         time: message.time,
+                        messageFlag: 1,
+                        username: _userInfoStore.username,
+                        userId: _userInfoStore.userId,
                       );
                     default:
                       return null;
@@ -415,7 +433,14 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
                 context: context,
                 isScrollControlled: true,
                 builder: (BuildContext context) {
-                  return MySchedule();
+                  return MySchedule(
+                    // messageTitle:
+                    username: _userInfoStore.username,
+                    userId: _userInfoStore.userId,
+                    onSendInvite: (scheduleItem) {
+                      _sendInvite(scheduleItem);
+                    },
+                  );
                 });
           },
           style: ElevatedButton.styleFrom(

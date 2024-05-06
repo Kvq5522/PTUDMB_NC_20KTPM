@@ -7,7 +7,7 @@ class DashBoardService {
   Future<List<Map<String, dynamic>>> getCompanyProjectsDashBoard(
       BigInt companyId, int typeFlag, String token) async {
     Response res = await _dioClient.get(
-      "/api/project/company/$companyId",
+      "/api/project/company/$companyId?typeFlag=$typeFlag",
       queries: {
         "companyId": companyId,
         "typeFlag": typeFlag,
@@ -19,7 +19,6 @@ class DashBoardService {
 
       throw Exception(errorMessage);
     }
-
     return List<Map<String, dynamic>>.from(res.data?["result"]);
   }
 

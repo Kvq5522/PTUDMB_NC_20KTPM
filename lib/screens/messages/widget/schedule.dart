@@ -1,7 +1,17 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:studenthub/screens/messages/widget/schedule_item.dart';
 
 class MySchedule extends StatefulWidget {
-  const MySchedule({Key? key}) : super(key: key);
+  final Function(ScheduleItem) onSendInvite;
+  final String username;
+  final BigInt userId;
+  const MySchedule(
+      {super.key,
+      required this.onSendInvite,
+      required this.username,
+      required this.userId});
 
   @override
   State<MySchedule> createState() => _MyScheduleState();
@@ -30,10 +40,11 @@ class _MyScheduleState extends State<MySchedule> {
       firstDate: DateTime.now(),
       lastDate: DateTime(2101),
     );
-    if (picked != null)
+    if (picked != null) {
       setState(() {
         selectedDate = picked;
       });
+    }
   }
 
   Future<void> _selectTime(BuildContext context) async {
@@ -41,10 +52,11 @@ class _MyScheduleState extends State<MySchedule> {
       context: context,
       initialTime: selectedTime,
     );
-    if (picked != null)
+    if (picked != null) {
       setState(() {
         selectedTime = picked;
       });
+    }
   }
 
   Future<void> _selectEndDate(BuildContext context) async {
@@ -54,10 +66,11 @@ class _MyScheduleState extends State<MySchedule> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null)
+    if (picked != null) {
       setState(() {
         selectedEndDate = picked;
       });
+    }
   }
 
   Future<void> _selectEndTime(BuildContext context) async {
@@ -65,10 +78,11 @@ class _MyScheduleState extends State<MySchedule> {
       context: context,
       initialTime: selectedEndTime,
     );
-    if (picked != null)
+    if (picked != null) {
       setState(() {
         selectedEndTime = picked;
       });
+    }
   }
 
   String get durationTime {
@@ -92,7 +106,7 @@ class _MyScheduleState extends State<MySchedule> {
     final minutes = duration.inMinutes.remainder(60);
 
     if (hours == 0) {
-      return '${minutes > 0 ? '$minutes minutes' : ''}';
+      return minutes > 0 ? '$minutes minutes' : '';
     } else {
       return '$hours hours ${minutes > 0 ? '$minutes minutes' : ''}';
     }
@@ -100,7 +114,7 @@ class _MyScheduleState extends State<MySchedule> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.65,
       child: Padding(
@@ -373,14 +387,37 @@ class _MyScheduleState extends State<MySchedule> {
                               if (!isJobTitleEmpty &&
                                   _isStartTimeBeforeEndTime() &&
                                   _isDurationValid()) {
-                                print('Title: ${jobTitleController.text}');
-                                print(
-                                    'Start time: ${selectedDate.day}/${selectedDate.month}/${selectedDate.year} ${selectedTime.hour}:${selectedTime.minute}');
-                                print(
-                                    'End time: ${selectedEndDate.day}/${selectedEndDate.month}/${selectedEndDate.year} ${selectedEndTime.hour}:${selectedEndTime.minute}');
-                                print('Duration: $durationTime');
-
-                                print('Send Invite');
+                                ScheduleItem scheduleItem = ScheduleItem(
+                                  isSender: true,
+                                  name: "You",
+                                  avatarUrl:
+                                      "https://cdn-icons-png.flaticon.com/512/147/147142.png",
+                                  title: jobTitleController.text,
+                                  duration: durationTime,
+                                  day: "Thursday",
+                                  date:
+                                      "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}",
+                                  timeMeeting:
+                                      "${selectedTime.hour}:${selectedTime.minute}",
+                                  endDay: "Thursday",
+                                  endDate:
+                                      "${selectedEndDate.day}/${selectedEndDate.month}/${selectedEndDate.year}",
+                                  endTimeMeeting:
+                                      "${selectedEndTime.hour}:${selectedEndTime.minute}",
+                                  time: DateTime.now(),
+                                  messageFlag: 1,
+                                  username: widget.username,
+                                  userId: widget.userId,
+                                );
+                                widget.onSendInvite(scheduleItem);
+                                Navigator.pop(context);
+                                // print('Title: ${jobTitleController.text}');
+                                // print(
+                                //     'Start time: ${selectedDate.day}/${selectedDate.month}/${selectedDate.year} ${selectedTime.hour}:${selectedTime.minute}');
+                                // print(
+                                //     'End time: ${selectedEndDate.day}/${selectedEndDate.month}/${selectedEndDate.year} ${selectedEndTime.hour}:${selectedEndTime.minute}');
+                                // print('Duration: $durationTime');
+                                // print('Send Invite');
                               } else {
                                 print('Invalid inputs');
                               }
