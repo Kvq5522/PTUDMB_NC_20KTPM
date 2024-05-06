@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/components/loading_screen.dart';
@@ -134,11 +135,22 @@ class _ProjectItemState extends State<ProjectItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Created: $timePost',
-                    style: const TextStyle(
-                      color: Colors.grey,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Created: '.tr(),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      const SizedBox(width: 2),
+                      Text(
+                        timePost,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
                   ),
                   IconButton(
                     color: const Color(0xFF008ABD),
@@ -195,23 +207,45 @@ class _ProjectItemState extends State<ProjectItem> {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
-                'Time: ${getProjectScopeText(widget.projectScopeFlag)}',
-                style: const TextStyle(
-                  color: Colors.grey,
-                ),
+              Row(
+                children: [
+                  Text(
+                    'Time: '.tr(),
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(width: 2),
+                  Text(
+                    getProjectScopeText(widget.projectScopeFlag),
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Text(
+                    'Team number: '.tr(),
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(width: 2),
+                  Text(
+                    '${widget.numberOfStudents}',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 8),
               Text(
-                'Team Number: ${widget.numberOfStudents}',
+                'Student are looking for: '.tr(),
                 style: const TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Student are looking for:',
-                style: TextStyle(
                   color: Colors.black,
                 ),
               ),
@@ -228,12 +262,22 @@ class _ProjectItemState extends State<ProjectItem> {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
-                'Proposal: ${widget.countProposals}',
-                style: const TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
+              Row(
+                children: [
+                  Text(
+                    'Proposal: '.tr(),
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Text(
+                    '${widget.countProposals}',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),

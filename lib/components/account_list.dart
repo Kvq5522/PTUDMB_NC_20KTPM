@@ -43,8 +43,7 @@ class _AccountListState extends State<AccountList> {
           : "Student");
 
       if (widget.accountList[0]?["hasProfile"] == true) {
-        _userInfoStore
-            .setRoleId(BigInt.from(widget.accountList[0]["roleId"]));
+        _userInfoStore.setRoleId(BigInt.from(widget.accountList[0]["roleId"]));
         _userInfoStore.setHasProfile(true);
       }
     }

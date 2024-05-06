@@ -98,11 +98,11 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
       final Duration difference = now.difference(createdAt);
 
       if (difference.inDays > 0) {
-        return 'created ${difference.inDays} days ago';
+        return '${difference.inDays} days ago';
       } else if (difference.inHours > 0) {
-        return 'created ${difference.inHours} hours ago';
+        return '${difference.inHours} hours ago';
       } else {
-        return 'created ${difference.inMinutes} minutes ago';
+        return '${difference.inMinutes} minutes ago';
       }
     } else {
       return 'Invalid date format';
@@ -134,8 +134,8 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFF008ABD),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background,
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -168,6 +168,15 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                               ),
                               const SizedBox(width: 5),
                               Text(
+                                'Created: '.tr(),
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
                                 calculateTimeDifference(),
                                 style: const TextStyle(
                                   fontSize: 15,
@@ -191,7 +200,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Student are looking for '.tr(),
+                    'Student are looking for: '.tr(),
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(

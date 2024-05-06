@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
-import 'package:studenthub/components/appbars/app_bar.dart';
+import 'package:studenthub/components/appbars/appbar_setting.dart';
 import 'package:studenthub/themes/theme_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -22,7 +22,7 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const MyAppBar(),
+        appBar: const SettingAppBar(),
         body: Column(
           children: [
             Container(

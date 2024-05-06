@@ -876,7 +876,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
 
                         // Skillsets
                         const SizedBox(height: 20),
-                        Text("Skillsets".tr()),
+                        Text('Skillsets'.tr()),
                         const SizedBox(height: 10),
                         MultiSelectChip(
                           itemList: _defaultSkillSet,

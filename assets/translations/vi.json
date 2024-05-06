@@ -146,5 +146,16 @@
   "Schedule a video call interview": "Lên lịch phỏng vấn qua video",
   "Title": "Tiêu đề",
   "Write a title for interview": "Viết tiêu đề",
-  "Send invite": "Gửi lời mời"
+  "Send invite": "Gửi lời mời",
+
+  "Created: ": "Đã tạo: ",
+  "Time: ": "Thời gian: ",
+  "Team number: ": "Số lượng thành viên: ",
+  "Proposal: ": "Đề xuất: ",
+  "Type here...": "Nhập...",
+  "Proposed: ": "Đề xuất ",
+
+  "Proposals: ": "Đề xuất: ",
+  "Messages: ": "Tin nhắn: ",
+  "Hired: ": "Đã tuyển: "
 }

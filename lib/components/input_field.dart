@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
@@ -44,7 +45,7 @@ class InputField extends StatelessWidget {
           ),
           filled: true,
           fillColor: Colors.white,
-          hintText: hintText != "" ? hintText : "Type here...",
+          hintText: hintText != "" ? hintText : 'Type here...'.tr(),
           hintStyle: const TextStyle(
             color: Colors.grey,
           ),

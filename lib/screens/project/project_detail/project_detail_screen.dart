@@ -56,11 +56,11 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
       final Duration difference = now.difference(createdAt);
 
       if (difference.inDays > 0) {
-        return 'created ${difference.inDays} days ago';
+        return '${difference.inDays} days ago';
       } else if (difference.inHours > 0) {
-        return 'created ${difference.inHours} hours ago';
+        return '${difference.inHours} hours ago';
       } else {
-        return 'created ${difference.inMinutes} minutes ago';
+        return '${difference.inMinutes} minutes ago';
       }
     } else {
       return 'Invalid date format';
@@ -127,6 +127,15 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                               ),
                               const SizedBox(width: 5),
                               Text(
+                                'Created: '.tr(),
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
                                 calculateTimeDifference(),
                                 style: const TextStyle(
                                   fontSize: 15,
@@ -149,9 +158,10 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Student are looking for ",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  Text(
+                    'Student are looking for: '.tr(),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     height: 6,
@@ -183,9 +193,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Project scope",
-                            style: TextStyle(
+                          Text(
+                            'Project scope'.tr(),
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
@@ -215,9 +225,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Student required",
-                            style: TextStyle(
+                          Text(
+                            'Student required'.tr(),
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),

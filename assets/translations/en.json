@@ -149,5 +149,16 @@
   "Schedule a video call interview": "Schedule a video call interview",
   "Title": "Title",
   "Write a title for interview": "Write a title for interview",
-  "Send invite": "Send invite"
+  "Send invite": "Send invite",
+
+  "Created: ": "Created: ",
+  "Time: ": "Time: ",
+  "Team number: ": "Team number: ",
+  "Proposal: ": "Proposal: ",
+  "Type here...": "Type here...",
+  "Proposed: ": "Proposed: ",
+
+  "Proposals: ": "Proposals: ",
+  "Messages: ": "Messages: ",
+  "Hired: ": "Hired: "
 }

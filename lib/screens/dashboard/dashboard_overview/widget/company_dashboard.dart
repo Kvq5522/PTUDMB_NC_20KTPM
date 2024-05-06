@@ -53,12 +53,16 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
       case 0:
         return Container(
           child: collapsibleList(
-              list: widget.projectList, title: "Working Project", status: 0),
+              list: widget.projectList,
+              title: 'Working Projects'.tr(),
+              status: 0),
         );
       case 1:
         return Container(
           child: collapsibleList(
-              list: widget.projectList, title: "Archived Project", status: 1),
+              list: widget.projectList,
+              title: 'Archived Projects'.tr(),
+              status: 1),
         );
       default:
         return const SizedBox(
@@ -328,12 +332,24 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      "Created $timeAgo",
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                      ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Created: '.tr(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 2),
+                                        Text(
+                                          timeAgo,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     IconButton(
                                       onPressed: () {
@@ -361,8 +377,16 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
 
                                 const SizedBox(height: 10),
                                 // Description
+
                                 Text(
-                                  "Student are looking for: \n\t ${list[index]["description"]}",
+                                  'Student are looking for: '.tr(),
+                                  style: const TextStyle(
+                                    overflow: TextOverflow.visible,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  "\n\t ${list[index]["description"]}",
                                   style: const TextStyle(
                                     overflow: TextOverflow.visible,
                                     color: Colors.black,
@@ -375,17 +399,32 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Proposals: ${list[index]["proposals"].where((element) => element["statusFlag"] == 0).length ?? 0}",
+                                      'Proposals: '.tr(),
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    const SizedBox(width: 2),
+                                    Text(
+                                      "${list[index]["proposals"].where((element) => element["statusFlag"] == 0).length ?? 0}",
                                       style: TextStyle(color: Colors.black),
                                     ),
                                     const SizedBox(width: 20),
                                     Text(
-                                      "Messages: ${list[index]["messages"] ?? 0}",
+                                      'Messages: '.tr(),
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    const SizedBox(width: 2),
+                                    Text(
+                                      "${list[index]["messages"] ?? 0}",
                                       style: TextStyle(color: Colors.black),
                                     ),
                                     const SizedBox(width: 20),
                                     Text(
-                                      "Hired: ${list[index]["proposals"].where((element) => element["statusFlag"] == 3).length ?? 0}",
+                                      'Hired: '.tr(),
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    const SizedBox(width: 2),
+                                    Text(
+                                      "${list[index]["proposals"].where((element) => element["statusFlag"] == 3).length ?? 0}",
                                       style: TextStyle(color: Colors.black),
                                     ),
                                   ],
