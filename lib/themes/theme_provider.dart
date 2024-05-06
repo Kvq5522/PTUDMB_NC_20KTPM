@@ -5,7 +5,8 @@ import 'package:studenthub/themes/dark_mode.dart';
 import 'package:studenthub/themes/light_mode.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  late ThemeData _themeData;
+  late ThemeData _themeData = ThemeData.light();
+
   bool _isDarkMode = false;
 
   static const _themeModeKey = 'theme_mode';
