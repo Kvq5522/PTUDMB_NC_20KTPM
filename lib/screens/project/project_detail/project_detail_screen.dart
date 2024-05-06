@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/services/project.service.dart';
@@ -55,11 +56,11 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
       final Duration difference = now.difference(createdAt);
 
       if (difference.inDays > 0) {
-        return 'created ${difference.inDays} days ago';
+        return '${difference.inDays} days ago';
       } else if (difference.inHours > 0) {
-        return 'created ${difference.inHours} hours ago';
+        return '${difference.inHours} hours ago';
       } else {
-        return 'created ${difference.inMinutes} minutes ago';
+        return '${difference.inMinutes} minutes ago';
       }
     } else {
       return 'Invalid date format';
@@ -91,8 +92,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFF008ABD),
+              decoration: BoxDecoration(
+                // color: Color(0xFF008ABD),
+                color: Theme.of(context).colorScheme.secondary,
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -125,6 +127,15 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                               ),
                               const SizedBox(width: 5),
                               Text(
+                                'Created: '.tr(),
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
                                 calculateTimeDifference(),
                                 style: const TextStyle(
                                   fontSize: 15,
@@ -147,9 +158,10 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Student are looking for ",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  Text(
+                    'Student are looking for: '.tr(),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     height: 6,
@@ -181,9 +193,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Project scope",
-                            style: TextStyle(
+                          Text(
+                            'Project scope'.tr(),
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
@@ -213,9 +225,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Student required",
-                            style: TextStyle(
+                          Text(
+                            'Student required'.tr(),
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
@@ -259,9 +271,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
 
                           routerConfig.push('/project-apply/$projectId');
                         },
-                        child: const Text(
-                          "Apply Now",
-                          style: TextStyle(
+                        child: Text(
+                          'Apply Now'.tr(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
                           ),
@@ -282,9 +294,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                           ),
                         ),
                         onPressed: () {},
-                        child: const Text(
-                          "Saved",
-                          style: TextStyle(
+                        child: Text(
+                          'Saved'.tr(),
+                          style: const TextStyle(
                             color: Color(0xFF008ABD),
                             fontWeight: FontWeight.w600,
                           ),

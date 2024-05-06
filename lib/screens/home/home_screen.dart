@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:studenthub/app_routes.dart';
@@ -37,12 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               children: [
                 buildPage(
-                  color: const Color(0xFFa9e1e9),
+                  color: Theme.of(context).colorScheme.background,
                   urlImage: 'assets/images/intro6.png',
-                  title: "Student",
+                  title: "Student".tr(),
                   subtitle:
-                      "Students participate to apply their academic knowledge to real-world projects and develop skills.",
-                  titleRole: "Join",
+                      "Students participate to apply their academic knowledge to real-world projects and develop skills."
+                          .tr(),
+                  titleRole: "Join".tr(),
                   isLastPage: false,
                   toPage: () {
                     String selectedOption = 'student';
@@ -53,12 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 buildPage(
-                  color: const Color(0xFFa9e1e9),
+                  color: Theme.of(context).colorScheme.background,
                   urlImage: 'assets/images/intro13.png',
-                  title: "Company",
+                  title: "Company".tr(),
                   subtitle:
-                      "Companies can search for and recruit talented students suitable for their projects.",
-                  titleRole: "Join",
+                      "Companies can search for and recruit talented students suitable for their projects."
+                          .tr(),
+                  titleRole: "Join".tr(),
                   isLastPage: false,
                   toPage: () {
                     String selectedOption = 'company';
@@ -69,11 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 buildPage(
-                  color: const Color(0xFFa9e1e9),
+                  color: Theme.of(context).colorScheme.background,
                   urlImage: 'assets/images/intro5.png',
                   title: "Student Hub",
                   subtitle:
-                      "Student Hub connects students and companies, fostering mutual development and advancement.",
+                      "Student Hub connects students and companies, fostering mutual development and advancement."
+                          .tr(),
                   isLastPage: true,
                 ),
               ],
@@ -85,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
             bottom: 0,
             child: isLastPage
                 ? Container(
-                    color: const Color(0xFFa9e1e9),
+                    color: Theme.of(context).colorScheme.background,
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.12,
                       child: TextButton(
@@ -104,15 +108,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           routerConfig.push('/login');
                         },
-                        child: const Text(
-                          'Get started',
-                          style: TextStyle(fontSize: 24),
+                        child: Text(
+                          'Get started'.tr(),
+                          style: const TextStyle(fontSize: 24),
                         ),
                       ),
                     ),
                   )
                 : Material(
-                    color: const Color(0xFFa9e1e9), // Màu nền của PageView
+                    color: Theme.of(context).colorScheme.background,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       height: 80,
@@ -123,19 +127,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             onPressed: () {
                               controller.jumpToPage(2);
                             },
-                            child: const Text(
-                              "SKIP",
-                              style: TextStyle(color: Color(0xFF00658a)),
+                            child: Text(
+                              "SKIP".tr(),
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                             ),
                           ),
                           Center(
                             child: SmoothPageIndicator(
                               controller: controller,
                               count: 3,
-                              effect: const WormEffect(
+                              effect: WormEffect(
                                 spacing: 16,
                                 dotColor: Colors.black26,
-                                activeDotColor: Color(0xFF00658a),
+                                activeDotColor:
+                                    Theme.of(context).colorScheme.primary,
                               ),
                               onDotClicked: (index) => controller.animateToPage(
                                 index,
@@ -151,9 +158,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 curve: Curves.easeInOut,
                               );
                             },
-                            child: const Text(
-                              "NEXT",
-                              style: TextStyle(color: Color(0xFF00658a)),
+                            child: Text(
+                              "NEXT".tr(),
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                             ),
                           ),
                         ],
@@ -190,8 +199,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Text(
             title,
-            style: const TextStyle(
-              color: Color(0xFF00658a),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 32,
               fontWeight: FontWeight.bold,
             ),
@@ -204,8 +213,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Text(
               subtitle,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF00658a),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.w400,
               ),
             ),

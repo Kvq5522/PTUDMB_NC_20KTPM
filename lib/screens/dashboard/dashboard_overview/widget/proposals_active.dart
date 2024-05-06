@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/services/dashboard.service.dart';
@@ -97,11 +98,11 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
       final Duration difference = now.difference(createdAt);
 
       if (difference.inDays > 0) {
-        return 'created ${difference.inDays} days ago';
+        return '${difference.inDays} days ago';
       } else if (difference.inHours > 0) {
-        return 'created ${difference.inHours} hours ago';
+        return '${difference.inHours} hours ago';
       } else {
-        return 'created ${difference.inMinutes} minutes ago';
+        return '${difference.inMinutes} minutes ago';
       }
     } else {
       return 'Invalid date format';
@@ -133,8 +134,8 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFF008ABD),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background,
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -167,6 +168,15 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                               ),
                               const SizedBox(width: 5),
                               Text(
+                                'Created: '.tr(),
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
                                 calculateTimeDifference(),
                                 style: const TextStyle(
                                   fontSize: 15,
@@ -189,8 +199,8 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Student are looking for ",
+                  Text(
+                    'Student are looking for: '.tr(),
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
@@ -223,8 +233,8 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Project scope",
+                          Text(
+                            'Project scope'.tr(),
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -255,8 +265,8 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Student required",
+                          Text(
+                            'Student required'.tr(),
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,

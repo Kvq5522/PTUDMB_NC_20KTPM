@@ -1,5 +1,6 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
@@ -92,13 +93,14 @@ class _ProjectPostingState extends State<ProjectPosting> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "1/4 Let's start with a strong title",
+            '1/4 Let\'s start with a strong title'.tr(),
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16.0),
-          const Text(
-            "This helps your post stand out to the right students. It's the first thing they will see, so make it impressive!",
+          Text(
+            'This helps your post stand out to the right students. It\'s the first thing they will see, so make it impressive!'
+                .tr(),
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 16.0),
           ),
@@ -111,7 +113,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                 borderSide: BorderSide(
                     color: const Color(0xFF008ABD)), // Màu xanh khi focus
               ),
-              hintText: 'Write a title for your job',
+              hintText: 'Write a title for your job'.tr(),
             ),
             onChanged: (value) {
               setState(() {
@@ -131,7 +133,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
           ),
           const SizedBox(height: 10.0),
           Text(
-            "Example titles: ",
+            'Example titles: '.tr(),
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
@@ -148,7 +150,8 @@ class _ProjectPostingState extends State<ProjectPosting> {
                 SizedBox(width: 5),
                 Expanded(
                   child: Text(
-                    "Build responsive WordPress site with booking/payment functionality",
+                    'Build responsive WordPress site with booking/payment functionality'
+                        .tr(),
                     style: TextStyle(fontSize: 16.0),
                   ),
                 ),
@@ -167,7 +170,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                 SizedBox(width: 5),
                 Expanded(
                   child: Text(
-                    "Facebook ad specialist need for product launch",
+                    'Facebook ad specialist need for product launch'.tr(),
                     style: TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.normal),
                   ),
@@ -203,7 +206,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                child: const Text('Next: Scope'),
+                child: Text('Next: Scope'.tr()),
               ),
             ),
           ),
@@ -219,20 +222,20 @@ class _ProjectPostingState extends State<ProjectPosting> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "2/4 Next, estimate the scope of your job",
+            '2/4 Next, estimate the scope of your job'.tr(),
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16.0),
-          const Text(
-            "Consider the size of your project and the timeline",
+          Text(
+            'Consider the size of your project and the timeline'.tr(),
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 16.0),
           ),
           const SizedBox(height: 16.0),
           const SizedBox(height: 16.0),
           Text(
-            "How long will your project take ?",
+            'How long will your project take ?'.tr(),
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
@@ -240,7 +243,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
           RadioListTile(
             title: Row(
               children: [
-                Text('1 to 3 months'),
+                Text('1 to 3 months'.tr()),
               ],
             ),
             value: '1',
@@ -265,7 +268,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
           RadioListTile(
             title: Row(
               children: [
-                Text('3 to 6 months'),
+                Text('3 to 6 months'.tr()),
               ],
             ),
             value: '2',
@@ -297,7 +300,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                 : SizedBox(),
           ),
           Text(
-            "How many students do you want for this project ?",
+            'How many students do you want for this project ?'.tr(),
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
@@ -311,7 +314,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                 borderSide: BorderSide(
                     color: const Color(0xFF008ABD)), // Màu xanh khi focus
               ),
-              hintText: 'Number of students',
+              hintText: 'Number of students'.tr(),
             ),
             onChanged: (value) {
               setState(() {
@@ -347,7 +350,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  child: const Text('Previous'),
+                  child: Text('Previous'.tr()),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
@@ -385,7 +388,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  child: const Text('Next: Scope'),
+                  child: Text('Next: Scope'.tr()),
                 ),
               ],
             ),
@@ -402,13 +405,13 @@ class _ProjectPostingState extends State<ProjectPosting> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "3/4 Next, provide project description",
+            '3/4 Next, provide project description'.tr(),
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16.0),
           Text(
-            "Student are looking for: ",
+            'Student are looking for: '.tr(),
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
           ),
@@ -427,7 +430,8 @@ class _ProjectPostingState extends State<ProjectPosting> {
                     SizedBox(width: 5),
                     Expanded(
                       child: Text(
-                        "Clear expectation about your project or deliverables",
+                        'Clear expectation about your project or deliverables'
+                            .tr(),
                         style: TextStyle(fontSize: 16.0),
                       ),
                     ),
@@ -446,7 +450,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                     SizedBox(width: 5),
                     Expanded(
                       child: Text(
-                        "The skills required for your project",
+                        'The skills required for your project'.tr(),
                         style: TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.normal),
                       ),
@@ -466,7 +470,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                     SizedBox(width: 5),
                     Expanded(
                       child: Text(
-                        "Details about your project ",
+                        'Details about your project '.tr(),
                         style: TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.normal),
                       ),
@@ -478,7 +482,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
           ),
           const SizedBox(height: 16.0),
           Text(
-            "Describe your project: ",
+            'Describe your project: '.tr(),
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
@@ -491,7 +495,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: const Color(0xFF008ABD)),
                 ),
-                hintText: "Description..."),
+                hintText: 'Description...'.tr()),
             onChanged: (value) {
               setState(() {
                 errorMessage = '';
@@ -529,7 +533,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  child: const Text('Previous'),
+                  child: Text('Previous'.tr()),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
@@ -555,7 +559,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  child: const Text('Next: Scope'),
+                  child: Text('Next: Scope'.tr()),
                 ),
               ],
             ),
@@ -578,7 +582,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "4/4 Project details",
+                  '4/4 Project details'.tr(),
                   textAlign: TextAlign.start,
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
@@ -595,7 +599,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  "Description: ",
+                  'Description: '.tr(),
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
@@ -627,7 +631,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Project scope",
+                          'Project scope'.tr(),
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -659,7 +663,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Student required",
+                          'Student required'.tr(),
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -695,7 +699,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        child: const Text('Previous'),
+                        child: Text('Previous'.tr()),
                       ),
                       SizedBox(width: 10),
                       ElevatedButton(
@@ -720,7 +724,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        child: const Text('Post job'),
+                        child: Text('Post job'.tr()),
                       ),
                     ],
                   ),

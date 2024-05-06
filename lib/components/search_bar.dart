@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/app_routes.dart';
 
@@ -23,20 +24,20 @@ class _MySearchBarState extends State<MySearchBar> {
           // color: const Color.fromARGB(255, 243, 243, 243),
           color: Colors.white,
         ),
-        child: const Padding(
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           child: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.search,
                 color: Color(0xFF008ABD),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Text(
-                "Search...",
-                style: TextStyle(color: Colors.grey),
+                'Search...'.tr(),
+                style: const TextStyle(color: Colors.grey),
               ),
             ],
           ),
@@ -55,7 +56,7 @@ class _MySearchBarState extends State<MySearchBar> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       builder: (BuildContext context) {
         List<String> searchResults = suggestions;
 
@@ -96,8 +97,8 @@ class _MySearchBarState extends State<MySearchBar> {
                       Expanded(
                         child: TextField(
                           controller: _searchController,
-                          decoration: const InputDecoration(
-                            hintText: 'Search...',
+                          decoration: InputDecoration(
+                            hintText: 'Search...'.tr(),
                             border: InputBorder.none,
                           ),
                           onChanged: (value) {

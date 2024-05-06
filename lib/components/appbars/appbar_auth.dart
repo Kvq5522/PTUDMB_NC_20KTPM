@@ -10,19 +10,23 @@ class Auth_AppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       // ignore: sized_box_for_whitespace
+      centerTitle: true,
       title: Container(
-        width: 160,
+        width: 180,
         height: MediaQuery.of(context).size.width * 0.2,
-        child: Image.asset('assets/images/logo.png'),
+        child: Image.asset(
+          'assets/images/logo.png',
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
-      backgroundColor: const Color(0xFF008ABD),
-      elevation: 2,
-      shadowColor: Colors.black,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      // elevation: 2,
+      // shadowColor: Colors.black,
       leading: GoRouter.of(context).canPop()
           ? IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back_ios_rounded,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.primary,
               ),
               onPressed: () {
                 GoRouter.of(context).pop();
@@ -36,7 +40,7 @@ class Auth_AppBar extends StatelessWidget implements PreferredSizeWidget {
       //     },
       //     icon: const Icon(
       //       Icons.arrow_forward_ios_rounded,
-      //       color: Colors.white,
+      //       color: Color(0xFF008ABD),
       //     ),
       //   ),
       // ],

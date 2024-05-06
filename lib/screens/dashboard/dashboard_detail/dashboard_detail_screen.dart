@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:provider/provider.dart';
@@ -117,7 +118,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                             : Colors.white,
                         padding: const EdgeInsets.all(0),
                       ),
-                      child: Text("Proposals",
+                      child: Text('Proposals'.tr(),
                           style: TextStyle(
                             color: filter == "Proposals"
                                 ? Colors.white
@@ -142,7 +143,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                             : Colors.white,
                         padding: const EdgeInsets.all(0),
                       ),
-                      child: Text("Detail",
+                      child: Text('Detail'.tr(),
                           style: TextStyle(
                               color: filter == "Detail"
                                   ? Colors.white
@@ -168,7 +169,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                             : Colors.white,
                         padding: const EdgeInsets.all(0),
                       ),
-                      child: Text("Message",
+                      child: Text('Message'.tr(),
                           style: TextStyle(
                               color: filter == "Message"
                                   ? Colors.white
@@ -194,7 +195,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                             : Colors.white,
                         padding: const EdgeInsets.all(0),
                       ),
-                      child: Text("Hired",
+                      child: Text('Hired'.tr(),
                           style: TextStyle(
                               color: filter == "Hired"
                                   ? Colors.white
@@ -241,9 +242,9 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
       floatingActionButton: filter == "Detail"
           ? ElevatedButton(
               onPressed: () {},
-              child: const Text(
-                "Post job",
-                style: TextStyle(
+              child: Text(
+                'Post job'.tr(),
+                style: const TextStyle(
                   color: Colors.blue,
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,

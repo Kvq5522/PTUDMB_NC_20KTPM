@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 
-class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MyAppBar({super.key});
+class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const SettingAppBar({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -35,7 +35,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onPressed: () {
                 try {
-                  routerConfig.pop(context);
+                  routerConfig.replace("/choose-user");
                 } catch (e) {
                   print(e);
                 }

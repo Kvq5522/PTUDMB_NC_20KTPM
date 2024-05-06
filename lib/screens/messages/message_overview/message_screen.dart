@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +59,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
-                        hintText: 'Search...',
+                        hintText: 'Search...'.tr(),
                         border: InputBorder.none,
                       ),
                       onChanged: (value) {
@@ -142,20 +143,22 @@ class _MessageScreenState extends State<MessageScreen> {
                                     // Name
                                     Text(
                                       otherUser["fullname"],
-                                      style: const TextStyle(
-                                        color: Color.fromARGB(255, 0, 0, 0),
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 20,
+                                        fontSize: 18,
                                       ),
                                     ),
                                     // Create at
                                     Text(
-                                      DateFormat('hh:mm dd/MM/yyyy').format(
+                                      DateFormat('dd/MM/yyyy').format(
                                           DateTime.parse(displayList[index]
                                                   ["createdAt"])
                                               .toLocal()),
                                       style: const TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 10,
                                         color: Colors.grey,
                                       ),
                                     ),
@@ -167,7 +170,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                   style: const TextStyle(
                                     color: Color(0xFF008ABD),
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 15,
+                                    fontSize: 13,
                                   ),
                                 ),
                                 SizedBox(height: 10),

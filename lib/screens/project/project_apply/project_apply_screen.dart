@@ -1,3 +1,4 @@
+import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:studenthub/app_routes.dart";
 import "package:studenthub/components/appbars/app_bar.dart";
@@ -69,10 +70,10 @@ class _ProjectApplyScreenState extends State<ProjectApplyScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Cover letter",
+              'Cover letter'.tr(),
               style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
             ),
-            Text("Describe why do you fit for this project"),
+            Text('Describe why do you fit for this project'.tr()),
             SizedBox(
               height: fieldSpacing,
             ),
@@ -87,13 +88,20 @@ class _ProjectApplyScreenState extends State<ProjectApplyScreen> {
               children: [
                 Expanded(
                     child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color.fromARGB(255, 255, 255, 255)),
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                      const EdgeInsets.all(16),
+                    ),
+                  ),
                   onPressed: () {
                     routerConfig.pop();
                   },
-                  child: const Text(
-                    "Cancel",
-                    style: TextStyle(
-                      color: Colors.blue,
+                  child: Text(
+                    'Cancel'.tr(),
+                    style: const TextStyle(
+                      color: Color(0xFF008ABD),
                     ),
                   ),
                 )),
@@ -102,6 +110,13 @@ class _ProjectApplyScreenState extends State<ProjectApplyScreen> {
                 ),
                 Expanded(
                     child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color(0xFF008ABD)),
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                      const EdgeInsets.all(16),
+                    ),
+                  ),
                   onPressed: () async {
                     await postStudentProposal(
                       widget.projectId,
@@ -114,10 +129,10 @@ class _ProjectApplyScreenState extends State<ProjectApplyScreen> {
 
                     routerConfig.push("/dashboard");
                   },
-                  child: const Text(
-                    "Apply",
-                    style: TextStyle(
-                      color: Colors.blue,
+                  child: Text(
+                    'Apply'.tr(),
+                    style: const TextStyle(
+                      color: Colors.white,
                     ),
                   ),
                 )),

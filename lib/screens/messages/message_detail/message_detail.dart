@@ -425,7 +425,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
           )
         ],
       ),
-      backgroundColor: const Color(0xFF008ABD),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       actions: [
         IconButton(
           onPressed: () {

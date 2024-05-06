@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:studenthub/services/background.service.dart';
 import 'package:studenthub/services/notification.service.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +15,8 @@ Future main() async {
 
   // Initialize background service
   await initializeService();
+
+  await EasyLocalization.ensureInitialized();
 
   // Initialize local notifications
   NotificationService().initLocalNotifications();
@@ -28,5 +31,10 @@ Future main() async {
   final showHome = prefs.getBool('showHome') ?? false;
 
   // Run the app
-  runApp(MainApp(showHome: showHome));
+  runApp(EasyLocalization(
+    supportedLocales: const [Locale("en"), Locale("vi")],
+    path: "assets/translations",
+    fallbackLocale: const Locale('en'),
+    child: MainApp(showHome: showHome),
+  ));
 }

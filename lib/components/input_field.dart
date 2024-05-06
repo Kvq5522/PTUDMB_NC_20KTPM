@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
@@ -29,23 +30,25 @@ class InputField extends StatelessWidget {
         obscureText: obscureText,
         maxLines: bigField ? 7 : null,
         keyboardType: bigField ? TextInputType.multiline : TextInputType.text,
+        cursorColor: Colors.grey,
+        style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
+          enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.tertiary,
+              color: Colors.grey,
             ),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary,
+              color: Colors.grey,
             ),
           ),
           filled: true,
-          // fillColor: Theme.of(context).colorScheme.secondary,
-          hintText: hintText != "" ? hintText : "Type here...",
-          // hintStyle: TextStyle(
-          //   color: Theme.of(context).colorScheme.primary,
-          // ),
+          fillColor: Colors.white,
+          hintText: hintText != "" ? hintText : 'Type here...'.tr(),
+          hintStyle: const TextStyle(
+            color: Colors.grey,
+          ),
         ),
       ),
     );

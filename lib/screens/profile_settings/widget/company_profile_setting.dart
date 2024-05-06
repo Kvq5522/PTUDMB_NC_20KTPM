@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
@@ -97,20 +98,21 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Center(
+                    Center(
                       child: Text(
-                        "Welcome to Student Hub",
-                        style: TextStyle(
+                        "Welcome to Student Hub".tr(),
+                        style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      "Tell us about your company and you will be on your way connect with high-skilled students.",
+                    Text(
+                      "Tell us about your company and you will be on your way connect with high-skilled students."
+                          .tr(),
                     ),
                     const SizedBox(height: 20),
-                    const Text("How many people are in your company?"),
+                    Text("How many people are in your company?".tr()),
                     RadioGroup(
                       items: companySize,
                       initialValue: _chosenCompanySize,
@@ -123,7 +125,7 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                     const SizedBox(height: 20),
 
                     //Input company name
-                    const Text("Company Name"),
+                    Text("Company Name".tr()),
                     TextFormField(
                       controller: _companyNameController,
                       validator: (String? value) {
@@ -132,22 +134,24 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: "Input your company name here",
-                        labelStyle: TextStyle(color: Colors.black),
-                        focusedBorder: UnderlineInputBorder(
+                        labelStyle: const TextStyle(color: Colors.black),
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF008ABD)),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
+                          borderSide: BorderSide(
+                              color:
+                                  Theme.of(context).colorScheme.inversePrimary),
                         ),
                       ),
                     ),
                     const SizedBox(height: 20),
 
                     //Input company website
-                    const Text(
-                      "Company Website",
+                    Text(
+                      "Company Website".tr(),
                       textAlign: TextAlign.left,
                     ),
                     TextFormField(
@@ -158,21 +162,23 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: "Input your company website here",
-                        labelStyle: TextStyle(color: Colors.black),
-                        focusedBorder: UnderlineInputBorder(
+                        labelStyle: const TextStyle(color: Colors.black),
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF008ABD)),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
+                          borderSide: BorderSide(
+                              color:
+                                  Theme.of(context).colorScheme.inversePrimary),
                         ),
                       ),
                     ),
                     const SizedBox(height: 20),
 
                     //Input company description
-                    const Text("Company Description"),
+                    Text("Company Description".tr()),
                     TextFormField(
                       controller: _companyDescriptionController,
                       validator: (String? value) {
@@ -182,14 +188,16 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                         return null;
                       },
                       maxLines: 5,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: "Input your company description here",
-                        labelStyle: TextStyle(color: Colors.black),
-                        focusedBorder: UnderlineInputBorder(
+                        labelStyle: const TextStyle(color: Colors.black),
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF008ABD)),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
+                          borderSide: BorderSide(
+                              color:
+                                  Theme.of(context).colorScheme.inversePrimary),
                         ),
                       ),
                     ),
@@ -279,7 +287,7 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            child: const Text("Continue")),
+                            child: Text("Continue".tr())),
                       ],
                     )
                   ],

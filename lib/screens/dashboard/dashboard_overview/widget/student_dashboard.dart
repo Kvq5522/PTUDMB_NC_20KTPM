@@ -1,3 +1,4 @@
+import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:studenthub/app_routes.dart";
 
@@ -31,27 +32,27 @@ class _StudentDashboardState extends State<StudentDashboard> {
           children: [
             collapsibleList(
                 list: widget.proposalList,
-                title: "Active Proposals",
+                title: 'Active Proposals'.tr(),
                 status: 2,
                 field: "statusFlag"),
             collapsibleList(
                 list: widget.proposalList,
-                title: "Submitted Proposals",
+                title: 'Submitted Proposals'.tr(),
                 status: 0,
                 field: "statusFlag"),
             collapsibleList(
                 list: widget.projectList,
-                title: "Pending Projects",
+                title: 'Pending Projects'.tr(),
                 status: 0,
                 field: "typeFlag"),
             collapsibleList(
                 list: widget.projectList,
-                title: "Working Projects",
+                title: 'Working Projects'.tr(),
                 status: 1,
                 field: "typeFlag"),
             collapsibleList(
                 list: widget.projectList,
-                title: "Archived Projects",
+                title: 'Archived Projects'.tr(),
                 status: 2,
                 field: "typeFlag"),
           ],
@@ -60,14 +61,14 @@ class _StudentDashboardState extends State<StudentDashboard> {
         return Container(
             child: collapsibleList(
                 list: widget.projectList,
-                title: "Working Projects",
+                title: 'Working Projects'.tr(),
                 status: 1,
                 field: "typeFlag"));
       case 1:
         return Container(
           child: collapsibleList(
               list: widget.projectList,
-              title: "Archived Projects",
+              title: 'Archived Projects'.tr(),
               status: 2,
               field: "typeFlag"),
         );
@@ -165,6 +166,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                 Expanded(
                                   child: Container(
                                     decoration: BoxDecoration(
+                                      color: Colors.white,
                                       border: Border.all(
                                         color: Colors.grey.shade300,
                                       ),
@@ -178,13 +180,26 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "Created ${field == "statusFlag" ? DateTime.now().difference(DateTime.parse(list[index]["project"]["createdAt"])).inDays : DateTime.now().difference(DateTime.parse(list[index]["createdAt"])).inDays} days ago",
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey,
-                                          ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Created: '.tr(),
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 2),
+                                            Text(
+                                              "${field == "statusFlag" ? DateTime.now().difference(DateTime.parse(list[index]["project"]["createdAt"])).inDays : DateTime.now().difference(DateTime.parse(list[index]["createdAt"])).inDays} days ago",
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
                                         ),
+
                                         Text(
                                           field == "statusFlag"
                                               ? list[index]["project"]["title"]
@@ -199,31 +214,70 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                         const SizedBox(height: 5),
                                         //Status
                                         if (field == "statusFlag")
-                                          Text(
-                                            "Proposed ${DateTime.now().difference(DateTime.parse(list[index]["createdAt"])).inDays} days ago",
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.grey,
-                                            ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Proposed: '.tr(),
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 2),
+                                              Text(
+                                                "${DateTime.now().difference(DateTime.parse(list[index]["createdAt"])).inDays} days ago",
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         const SizedBox(height: 5),
                                         //Time
-                                        Text(
-                                          "Time: ${getProjectScopeText(field == "statusFlag" ? list[index]["project"]["projectScopeFlag"] : list[index]["projectScopeFlag"])}",
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey,
-                                          ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Time: '.tr(),
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 2),
+                                            Text(
+                                              // ignore: unnecessary_string_interpolations
+                                              '${getProjectScopeText(field == "statusFlag" ? list[index]["project"]["projectScopeFlag"] : list[index]["projectScopeFlag"])}',
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
                                         ),
+
                                         const SizedBox(height: 5),
                                         //Team Number
-                                        Text(
-                                          "Team Number: ${field == "statusFlag" ? list[index]["project"]["numberOfStudents"] : list[index]["numberOfStudents"]}",
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey,
-                                          ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Team number: '.tr(),
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 2),
+                                            Text(
+                                              "${field == "statusFlag" ? list[index]["project"]["numberOfStudents"] : list[index]["numberOfStudents"]}",
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey,
+                                              ),
+                                            )
+                                          ],
                                         ),
+
                                         const SizedBox(height: 10),
                                         //Description
                                         Text(
@@ -232,6 +286,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                                   ["description"]
                                               : list[index]["description"],
                                           style: const TextStyle(
+                                            color: Colors.black,
                                             overflow: TextOverflow.visible,
                                           ),
                                         ),

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 import "package:studenthub/app_routes.dart";
@@ -98,12 +99,12 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
         ),
         builder: (context) {
           return Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(25.0),
                 topRight: Radius.circular(25.0),
               ),
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.background,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -113,15 +114,15 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                   height: 50,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: Theme.of(context).colorScheme.background,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(25.0),
                       topRight: Radius.circular(25.0),
                     ),
                   ),
-                  child: const Text(
-                    "Properties",
-                    style: TextStyle(
+                  child: Text(
+                    'Properties'.tr(),
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -179,7 +180,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                       ),
                       ListTile(
                         leading: const Icon(Icons.assignment),
-                        title: const Text("View Proposals"),
+                        title: Text('View Proposals'.tr()),
                         onTap: () {
                           final projectId = project["id"];
                           final title = project["title"];
@@ -191,7 +192,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                       ),
                       ListTile(
                         leading: const Icon(Icons.message),
-                        title: const Text("View Messages"),
+                        title: Text('View Messages'.tr()),
                         onTap: () {
                           final projectId = project["id"];
                           final title = project["title"];
@@ -202,7 +203,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                       ),
                       ListTile(
                         leading: const Icon(Icons.work),
-                        title: const Text("View Hired"),
+                        title: Text('View Hired'.tr()),
                         onTap: () {
                           final projectId = project["id"];
                           final title = project["title"];
@@ -213,7 +214,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                       ),
                       ListTile(
                         leading: const Icon(Icons.assignment_turned_in),
-                        title: const Text("View Project"),
+                        title: Text('View Project'.tr()),
                         onTap: () {
                           final projectId = project["id"];
                           final title = project["title"];
@@ -224,7 +225,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                       ),
                       ListTile(
                         leading: const Icon(Icons.edit),
-                        title: const Text("Edit Project"),
+                        title: Text('Edit Project'.tr()),
                         onTap: () {
                           showDialog(
                             context: context,
@@ -235,7 +236,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                       ),
                       ListTile(
                         leading: const Icon(Icons.delete),
-                        title: const Text("Remove Project"),
+                        title: Text('Remove Project'.tr()),
                         onTap: () async {
                           try {
                             await _dashBoardService.deleteProject(
@@ -320,6 +321,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                               border: Border.all(
                                 color: Colors.grey.shade300,
                               ),
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             padding: const EdgeInsets.all(20),
@@ -332,19 +334,34 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      "Created $timeAgo",
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                      ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Created: '.tr(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 2),
+                                        Text(
+                                          timeAgo,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     IconButton(
                                       onPressed: () {
                                         showOptionsBottomModal(
                                             widget.projectList[index]);
                                       },
-                                      icon: const Icon(Icons.more_vert),
+                                      icon: const Icon(
+                                        Icons.more_vert,
+                                        color: Colors.grey,
+                                      ),
                                     )
                                   ],
                                 ),
@@ -362,10 +379,19 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
 
                                 const SizedBox(height: 10),
                                 // Description
+
                                 Text(
-                                  "Student are looking for: \n\t ${list[index]["description"]}",
+                                  'Student are looking for: '.tr(),
                                   style: const TextStyle(
                                     overflow: TextOverflow.visible,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  "\n\t ${list[index]["description"]}",
+                                  style: const TextStyle(
+                                    overflow: TextOverflow.visible,
+                                    color: Colors.black,
                                   ),
                                 ),
                                 const SizedBox(height: 10),
@@ -375,15 +401,33 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Proposals: ${list[index]["proposals"].where((element) => element["statusFlag"] == 0).length ?? 0}",
+                                      'Proposals: '.tr(),
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    const SizedBox(width: 2),
+                                    Text(
+                                      "${list[index]["proposals"].where((element) => element["statusFlag"] == 0).length ?? 0}",
+                                      style: TextStyle(color: Colors.black),
                                     ),
                                     const SizedBox(width: 20),
                                     Text(
-                                      "Messages: ${list[index]["messages"] ?? 0}",
+                                      'Messages: '.tr(),
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    const SizedBox(width: 2),
+                                    Text(
+                                      "${list[index]["messages"] ?? 0}",
+                                      style: TextStyle(color: Colors.black),
                                     ),
                                     const SizedBox(width: 20),
                                     Text(
-                                      "Hired: ${list[index]["proposals"].where((element) => element["statusFlag"] == 3).length ?? 0}",
+                                      'Hired: '.tr(),
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    const SizedBox(width: 2),
+                                    Text(
+                                      "${list[index]["proposals"].where((element) => element["statusFlag"] == 3).length ?? 0}",
+                                      style: TextStyle(color: Colors.black),
                                     ),
                                   ],
                                 )

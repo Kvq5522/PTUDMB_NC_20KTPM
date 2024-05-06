@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:provider/provider.dart';
@@ -72,8 +73,6 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
           };
         });
       }
-
-      print(accountList);
     } catch (e) {
       routerConfig.go("/login");
     } finally {
@@ -98,6 +97,7 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      const SizedBox(height: 24.0),
                       // Display account list
                       _isLoading
                           ? const Center(
@@ -107,12 +107,13 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
                           : AccountList(accountList: accountList),
 
                       // Display feature buttons
+                      const SizedBox(height: 10.0),
                       _featureButton(
                           icon: const Icon(
                             Icons.person,
                             size: 35,
                           ),
-                          label: "Profile",
+                          label: "Profile".tr(),
                           onTap: () {
                             routerConfig.push('/profile-setting');
                           }),
@@ -122,15 +123,17 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
                             Icons.settings,
                             size: 35,
                           ),
-                          label: "Settings",
-                          onTap: () {}),
+                          label: "Settings".tr(),
+                          onTap: () {
+                            routerConfig.push('/settings');
+                          }),
 
                       _featureButton(
                           icon: const Icon(
                             Icons.logout,
                             size: 35,
                           ),
-                          label: "Log out",
+                          label: "Log out".tr(),
                           onTap: () {
                             FlutterBackgroundService().invoke("stopService");
                             _userInfoStore.reset();
@@ -153,6 +156,7 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
       },
       child: Container(
         decoration: BoxDecoration(
+          color: const Color(0xFF008ABD),
           border: Border.all(color: const Color(0xFF008ABD)),
           borderRadius: BorderRadius.circular(10),
         ),
@@ -163,7 +167,11 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
             // Display feature icon
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
-              child: icon,
+              child: Icon(
+                icon.icon,
+                color: Colors.white, // Set the color of the icon to white
+                size: icon.size,
+              ),
             ),
 
             const SizedBox(width: 30),
@@ -171,7 +179,7 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
             // Display feature label
             Text(
               label,
-              style: const TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20, color: Colors.white),
               softWrap: true,
             ),
           ],

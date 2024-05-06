@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -180,22 +181,23 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //title text
-                    const Center(
+                    Center(
                       child: Text(
-                        'Welcome to Student Hub',
+                        'Welcome to Student Hub'.tr(),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 24.0, fontWeight: FontWeight.bold),
                       ),
                     ),
                     const SizedBox(height: 16.0),
-                    const Text(
-                      'Tell us about yourself and we will be on your way to connect with the real world',
+                    Text(
+                      'Tell us about yourself and you will be on your way to connect with real-world projects'
+                          .tr(),
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16.0),
+                      style: const TextStyle(fontSize: 16.0),
                     ),
                     const SizedBox(height: 16.0),
-                    const Text('Techstack'),
+                    Text('Techstack'.tr()),
                     const SizedBox(height: 16.0),
 
                     //Techstack dropdown
@@ -219,8 +221,9 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                         isExpanded: true,
                         underline: const SizedBox(),
                         icon: const Icon(Icons.arrow_drop_down),
-                        style: const TextStyle(
-                            color: Colors.black, fontSize: 16.0),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 16.0),
                         value: _loadedTechStack,
                         onChanged: (Map<String, dynamic>? newValue) {
                           setState(() {
@@ -241,7 +244,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                       ),
                     ),
                     const SizedBox(height: 16.0),
-                    const Text('Skillset'),
+                    Text('Skillset'.tr()),
                     const SizedBox(height: 16.0),
 
                     //Skillset dropdown
@@ -321,9 +324,9 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              'Languages',
-                              style: TextStyle(
+                            Text(
+                              'Languages'.tr(),
+                              style: const TextStyle(
                                   fontSize: 20.0, fontWeight: FontWeight.bold),
                             ),
                             IconButton(
@@ -442,9 +445,9 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              'Education',
-                              style: TextStyle(
+                            Text(
+                              'Education'.tr(),
+                              style: const TextStyle(
                                   fontSize: 20.0, fontWeight: FontWeight.bold),
                             ),
                             IconButton(
@@ -739,7 +742,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          child: const Text('Next'),
+                          child: Text('Next'.tr()),
                         ),
                       ),
                     ),
@@ -873,7 +876,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
 
                         // Skillsets
                         const SizedBox(height: 20),
-                        const Text("Skillsets"),
+                        Text('Skillsets'.tr()),
                         const SizedBox(height: 10),
                         MultiSelectChip(
                           itemList: _defaultSkillSet,
@@ -1027,25 +1030,26 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Center(
+                    Center(
                       child: Text(
-                        "Experiences",
-                        style: TextStyle(
+                        "Experiences".tr(),
+                        style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      "Tell us about yourself and you will be on your way connecting with real-world projects.",
+                    Text(
+                      "Tell us about yourself and you will be on your way to connect with real-world projects"
+                          .tr(),
                     ),
                     const SizedBox(height: 20),
                     // Display project list
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text("Projects"),
+                        Text("Projects".tr()),
                         // Add project icon
                         GestureDetector(
                           onTap: () {
@@ -1140,8 +1144,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  child: const Text(
-                                    "Back",
+                                  child: Text(
+                                    "Back".tr(),
                                   ),
                                 )
                               : const SizedBox(),
@@ -1224,11 +1228,11 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                 ),
                               ),
                               child: step < 3
-                                  ? const Text(
-                                      "Next",
+                                  ? Text(
+                                      "Next".tr(),
                                     )
-                                  : const Text(
-                                      "Continue",
+                                  : Text(
+                                      "Continue".tr(),
                                     )),
                         ],
                       ),
@@ -1250,31 +1254,32 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'CV & Transcript',
-                    style: TextStyle(
+                    'CV & Transcript'.tr(),
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24.0,
                     ),
                   ),
-                  SizedBox(width: 8.0),
+                  const SizedBox(width: 8.0),
                 ],
               ),
               const SizedBox(height: 16.0),
-              const Text(
-                'Tell us about yourself and you will be on your way to connect with real-world projects',
-                style: TextStyle(
+              Text(
+                'Tell us about yourself and you will be on your way to connect with real-world projects'
+                    .tr(),
+                style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 14.0,
                 ),
               ),
               const SizedBox(height: 36.0),
-              const Text(
-                'Resume/CV (*)',
-                style: TextStyle(
+              Text(
+                'Resume/CV (*)'.tr(),
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16.0,
                 ),
@@ -1346,9 +1351,9 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                 },
               ),
               const SizedBox(height: 16.0),
-              const Text(
-                'Transcript (*)',
-                style: TextStyle(
+              Text(
+                'Transcript (*)'.tr(),
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16.0,
                 ),
@@ -1443,7 +1448,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        child: const Text('Back'),
+                        child: Text('Back'.tr()),
                       ),
                       const SizedBox(width: 10),
                       ElevatedButton(
@@ -1511,7 +1516,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        child: const Text('Continue'),
+                        child: Text('Continue'.tr()),
                       ),
                     ],
                   ),

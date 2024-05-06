@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:studenthub/constants/interview_mock.dart';
@@ -122,9 +123,9 @@ class _InterviewScreenState extends State<InterviewScreen> {
                       onPressed: () {
                         routerConfig.push('/video-call');
                       },
-                      child: const Text(
-                        "Join",
-                        style: TextStyle(
+                      child: Text(
+                        'Join'.tr(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
                         ),

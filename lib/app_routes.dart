@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/dashboard_detail_screen.dart';
 import 'package:studenthub/screens/dashboard/dashboard_overview/widget/proposals_active.dart';
 import 'package:studenthub/screens/interviews/interview.dart';
-
+import 'package:studenthub/screens/user/settings/settings_screen.dart';
 import 'package:studenthub/screens/project/project_apply/project_apply_screen.dart';
 import 'package:studenthub/screens/project/project_detail/project_detail_screen.dart';
 import 'package:studenthub/screens/layout.dart';
@@ -75,6 +75,10 @@ GoRouter routerConfig = GoRouter(
     GoRoute(
       path: '/profile-setting',
       builder: (context, state) => const ProfileSettingScreen(),
+    ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingScreen(),
     ),
     GoRoute(
       path: '/welcome',
