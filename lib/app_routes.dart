@@ -150,7 +150,19 @@ GoRouter routerConfig = GoRouter(
 
     GoRoute(
       path: '/video-call',
-      builder: (context, state) => const VideoCallScreen(),
+      builder: (context, state) {
+        final Map<String, dynamic> extraInfo =
+            state.extra as Map<String, dynamic>;
+        final String conferenceID = extraInfo['conferenceID'] as String;
+        final String username = extraInfo['username'] as String;
+        final BigInt userId = BigInt.parse(extraInfo['userId'].toString());
+
+        return VideoCallScreen(
+          conferenceID: conferenceID,
+          username: username,
+          userId: userId,
+        );
+      },
     ),
     GoRoute(
       path: '/active-proposal/:projectId/:proposalId',
