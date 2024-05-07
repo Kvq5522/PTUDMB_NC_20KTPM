@@ -37,9 +37,11 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
 
       var userInfo = await _authService.getUserInfo(_userInfoStore.token);
 
-      setState(() {
-        _studentId = (userInfo["student"]["id"]).toString();
-      });
+      if (mounted) {
+        setState(() {
+          _studentId = (userInfo["student"]["id"]).toString();
+        });
+      }
 
       List<Map<String, dynamic>> projects =
           await _projectService.getAllSavedProject(
@@ -47,10 +49,12 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
 
       print("projects length: ${projects.length}");
 
-      setState(() {
-        _isLoading = false;
-        _savedProjects = projects;
-      });
+      if (mounted) {
+        setState(() {
+          _savedProjects = projects;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       print(e);
       if (mounted) {

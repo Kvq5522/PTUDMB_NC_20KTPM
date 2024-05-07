@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:studenthub/screens/dashboard/dashboard_detail/dashboard_detail_proposal_detail.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/dashboard_detail_screen.dart';
 import 'package:studenthub/screens/dashboard/dashboard_overview/widget/proposals_active.dart';
 import 'package:studenthub/screens/interviews/interview.dart';
@@ -128,7 +129,15 @@ GoRouter routerConfig = GoRouter(
         return DetailProjectScreen(projectId: projectId, isInfo: isInfo);
       },
     ),
+    GoRoute(
+      path: '/project/proposal/:studentId',
+      builder: (context, state) {
+        final studentId = state.pathParameters['studentId'] as String;
 
+        return DashboardDetailProposalDetail(studentId: studentId);
+        // return ActiveProposals(studentId: studentId);
+      },
+    ),
     GoRoute(
         path: '/project-apply/:projectId',
         builder: (context, state) {

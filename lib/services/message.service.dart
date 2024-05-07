@@ -55,4 +55,35 @@ class MessageService {
       rethrow;
     }
   }
+
+  Future<dynamic> sendMessage({
+    required String token,
+    required BigInt projectId,
+    required BigInt senderId,
+    required BigInt receiverId,
+    required String content,
+  }) async {
+    try {
+      Response res = await _dioClient.post(
+        "/api/message/sendMessage",
+        body: {
+          "projectId": projectId.toInt(),
+          "senderId": senderId.toInt(),
+          "receiverId": receiverId.toInt(),
+          "content": content,
+          "messageFlag": 0
+        },
+        token: token,
+      );
+
+      if (res.statusCode! >= 400) {
+        String errorMessage = res.data?["errorDetails"];
+        throw Exception(errorMessage);
+      }
+
+      return res.data?["result"];
+    } catch (_) {
+      rethrow;
+    }
+  }
 }

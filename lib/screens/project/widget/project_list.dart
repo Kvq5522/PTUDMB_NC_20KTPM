@@ -41,10 +41,12 @@ class _ProjectListState extends State<ProjectList> {
 
       _hasMore = projects.isNotEmpty;
 
-      setState(() {
-        _projects.addAll(projects);
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _projects = projects;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       if (mounted) {
         setState(() {
@@ -71,10 +73,12 @@ class _ProjectListState extends State<ProjectList> {
 
       _hasMore = projects.isNotEmpty;
 
-      setState(() {
-        _projects.addAll(projects);
-        _loadingMore = false;
-      });
+      if (mounted) {
+        setState(() {
+          _projects.addAll(projects);
+          _loadingMore = false;
+        });
+      }
     } catch (e) {
       if (mounted) {
         setState(() {

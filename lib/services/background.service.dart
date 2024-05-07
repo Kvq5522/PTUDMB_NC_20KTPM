@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -48,8 +49,14 @@ Future<void> initSocket(String token, String userId) async {
 
   socket.on('NOTI_$userId', (data) {
     try {
-      _notificationService.showNotification(
-          title: data?["title"], body: data?['content']);
+      print(jsonEncode(data));
+
+      if (data?["notification"]?.containsKey("message") == true) {
+        _notificationService.showNotification(
+            title: data?["notification"]?["title"],
+            body: data?["notification"]?["message"]?["content"]);
+        return;
+      }
     } catch (e) {
       print("Error: ${e.toString()}");
     }

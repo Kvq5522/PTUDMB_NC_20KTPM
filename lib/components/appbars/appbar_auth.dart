@@ -22,17 +22,7 @@ class Auth_AppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Theme.of(context).colorScheme.background,
       // elevation: 2,
       // shadowColor: Colors.black,
-      leading: GoRouter.of(context).canPop()
-          ? IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios_rounded,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              onPressed: () {
-                GoRouter.of(context).pop();
-              },
-            )
-          : null,
+      iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.white),
       // actions: [
       //   IconButton(
       //     onPressed: () async {

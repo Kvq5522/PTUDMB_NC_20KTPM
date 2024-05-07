@@ -27,21 +27,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       // elevation: 2,
       // shadowColor: Colors.black,
-      leading: routerConfig.canPop()
-          ? IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_rounded,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                try {
-                  routerConfig.pop(context);
-                } catch (e) {
-                  print(e);
-                }
-              },
-            )
-          : null,
+      iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.white),
+
       actions: [
         currentPath == "/choose-user"
             ? IconButton(

@@ -85,171 +85,178 @@ class _DashboardDetailProposalListState
   }
 
   Widget proposalDetail(proposal) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey.shade300,
-          width: 1,
+    return GestureDetector(
+      onTap: () {
+        print("Proposal clicked");
+        print(proposal.toString());
+        routerConfig.push('/project/proposal/${proposal?["student"]?["id"]}');
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.grey.shade300,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(10),
         ),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                  radius: 30,
-                  backgroundImage: NetworkImage(
-                      "https://cdn-icons-png.flaticon.com/512/147/147142.png")),
-              const SizedBox(
-                width: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    proposal["student"]["user"]["fullname"],
-                    style: const TextStyle(
-                      color: Color(0xFF008ABD),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      overflow: TextOverflow.visible,
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage(
+                        "https://cdn-icons-png.flaticon.com/512/147/147142.png")),
+                const SizedBox(
+                  width: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      proposal["student"]["user"]["fullname"],
+                      style: const TextStyle(
+                        color: Color(0xFF008ABD),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        overflow: TextOverflow.visible,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "Proposals created: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(proposal["createdAt"]))}",
-                    style: const TextStyle(
-                      color: Colors.grey,
+                    Text(
+                      "Proposals created: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(proposal["createdAt"]))}",
+                      style: const TextStyle(
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(proposal["student"]["techStack"]["name"]),
-              Text('Excellent')
-              // Text(proposal['skills'])
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            proposal['coverLetter'],
-            style: const TextStyle(
-              overflow: TextOverflow.visible,
+                  ],
+                ),
+              ],
             ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                  child: ElevatedButton(
-                onPressed: () {
-                  routerConfig.push('/message_detail', extra: {
-                    "projectId": proposal["id"],
-                    "receiverId": proposal["student"]["userId"],
-                    "receiverName": proposal["student"]["user"]["fullname"],
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  textStyle: const TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(proposal["student"]["techStack"]["name"]),
+                Text('Excellent')
+                // Text(proposal['skills'])
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              proposal['coverLetter'],
+              style: const TextStyle(
+                overflow: TextOverflow.visible,
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                    child: ElevatedButton(
+                  onPressed: () {
+                    routerConfig.push('/message_detail', extra: {
+                      "projectId": proposal["id"],
+                      "receiverId": proposal["student"]["userId"],
+                      "receiverName": proposal["student"]["user"]["fullname"],
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                child: const Text(
-                  "Message",
-                  style: TextStyle(color: Colors.blue),
-                ),
-              )),
-              const SizedBox(width: 10),
-              Expanded(
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        bool? shouldContinue = await showDialog<bool>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Confirmation'),
-                              content: Text(
-                                proposal["statusFlag"] == 2
-                                    ? 'Do you want to cancel hiring?'
-                                    : 'Do you really want to send hire offer for student to this project?',
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text('Cancel'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop(false);
-                                  },
+                  child: const Text(
+                    "Message",
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                )),
+                const SizedBox(width: 10),
+                Expanded(
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          bool? shouldContinue = await showDialog<bool>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Confirmation'),
+                                content: Text(
+                                  proposal["statusFlag"] == 2
+                                      ? 'Do you want to cancel hiring?'
+                                      : 'Do you really want to send hire offer for student to this project?',
                                 ),
-                                TextButton(
-                                  child: Text('Yes'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop(true);
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('Cancel'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop(false);
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: Text('Yes'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop(true);
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
 
-                        if (shouldContinue == true) {
-                          setState(() {
-                            proposal["statusFlag"] =
-                                proposal["statusFlag"] == 2 ? 0 : 2;
-                          });
-
-                          try {
-                            await updateProject(
-                              proposal["id"],
-                              proposal["coverLetter"],
-                              proposal["statusFlag"],
-                              proposal["disableFlag"],
-                              context,
-                            );
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(e.toString()),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-
-                            print('Failed to update project: $e');
+                          if (shouldContinue == true) {
                             setState(() {
                               proposal["statusFlag"] =
                                   proposal["statusFlag"] == 2 ? 0 : 2;
                             });
+
+                            try {
+                              await updateProject(
+                                proposal["id"],
+                                proposal["coverLetter"],
+                                proposal["statusFlag"],
+                                proposal["disableFlag"],
+                                context,
+                              );
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(e.toString()),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+
+                              print('Failed to update project: $e');
+                              setState(() {
+                                proposal["statusFlag"] =
+                                    proposal["statusFlag"] == 2 ? 0 : 2;
+                              });
+                            }
                           }
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        textStyle: const TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          textStyle: const TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        proposal["statusFlag"] == 0
-                            ? "Hire"
-                            : "Sent hired offer",
-                        style: TextStyle(color: Colors.blue),
-                      ))),
-            ],
-          )
-        ],
+                        child: Text(
+                          proposal["statusFlag"] == 0
+                              ? "Hire"
+                              : "Sent hired offer",
+                          style: TextStyle(color: Colors.blue),
+                        ))),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

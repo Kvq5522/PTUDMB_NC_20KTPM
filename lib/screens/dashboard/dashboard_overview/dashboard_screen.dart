@@ -48,6 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _dashBoardService.getCompanyProjectsDashBoard(
               userInfoStore.roleId, 2, userInfoStore.token)
         ]);
+
         if (mounted) {
           setState(() {
             companyProjects = [...res[0], ...res[1], ...res[2]];

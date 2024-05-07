@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/services/message.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
+import 'package:studenthub/utils/toast.dart';
 import '../../../app_routes.dart';
 
 class MessageScreen extends StatefulWidget {
@@ -27,15 +28,22 @@ class _MessageScreenState extends State<MessageScreen> {
     super.didChangeDependencies();
     _userInfoStore = Provider.of<UserInfoStore>(context);
 
-    List<Map<String, dynamic>> chatrooms =
-        await messageService.getChatroom(token: _userInfoStore.token);
+    try {
+      List<Map<String, dynamic>> chatrooms =
+          await messageService.getChatroom(token: _userInfoStore.token);
 
-    setState(() {
-      messageList = chatrooms;
-      displayList = chatrooms;
-    });
-
-    print(chatrooms[0]);
+      if (mounted && chatrooms.isNotEmpty) {
+        setState(() {
+          messageList = chatrooms;
+          displayList = chatrooms;
+        });
+      }
+    } catch (error) {
+      print(error);
+      if (mounted) {
+        showDangerToast(context: context, message: "Failed to load chatroms");
+      }
+    }
   }
 
   @override

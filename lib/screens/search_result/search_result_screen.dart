@@ -49,15 +49,20 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               title: widget.searchQuery ?? "", token: _userInfoStore.token);
 
       // Update the state with the fetched projects
-      setState(() {
-        _projects = projects;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _projects = projects;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       print(e);
-      setState(() {
-        _isLoading = false;
-      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -133,12 +138,15 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                 // print('Selected option: $selectedOption');
                                 // print('Students needed: $studentCount');
                                 // print('Proposals less than: $proposalCount');
-                                setState(() {
-                                  _selectedOption = selectedOption;
-                                  _studentCount = int.tryParse(studentCount);
+                                if (mounted) {
+                                  setState(() {
+                                    _selectedOption = selectedOption;
+                                    _studentCount = int.tryParse(studentCount);
 
-                                  _proposalCount = int.tryParse(proposalCount);
-                                });
+                                    _proposalCount =
+                                        int.tryParse(proposalCount);
+                                  });
+                                }
                               },
                             );
                           });

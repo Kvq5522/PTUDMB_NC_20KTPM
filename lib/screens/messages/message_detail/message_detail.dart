@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
@@ -147,28 +149,33 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
     });
 
     socket.on('RECEIVE_MESSAGE', (data) {
-      final message = Message(
-        isSender: BigInt.from(data?["senderId"]) == _userInfoStore.userId
-            ? true
-            : false,
-        name: BigInt.from(data?["senderId"]) == _userInfoStore.userId
-            ? "You"
-            : widget.receiverName,
-        avatarUrl: 'https://cdn-icons-png.flaticon.com/512/147/147142.png',
-        text: data?['content'],
-        time: DateTime.now(),
-        messageFlag: data?['messageFlag'],
-      );
+      try {
+        final message = Message(
+          isSender: BigInt.from(data?["notification"]?["sender"]?["id"]) ==
+              _userInfoStore.userId,
+          name: BigInt.from(data?["notification"]?["sender"]?["id"]) ==
+                  _userInfoStore.userId
+              ? "You"
+              : data?["notification"]?["receiver"]?["fullname"],
+          avatarUrl: 'https://cdn-icons-png.flaticon.com/512/147/147142.png',
+          text: data?["notification"]?["message"]?["content"],
+          time: DateTime.parse(data?["notification"]?["message"]?["createdAt"]),
+          messageFlag: data?["notification"]?["message"]?["messageFlag"],
+        );
 
-      if (_scrollController.position.pixels !=
-          _scrollController.position.minScrollExtent) {
-        hasNewMessageScrollToBottom = true;
+        if (_scrollController.position.pixels !=
+            _scrollController.position.minScrollExtent) {
+          hasNewMessageScrollToBottom = true;
+        }
+
+        setState(() {
+          _messageList.insert(0, message);
+        });
+      } catch (e) {
+        print("Error: ${e.toString()}");
       }
-
-      setState(() {
-        _messageList.insert(0, message);
-      });
     });
+
     super.didChangeDependencies();
   }
 
@@ -257,16 +264,23 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
     }
   }
 
-  void _sendMessage(String message) {
-    socket.emit("SEND_MESSAGE", {
-      "content": message,
-      "projectId": int.parse(widget.projectId),
-      "senderId": _userInfoStore.userId.toInt(),
-      "receiverId": int.parse(widget.receiverId),
-      "messageFlag": 0
-    });
+  void _sendMessage(String message) async {
+    try {
+      await _messageService.sendMessage(
+          token: _userInfoStore.token,
+          projectId: BigInt.parse(widget.projectId),
+          senderId: _userInfoStore.userId,
+          receiverId: BigInt.parse(widget.receiverId),
+          content: message);
 
-    _messageController.clear();
+      _messageController.clear();
+    } catch (e) {
+      print('Error sending message: $e');
+      if (mounted) {
+        showDangerToast(
+            context: context, message: "Can't send message, please try again");
+      }
+    }
   }
 
   void _sendInvite(ScheduleItem schedule) {

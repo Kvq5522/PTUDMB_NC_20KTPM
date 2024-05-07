@@ -127,7 +127,7 @@ class _ProjectApplyScreenState extends State<ProjectApplyScreen> {
                       context,
                     );
 
-                    routerConfig.push("/dashboard");
+                    routerConfig.go("/dashboard");
                   },
                   child: Text(
                     'Apply'.tr(),

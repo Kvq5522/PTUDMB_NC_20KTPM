@@ -7,7 +7,7 @@ class DashBoardService {
   Future<List<Map<String, dynamic>>> getCompanyProjectsDashBoard(
       BigInt companyId, int typeFlag, String token) async {
     Response res = await _dioClient.get(
-      "/api/project/company/$companyId?typeFlag=$typeFlag",
+      "/api/project/company/$companyId",
       queries: {
         "companyId": companyId,
         "typeFlag": typeFlag,
@@ -269,5 +269,23 @@ class DashBoardService {
     } catch (_) {
       rethrow;
     }
+  }
+
+  Future<Map<String, dynamic>> getStudentProfile(
+      String studentId, String token) async {
+    Response res = await _dioClient.get(
+      "/api/profile/student/$studentId",
+      token: token,
+    );
+
+    print(res);
+
+    if (res.statusCode! >= 400) {
+      String errorMessage = res.data?["errorDetails"];
+
+      throw Exception(errorMessage);
+    }
+
+    return Map<String, dynamic>.from(res.data?["result"]);
   }
 }
