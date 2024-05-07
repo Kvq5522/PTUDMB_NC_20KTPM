@@ -43,6 +43,27 @@ class ProjectService {
     }
   }
 
+  Future<List<Map<String, dynamic>>> searchProject(
+      {required String title,
+      required int page,
+      required int perPage,
+      required String token}) async {
+    try {
+      Response res = await _dioClient.get(
+          "/api/project?title=$title&page=$page&perPage=$perPage",
+          token: token);
+
+      if (res.statusCode! >= 400) {
+        String errorMessage = res.data?["errorDetails"] ?? "Unknown error";
+        throw Exception(errorMessage);
+      }
+
+      return List<Map<String, dynamic>>.from(res.data?["result"]);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   //Get all Saved project
   Future<List<Map<String, dynamic>>> getAllSavedProject(
       {required String studentId, required String token}) async {

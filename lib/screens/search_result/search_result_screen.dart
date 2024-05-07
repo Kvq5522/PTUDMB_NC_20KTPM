@@ -12,7 +12,6 @@ import 'package:studenthub/screens/project/widget/project_item.dart';
 class SearchResultScreen extends StatefulWidget {
   final String? searchQuery;
 
-  // Thêm tham số searchQuery vào hàm tạo
   const SearchResultScreen({Key? key, required this.searchQuery})
       : super(key: key);
 
@@ -25,6 +24,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   late UserInfoStore _userInfoStore;
   List<Map<String, dynamic>> _projects = [];
   bool _isLoading = false;
+  bool _loadingMore = false;
+  int _page = 1;
+  bool _hasMore = true;
   int? _selectedOption;
   int? _studentCount;
   int? _proposalCount;
@@ -32,7 +34,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-
     _userInfoStore = Provider.of<UserInfoStore>(context);
     _loadProjects();
   }
@@ -43,24 +44,54 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     });
 
     try {
-      // Fetch projects using the API service
-      List<Map<String, dynamic>> projects =
-          await _projectService.searchProjectByTitle(
-              title: widget.searchQuery ?? "", token: _userInfoStore.token);
+      List<Map<String, dynamic>> projects = await _projectService.searchProject(
+        title: widget.searchQuery ?? "",
+        page: _page,
+        perPage: 10,
+        token: _userInfoStore.token,
+      );
 
-      // Update the state with the fetched projects
+      _hasMore = projects.isNotEmpty;
+
+      setState(() {
+        _projects.addAll(projects);
+        _isLoading = false;
+      });
+    } catch (e) {
       if (mounted) {
         setState(() {
-          _projects = projects;
           _isLoading = false;
         });
       }
+    }
+  }
+
+  void _loadMoreProjects() async {
+    if (_loadingMore || !_hasMore) return;
+
+    setState(() {
+      _loadingMore = true;
+    });
+
+    try {
+      _page++;
+      List<Map<String, dynamic>> projects = await _projectService.searchProject(
+        title: widget.searchQuery ?? "",
+        page: _page,
+        perPage: 10,
+        token: _userInfoStore.token,
+      );
+
+      _hasMore = projects.isNotEmpty;
+
+      setState(() {
+        _projects.addAll(projects);
+        _loadingMore = false;
+      });
     } catch (e) {
-      print(e);
-    } finally {
       if (mounted) {
         setState(() {
-          _isLoading = false;
+          _loadingMore = false;
         });
       }
     }
@@ -78,7 +109,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  GoRouter.of(context).pop();
+                  routerConfig.go("/project");
                 },
               )
             : null,
@@ -171,53 +202,75 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           ),
           // ProjectList(),
           Expanded(
-            child: _isLoading
+            child: _isLoading && _projects.isEmpty
                 ? const Center(
                     child: const CircularProgressIndicator(
                       color: Color(0xFF008ABD),
                     ),
                   )
-                : SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 15),
-                      child: _projects.isEmpty
-                          ? const Center(
-                              child: Text('Không có dự án nào.'),
-                            )
-                          : Column(
-                              children: _projects
-                                  .where((project) =>
-                                      (_selectedOption == null ||
-                                          _selectedOption == -1 ||
-                                          project['projectScopeFlag'] ==
-                                              _selectedOption) &&
-                                      (_studentCount == null ||
-                                          project['numberOfStudents'] ==
-                                              _studentCount) &&
-                                      (_proposalCount == null ||
-                                          project['countProposals'] ==
-                                              _proposalCount))
-                                  .map((project) {
-                                return ProjectItem(
-                                  projectId: project['id'],
-                                  createdAt: project['createdAt'],
-                                  updatedAt: project['updatedAt'],
-                                  deletedAt: project['deletedAt'],
-                                  companyId: project['companyId'],
-                                  projectScopeFlag: project['projectScopeFlag'],
-                                  title: project['title'],
-                                  description: project['description'],
-                                  numberOfStudents: project['numberOfStudents'],
-                                  typeFlag: project['typeFlag'],
-                                  countProposals: project['countProposals'],
-                                  isFavorite: project['isFavorite'],
-                                );
-                              }).toList(),
-                            ),
+                : NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification scrollInfo) {
+                      if (!_loadingMore &&
+                          _hasMore &&
+                          scrollInfo.metrics.pixels ==
+                              scrollInfo.metrics.maxScrollExtent) {
+                        _loadMoreProjects();
+                      }
+                      return true;
+                    },
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        child: _projects.isEmpty
+                            ? const Center(
+                                child: Text('Project not found'),
+                              )
+                            : Column(
+                                children: _projects
+                                    .where((project) =>
+                                        (_selectedOption == null ||
+                                            _selectedOption == -1 ||
+                                            project['projectScopeFlag'] ==
+                                                _selectedOption) &&
+                                        (_studentCount == null ||
+                                            project['numberOfStudents'] ==
+                                                _studentCount) &&
+                                        (_proposalCount == null ||
+                                            project['countProposals'] ==
+                                                _proposalCount))
+                                    .map((project) {
+                                  return ProjectItem(
+                                    projectId: project['id'],
+                                    createdAt: project['createdAt'],
+                                    updatedAt: project['updatedAt'],
+                                    deletedAt: project['deletedAt'],
+                                    companyId: project['companyId'],
+                                    projectScopeFlag:
+                                        project['projectScopeFlag'],
+                                    title: project['title'],
+                                    description: project['description'],
+                                    numberOfStudents:
+                                        project['numberOfStudents'],
+                                    typeFlag: project['typeFlag'],
+                                    countProposals: project['countProposals'],
+                                    isFavorite: project['isFavorite'],
+                                  );
+                                }).toList(),
+                              ),
+                      ),
                     ),
                   ),
           ),
+          if (_loadingMore)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: CircularProgressIndicator(
+                  color: Color(0xFF008ABD),
+                ),
+              ),
+            ),
         ],
       ),
     );
