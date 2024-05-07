@@ -160,5 +160,15 @@
 
   "Proposals: ": "Proposals: ",
   "Messages: ": "Messages: ",
-  "Hired: ": "Hired: "
+  "Hired: ": "Hired: ",
+
+  "Enter the email address associated with your account.": "Enter the email address associated with your account.",
+  "Send": "Send",
+  "Forgot password?": "Forgot password?",
+  "Reset Password": "Reset Password",
+  "Change password": "Change password",
+  "Old password": "Old password",
+  "New password": "New password",
+  "Confirm new password": "Confirm new password",
+  "Reset password": "Reset password"
 }

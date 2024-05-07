@@ -3,15 +3,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/services/auth.service.dart';
+import 'package:studenthub/utils/toast.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import '../../app_routes.dart';
 import '../../components/appbars/appbar_auth.dart';
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
-class LoginScreen extends StatelessWidget {
+class forgotPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
           children: <Widget>[
             SizedBox(height: MediaQuery.of(context).size.height * 0.125),
             Text(
-              "Sign In".tr(),
+              "Reset Password".tr(),
               style: TextStyle(
                 fontSize: 30.0,
                 fontWeight: FontWeight.bold,
@@ -37,34 +37,27 @@ class LoginScreen extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
+            const SizedBox(height: 16.0),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Text(
+                "Enter the email address associated with your account.".tr(),
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                  shadows: [
+                    Shadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      offset: Offset(1.0, 1.0),
+                      blurRadius: 1.0,
+                    ),
+                  ],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
             LoginForm(),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-        color: Theme.of(context).colorScheme.background,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              "Don't have a Student Hub account?".tr(),
-              style: TextStyle(
-                fontSize: 16.0,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            ElevatedButton(
-              onPressed: () {
-                routerConfig.pushReplacement('/signup_options');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF008ABD),
-              ),
-              child:
-                  Text('Sign Up'.tr(), style: TextStyle(color: Colors.white)),
-            ),
           ],
         ),
       ),
@@ -90,7 +83,6 @@ class _LoginFormState extends State<LoginForm> {
   String? _errorMessage;
 
   late UserInfoStore _userInfoStore;
-  bool _isPasswordVisible = false;
 
   @override
   void didChangeDependencies() {
@@ -107,7 +99,6 @@ class _LoginFormState extends State<LoginForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            SizedBox(height: 18.0),
             Text('Email'),
             TextFormField(
               controller: _emailController,
@@ -143,107 +134,38 @@ class _LoginFormState extends State<LoginForm> {
               cursorColor: const Color(0xFF008ABD),
             ),
             SizedBox(height: 20.0),
-            Text('Password'),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _passwordController,
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Password is required';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.black),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: const Color(0xFF008ABD)),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      filled: true,
-                      prefixIcon: Icon(Icons.lock_outline, color: Colors.black),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Colors.black,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                      ),
-                      fillColor: Colors.grey[
-                          200], // Add a background color for better contrast
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 12.0,
-                          horizontal: 16.0), // Adjust padding as needed
-                    ),
-                    obscureText: !_isPasswordVisible,
-                    style: TextStyle(color: Colors.black),
-                    cursorColor: const Color(0xFF008ABD),
-                  ),
-                ),
-              ],
-            ),
-            if (_errorMessage != null)
-              Text(
-                _errorMessage!,
-                style: TextStyle(color: Colors.red, fontSize: 16),
-              ),
-            const SizedBox(height: 8.0),
-            Container(
-              alignment: Alignment.centerRight,
-              child: GestureDetector(
-                onTap: () {
-                  routerConfig.push('/forgot_password');
-                },
-                child: Text(
-                  'Forgot password?'.tr(),
-                  style: TextStyle(
-                    color: const Color(0xFF008ABD),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 30.0),
+            const SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate() && !_isLoading) {
-                  // Form is validated, process login
-                  // Your login logic here
                   try {
                     setState(() {
                       _isLoading = true;
                       _errorMessage = null;
                     });
 
-                    String token = await _authService.signIn(
-                        _emailController.text, _passwordController.text);
+                    String forgotPassword = await _authService
+                        .forgotPassword(_emailController.text);
 
-                    Map<String, dynamic> userInfo =
-                        await _authService.getUserInfo(token);
-
-                    FlutterBackgroundService().invoke("setAsBackground", {
-                      "token": token,
-                      "userId": userInfo['id'].toString(),
-                    });
-
-                    _userInfoStore.setToken(token);
-                    _userInfoStore.setUserId(BigInt.from(userInfo['id']));
-
-                    routerConfig.go('/choose-user');
+                    // Success handling
+                    if (mounted) {
+                      showSuccessToast(
+                          context: context, message: forgotPassword);
+                      routerConfig.pushReplacement(
+                          '/login'); // Assuming this is the navigation method you use
+                    }
                   } catch (e) {
                     setState(() {
                       _errorMessage = e.toString();
                     });
+
+                    // Error handling
+                    if (mounted) {
+                      showDangerToast(
+                          context: context,
+                          message:
+                              _errorMessage ?? "An unknown error occurred");
+                    }
                   } finally {
                     if (mounted) {
                       setState(() {
@@ -267,7 +189,7 @@ class _LoginFormState extends State<LoginForm> {
                   : Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12.0),
                       child: Text(
-                        'Login'.tr(),
+                        'Send'.tr(),
                         style: TextStyle(fontSize: 18.0, color: Colors.white),
                       ),
                     ),

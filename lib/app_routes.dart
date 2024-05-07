@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/dashboard_detail_screen.dart';
 import 'package:studenthub/screens/dashboard/dashboard_overview/widget/proposals_active.dart';
 import 'package:studenthub/screens/interviews/interview.dart';
+import 'package:studenthub/screens/user/reset_password/reset_password_screen.dart';
 import 'package:studenthub/screens/user/settings/settings_screen.dart';
 import 'package:studenthub/screens/project/project_apply/project_apply_screen.dart';
 import 'package:studenthub/screens/project/project_detail/project_detail_screen.dart';
@@ -19,6 +20,7 @@ import 'package:studenthub/screens/welcome/welcome_screen.dart';
 import 'package:studenthub/screens/messages/message_detail/message_detail.dart';
 import 'package:studenthub/screens/dashboard/dashboard_posting/dashboard_project_post_screen.dart';
 import 'package:studenthub/screens/notifications/notifications.dart';
+import 'package:studenthub/screens/authentication/forgot_password.dart';
 
 GoRouter routerConfig = GoRouter(
   debugLogDiagnostics: true,
@@ -36,6 +38,14 @@ GoRouter routerConfig = GoRouter(
     GoRoute(
       path: '/signup_options',
       builder: (context, state) => const SignUpOptions(),
+    ),
+    GoRoute(
+      path: '/forgot_password',
+      builder: (context, state) => forgotPasswordScreen(),
+    ),
+    GoRoute(
+      path: '/reset_password',
+      builder: (context, state) => const ResetPasswordScreen(),
     ),
     GoRoute(
       path: '/signup',

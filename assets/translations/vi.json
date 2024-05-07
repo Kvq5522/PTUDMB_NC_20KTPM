@@ -157,5 +157,15 @@
 
   "Proposals: ": "Đề xuất: ",
   "Messages: ": "Tin nhắn: ",
-  "Hired: ": "Đã tuyển: "
+  "Hired: ": "Đã tuyển: ",
+
+  "Enter the email address associated with your account.": "Nhập địa chỉ email được liên kết với tài khoản của bạn.",
+  "Send": "Gửi",
+  "Forgot password?": "Quên mật khẩu?",
+  "Reset Password": "Quên mật khẩu",
+  "Change password": "Đổi mật khẩu",
+  "Old password": "Mật khẩu cũ",
+  "New password": "Mật khẩu mới",
+  "Confirm new password": "Xác nhận mật khẩu",
+  "Reset password": "Đổi mật khẩu"
 }
