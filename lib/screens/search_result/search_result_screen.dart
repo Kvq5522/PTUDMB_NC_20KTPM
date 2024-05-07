@@ -53,10 +53,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
       _hasMore = projects.isNotEmpty;
 
-      setState(() {
-        _projects.addAll(projects);
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _projects.addAll(projects);
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       if (mounted) {
         setState(() {
@@ -83,11 +85,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       );
 
       _hasMore = projects.isNotEmpty;
-
-      setState(() {
-        _projects.addAll(projects);
-        _loadingMore = false;
-      });
+      if (mounted) {
+        setState(() {
+          _projects.addAll(projects);
+          _loadingMore = false;
+        });
+      }
     } catch (e) {
       if (mounted) {
         setState(() {
