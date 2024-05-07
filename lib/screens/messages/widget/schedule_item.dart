@@ -1,10 +1,13 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/app_routes.dart';
+import 'package:studenthub/services/message.service.dart';
 
 class ScheduleItem extends StatelessWidget {
+  final int id;
   final bool isSender;
-  final String name;
   final String avatarUrl;
   final String title;
   final String duration;
@@ -18,11 +21,28 @@ class ScheduleItem extends StatelessWidget {
   final int messageFlag;
   final String username;
   final BigInt userId;
+  final MessageService _messageService = MessageService();
 
-  const ScheduleItem(
+  // Future<void> deleteInterview(
+  //   String title,
+  //   String content,
+  //   BuildContext context,
+  // ) async {
+  //   try {
+  //     await _messageService.deleteInterview();
+  //     String message = 'Interview posted successfully';
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text(message)),
+  //     );
+  //   } catch (e) {
+  //     print('Failed to post interview: $e');
+  //   }
+  // }
+
+  ScheduleItem(
       {super.key,
+      required this.id,
       required this.isSender,
-      required this.name,
       required this.avatarUrl,
       required this.title,
       required this.duration,
@@ -39,7 +59,6 @@ class ScheduleItem extends StatelessWidget {
   Map<String, dynamic> toJson() {
     return {
       'isSender': isSender,
-      'name': name,
       'avatarUrl': avatarUrl,
       'title': title,
       'duration': duration,
@@ -87,7 +106,7 @@ class ScheduleItem extends StatelessWidget {
                 children: [
                   if (!isSender)
                     Text(
-                      name,
+                      "name",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -332,7 +351,13 @@ class OptionsDialog extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     color: Colors.grey),
               ),
-              onTap: () {
+              onTap: () async {
+                // try {
+                //   await deledeleteInterview(
+                //     id,
+                //     token,
+                //   );
+                // } catch (e) {}
                 Navigator.of(context).pop(); // Close dialog
               },
             ),

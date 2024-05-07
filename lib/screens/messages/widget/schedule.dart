@@ -1,16 +1,24 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/screens/messages/widget/schedule_item.dart';
+import 'package:studenthub/services/message.service.dart';
 
 class MySchedule extends StatefulWidget {
-  final Function(ScheduleItem) onSendInvite;
   final String username;
   final BigInt userId;
-  const MySchedule(
-      {super.key,
-      required this.onSendInvite,
-      required this.username,
-      required this.userId});
+  final String projectId;
+  final String receiverId;
+  final String token;
+  const MySchedule({
+    super.key,
+    required this.username,
+    required this.userId,
+    required this.token,
+    required this.projectId,
+    required this.receiverId,
+  });
 
   @override
   State<MySchedule> createState() => _MyScheduleState();
@@ -25,6 +33,7 @@ class _MyScheduleState extends State<MySchedule> {
   bool isJobTitleEmpty = false;
   bool isDateCheck = false;
   bool isTimeCheck = false;
+  final MessageService _messageService = MessageService();
   @override
   void dispose() {
     // Dispose the controller
@@ -108,6 +117,44 @@ class _MyScheduleState extends State<MySchedule> {
       return minutes > 0 ? '$minutes minutes' : '';
     } else {
       return '$hours hours ${minutes > 0 ? '$minutes minutes' : ''}';
+    }
+  }
+
+  Future<void> postInterview(
+    String title,
+    String content,
+    String startTime,
+    String endTime,
+    int projectId,
+    String senderId,
+    int receiverId,
+    String meetingCode,
+    String meetingId,
+    String expiredAt,
+    BuildContext context,
+  ) async {
+    try {
+      await _messageService.postInterview(
+        title,
+        content,
+        startTime,
+        endTime,
+        projectId,
+        senderId,
+        receiverId,
+        meetingCode,
+        meetingId,
+        expiredAt,
+        widget.token,
+      );
+      if (mounted) {
+        String message = 'Interview posted successfully';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+      }
+    } catch (e) {
+      print('Failed to post interview: $e');
     }
   }
 
@@ -393,29 +440,34 @@ class _MyScheduleState extends State<MySchedule> {
                               if (!isJobTitleEmpty &&
                                   _isStartTimeBeforeEndTime() &&
                                   _isDurationValid()) {
-                                ScheduleItem scheduleItem = ScheduleItem(
-                                  isSender: true,
-                                  name: "You",
-                                  avatarUrl:
-                                      "https://cdn-icons-png.flaticon.com/512/147/147142.png",
-                                  title: jobTitleController.text,
-                                  duration: durationTime,
-                                  day: "Thursday",
-                                  date:
-                                      "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}",
-                                  timeMeeting:
-                                      "${selectedTime.hour}:${selectedTime.minute}",
-                                  endDay: "Thursday",
-                                  endDate:
-                                      "${selectedEndDate.day}/${selectedEndDate.month}/${selectedEndDate.year}",
-                                  endTimeMeeting:
-                                      "${selectedEndTime.hour}:${selectedEndTime.minute}",
-                                  time: DateTime.now(),
-                                  messageFlag: 1,
-                                  username: widget.username,
-                                  userId: widget.userId,
-                                );
-                                widget.onSendInvite(scheduleItem);
+                                try {
+                                  String formattedSelectedDate =
+                                      selectedDate.toIso8601String();
+                                  String formattedSelectedEndDate =
+                                      selectedEndDate.toIso8601String();
+                                  String formattedBigInt =
+                                      widget.userId.toString();
+                                  postInterview(
+                                    jobTitleController.text,
+                                    'content',
+                                    formattedSelectedDate,
+                                    formattedSelectedEndDate,
+                                    int.parse(widget.projectId),
+                                    formattedBigInt,
+                                    int.parse(widget.receiverId),
+                                    "meeting_code",
+                                    jobTitleController.text,
+                                    formattedSelectedEndDate,
+                                    context,
+                                  );
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e.toString()),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
                                 Navigator.pop(context);
                                 // print('Title: ${jobTitleController.text}');
                                 // print(

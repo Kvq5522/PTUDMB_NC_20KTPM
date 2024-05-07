@@ -16,6 +16,7 @@ import 'package:studenthub/stores/user_info/user_info.dart';
 import '../../../constants/conservation_mock.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:studenthub/utils/toast.dart';
+import 'package:intl/intl.dart';
 
 class MessageDetailScreen extends StatefulWidget {
   final String projectId;
@@ -34,7 +35,7 @@ class MessageDetailScreen extends StatefulWidget {
 
 class _MessageDetailScreen extends State<MessageDetailScreen> {
   // final MessageService _messageService = MessageService();
-  List<Message> _messageList = [];
+  List<dynamic> _messageList = [];
   bool _isLoading = false;
   int page = 1;
   bool hasNewMessageScrollToBottom = false;
@@ -175,13 +176,56 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         print("Error: ${e.toString()}");
       }
     });
+    socket.on('RECEIVE_INTERVIEW', (data) {
+      print(data["notification"]["message"]);
+      String iso8601StringStart =
+          data?["notification"]["message"]["interview"]["startTime"];
+      DateTime dateTimeStart = DateTime.parse(iso8601StringStart);
+      String iso8601StringEnd =
+          data?["notification"]["message"]["interview"]["startTime"];
+      DateTime dateTimeEnd = DateTime.parse(iso8601StringEnd);
 
+      final schedule = ScheduleItem(
+        id: data?["notification"]["message"]["interview"]["id"],
+        isSender: BigInt.from(data?["notification"]["message"]["senderId"]) ==
+                _userInfoStore.userId
+            ? true
+            : false,
+        avatarUrl: 'https://cdn-icons-png.flaticon.com/512/147/147142.png',
+        // name: BigInt.from(data?["notification"]["message"]["senderId"]) ==
+        //         _userInfoStore.userId
+        //     ? "You"
+        //     : widget.receiverName,
+        title: data?["notification"]["message"]["interview"]["title"],
+        duration: "1 hour",
+        day: "Thursday",
+        date: DateFormat('dd/MM/yyyy').format(dateTimeStart),
+        timeMeeting: DateFormat('HH:mm').format(dateTimeStart),
+        endDay: "Thursday",
+        endDate: DateFormat('dd/MM/yyyy').format(dateTimeEnd),
+        endTimeMeeting: DateFormat('HH:mm').format(dateTimeEnd),
+        time: DateTime.now(),
+        username: _userInfoStore.username,
+        userId: _userInfoStore.userId,
+        messageFlag: 1,
+      );
+
+      if (_scrollController.position.pixels !=
+          _scrollController.position.minScrollExtent) {
+        hasNewMessageScrollToBottom = true;
+      }
+
+      setState(() {
+        _messageList.insert(0, schedule);
+      });
+    });
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     socket.off("RECEIVE_MESSAGE");
+    socket.off("RECEIVE_INTERVIEW");
     socket.disconnect();
     _messageController.dispose();
     _scrollController.dispose();
@@ -218,6 +262,31 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         page: page,
       );
 
+      //
+      List<Future<dynamic>> interview = [];
+      for (int i = 0; i < fetchedMessages.length; i++) {
+        if (fetchedMessages[i]["messageFlag"] == 1) {
+          interview.add(_messageService.getInterviewById(
+            token: _userInfoStore.token,
+            interviewId: fetchedMessages[i]["interviewId"],
+          ));
+        }
+      }
+
+      List fetchedInterviews = await Future.wait(interview);
+
+      // Add new data to fetchedMessages from fetchedInterviews by interviewId
+      for (int i = 0; i < fetchedMessages.length; i++) {
+        if (fetchedMessages[i]["messageFlag"] == 1) {
+          var interview = fetchedInterviews.firstWhere(
+              (element) => element["id"] == fetchedMessages[i]["interviewId"]);
+
+          if (interview != null) {
+            fetchedMessages[i] = {...fetchedMessages[i], ...interview};
+          }
+        }
+      }
+
       if (fetchedMessages.isEmpty) {
         setState(() {
           page = page - 1;
@@ -227,23 +296,87 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
       }
 
       setState(() {
-        List<Message> newMessages = fetchedMessages
-            .map((message) => Message(
-                  isSender:
-                      BigInt.from(message["senderId"]) == _userInfoStore.userId
-                          ? true
-                          : false,
-                  name:
-                      BigInt.from(message["senderId"]) == _userInfoStore.userId
-                          ? "You"
-                          : widget.receiverName,
-                  avatarUrl:
-                      'https://cdn-icons-png.flaticon.com/512/147/147142.png',
-                  text: message["content"],
-                  time: DateTime.parse(message["createdAt"]),
-                  messageFlag: message["messageFlag"],
-                ))
-            .toList();
+        List<dynamic> newMessages = fetchedMessages.map((message) {
+          if (message["messageFlag"] == 0) {
+            return Message(
+              isSender:
+                  BigInt.from(message["senderId"]) == _userInfoStore.userId
+                      ? true
+                      : false,
+              name: BigInt.from(message["senderId"]) == _userInfoStore.userId
+                  ? "You"
+                  : widget.receiverName,
+              avatarUrl:
+                  'https://cdn-icons-png.flaticon.com/512/147/147142.png',
+              text: message["content"],
+              time: DateTime.parse(message["createdAt"]),
+              messageFlag: message["messageFlag"],
+            );
+          } else {
+            String iso8601StringStart = message["startTime"];
+            DateTime dateTimeStart = DateTime.parse(iso8601StringStart);
+            String iso8601StringEnd = message["endTime"];
+            DateTime dateTimeEnd = DateTime.parse(iso8601StringEnd);
+            print(message.toString());
+            return ScheduleItem(
+              id: message["id"],
+              isSender:
+                  BigInt.from(message["senderId"]) == _userInfoStore.userId
+                      ? true
+                      : false,
+              avatarUrl:
+                  'https://cdn-icons-png.flaticon.com/512/147/147142.png',
+              // name: BigInt.from(message["senderId"]) == _userInfoStore.userId
+              //     ? "You"
+              //     : widget.receiverName,
+              title: message["title"],
+              duration: "1 hour",
+              day: "Thursday",
+              date: DateFormat('dd/MM/yyyy').format(dateTimeStart),
+              timeMeeting: DateFormat('HH:mm').format(dateTimeStart),
+              endDay: "Thursday",
+              endDate: DateFormat('dd/MM/yyyy').format(dateTimeEnd),
+              endTimeMeeting: DateFormat('HH:mm').format(dateTimeEnd),
+              time: DateTime.now(),
+              username: _userInfoStore.username,
+              userId: _userInfoStore.userId,
+              messageFlag: 1,
+            );
+            // String iso8601StringStart =
+            //     message["notification"]["message"]["interview"]["startTime"];
+            // DateTime dateTimeStart = DateTime.parse(iso8601StringStart);
+            // String iso8601StringEnd =
+            //     message["notification"]["message"]["interview"]["startTime"];
+            // DateTime dateTimeEnd = DateTime.parse(iso8601StringEnd);
+
+            // return ScheduleItem(
+            //   isSender:
+            //       BigInt.from(message["notification"]["message"]["senderId"]) ==
+            //               _userInfoStore.userId
+            //           ? true
+            //           : false,
+            //   avatarUrl:
+            //       'https://cdn-icons-png.flaticon.com/512/147/147142.png',
+            //   name:
+            //       BigInt.from(message["notification"]["message"]["senderId"]) ==
+            //               _userInfoStore.userId
+            //           ? "You"
+            //           : widget.receiverName,
+            //   title: message["notification"]["message"]["interview"]["title"],
+            //   duration: message["duration"],
+            //   day: "Thursday",
+            //   date: DateFormat('dd/MM/yyyy').format(dateTimeStart),
+            //   timeMeeting: DateFormat('HH:mm').format(dateTimeStart),
+            //   endDay: "Thursday",
+            //   endDate: DateFormat('dd/MM/yyyy').format(dateTimeEnd),
+            //   endTimeMeeting: DateFormat('HH:mm').format(dateTimeEnd),
+            //   time: DateTime.now(),
+            //   username: _userInfoStore.username,
+            //   userId: _userInfoStore.userId,
+            //   messageFlag: 1,
+            // );
+          }
+        }).toList();
 
         _messageList.addAll(newMessages);
       });
@@ -255,6 +388,8 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
       if (mounted) {
         showDangerToast(context: context, message: e.toString());
       }
+      print("****");
+      print(e);
     } finally {
       if (mounted) {
         setState(() {
@@ -272,8 +407,6 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
           senderId: _userInfoStore.userId,
           receiverId: BigInt.parse(widget.receiverId),
           content: message);
-
-      _messageController.clear();
     } catch (e) {
       print('Error sending message: $e');
       if (mounted) {
@@ -281,20 +414,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
             context: context, message: "Can't send message, please try again");
       }
     }
-  }
 
-  void _sendInvite(ScheduleItem schedule) {
-    Map<String, dynamic> scheduleData = schedule.toJson();
-    socket.emit("SEND_MESSAGE", {
-      "content": scheduleData["title"],
-      "projectId": int.parse(widget.projectId),
-      "senderId": _userInfoStore.userId.toInt(),
-      "duration": scheduleData["duration"],
-      "receiverId": int.parse(widget.receiverId),
-      "messageFlag": 1
-    });
-
-    // Clear the message controller
     _messageController.clear();
   }
 
@@ -342,7 +462,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
                 itemCount: _messageList.length,
                 itemBuilder: (context, index) {
                   final message = _messageList[index];
-
+                  // print(message.toString());
                   switch (message.messageFlag) {
                     case 0:
                       return MessageBubble(
@@ -354,22 +474,23 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
                       );
                     case 1:
                       return ScheduleItem(
+                        id: message.id,
                         isSender: message.isSender,
-                        name: message.name,
                         avatarUrl: message.avatarUrl,
-                        title: message.text,
-                        duration: "1 hour",
-                        day: "Thursday",
-                        date: "13/3/2024",
-                        timeMeeting: "15:00",
-                        endDay: "Thursday",
-                        endDate: "13/3/2024",
-                        endTimeMeeting: "16:00",
+                        title: message.title,
+                        duration: message.duration,
+                        day: message.day,
+                        date: message.date,
+                        timeMeeting: message.timeMeeting,
+                        endDay: message.endDay,
+                        endDate: message.endDate,
+                        endTimeMeeting: message.endTimeMeeting,
                         time: message.time,
-                        messageFlag: 1,
-                        username: _userInfoStore.username,
-                        userId: _userInfoStore.userId,
+                        username: message.username,
+                        userId: message.userId,
+                        messageFlag: message.messageFlag,
                       );
+
                     default:
                       return null;
                   }
@@ -419,17 +540,6 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
-      leading: GoRouter.of(context).canPop()
-          ? IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_rounded,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                GoRouter.of(context).pop();
-              },
-            )
-          : null,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -440,6 +550,9 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         ],
       ),
       backgroundColor: Theme.of(context).colorScheme.secondary,
+      iconTheme: Theme.of(context)
+          .iconTheme
+          .copyWith(color: Theme.of(context).colorScheme.tertiary),
       actions: [
         IconButton(
           onPressed: () {
@@ -448,12 +561,11 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
                 isScrollControlled: true,
                 builder: (BuildContext context) {
                   return MySchedule(
-                    // messageTitle:
                     username: _userInfoStore.username,
                     userId: _userInfoStore.userId,
-                    onSendInvite: (scheduleItem) {
-                      _sendInvite(scheduleItem);
-                    },
+                    projectId: widget.projectId,
+                    receiverId: widget.receiverId,
+                    token: _userInfoStore.token,
                   );
                 });
           },

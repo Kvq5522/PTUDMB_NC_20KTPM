@@ -27,21 +27,9 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       // elevation: 2,
       // shadowColor: Colors.black,
-      leading: routerConfig.canPop()
-          ? IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_rounded,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                try {
-                  routerConfig.replace("/choose-user");
-                } catch (e) {
-                  print(e);
-                }
-              },
-            )
-          : null,
+      iconTheme: Theme.of(context)
+          .iconTheme
+          .copyWith(color: Theme.of(context).colorScheme.tertiary),
       actions: [
         currentPath == "/choose-user"
             ? IconButton(
