@@ -25,7 +25,7 @@ class _MySearchBarState extends State<MySearchBar> {
           color: Colors.white,
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           child: Row(
             children: [
               const Icon(
@@ -122,6 +122,7 @@ class _MySearchBarState extends State<MySearchBar> {
                           routerConfig.push('/search-result',
                               extra:
                                   searchText == searchText ? searchText : "");
+                          _searchController.clear();
                         },
                       ),
                     ],

@@ -57,6 +57,30 @@ class AuthenticationService {
     }
   }
 
+  Future<String> forgotPassword(String email) async {
+    try {
+      Response response = await _dioClient.post(
+        "/api/user/forgotPassword",
+        body: {
+          "email": email,
+        },
+      );
+
+      if (response.statusCode! >= 400) {
+        List<dynamic>? errors = response.data["errorDetails"];
+        String errorMessage = "Sign in failed, please try again.";
+        if (errors != null && errors.isNotEmpty) {
+          errorMessage = errors.join("\n");
+        }
+        throw Exception(errorMessage);
+      }
+
+      return "Password reset instructions sent to $email.";
+    } catch (e) {
+      throw Exception('Failed to send password reset email.');
+    }
+  }
+
   Future<Map<String, dynamic>> getUserInfo(String token) async {
     try {
       Response res = await _dioClient.get(

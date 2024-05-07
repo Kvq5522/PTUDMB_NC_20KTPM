@@ -127,7 +127,15 @@ class _ChooseUserScreenState extends State<ChooseUserScreen> {
                           onTap: () {
                             routerConfig.push('/settings');
                           }),
-
+                      _featureButton(
+                          icon: const Icon(
+                            Icons.lock_reset_rounded,
+                            size: 35,
+                          ),
+                          label: "Change password".tr(),
+                          onTap: () {
+                            routerConfig.push('/reset_password');
+                          }),
                       _featureButton(
                           icon: const Icon(
                             Icons.logout,

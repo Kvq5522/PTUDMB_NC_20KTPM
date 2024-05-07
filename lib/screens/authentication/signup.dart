@@ -98,6 +98,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
   final AuthenticationService _authService = AuthenticationService();
+  bool _isPasswordVisible = false;
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -182,7 +183,6 @@ class _SignUpFormState extends State<SignUpForm> {
                     vertical: 12.0,
                     horizontal: 16.0), // Adjust padding as needed
               ),
-              obscureText: true,
               style: TextStyle(color: Colors.black),
               cursorColor: const Color(0xFF008ABD),
             ),
@@ -211,13 +211,26 @@ class _SignUpFormState extends State<SignUpForm> {
                 ),
                 filled: true,
                 prefixIcon: Icon(Icons.lock_outline, color: Colors.black),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                ),
                 fillColor: Colors
                     .grey[200], // Add a background color for better contrast
                 contentPadding: EdgeInsets.symmetric(
                     vertical: 12.0,
                     horizontal: 16.0), // Adjust padding as needed
               ),
-              obscureText: true,
+              obscureText: !_isPasswordVisible,
               style: TextStyle(color: Colors.black),
               cursorColor: const Color(0xFF008ABD),
             ),

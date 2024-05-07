@@ -531,4 +531,39 @@ class UserService {
       rethrow;
     }
   }
+
+  // Update user language
+  Future<String> changePassword({
+    required String token,
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    try {
+      Response res = await _dioClient.put(
+        "/api/user/changePassword",
+        body: {
+          "oldPassword": oldPassword,
+          "newPassword": newPassword,
+        },
+        token: token,
+      );
+
+      if (res.statusCode! >= 400) {
+        String errorMessage = "Error updating password";
+
+        dynamic errorDetails = res.data?["errorDetails"];
+        if (errorDetails is List) {
+          errorMessage = errorDetails.join("\n");
+        } else if (errorDetails is String) {
+          errorMessage = errorDetails;
+        }
+
+        throw Exception(errorMessage);
+      }
+
+      return "Password reset success";
+    } catch (_) {
+      throw Exception('Old password is wrong');
+    }
+  }
 }
