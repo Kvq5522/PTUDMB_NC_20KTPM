@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'dart:convert';
 
@@ -177,47 +177,82 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
       }
     });
     socket.on('RECEIVE_INTERVIEW', (data) {
-      print(data["notification"]["message"]);
+      print(data?["notification"]["message"]["interview"]["disableFlag"]);
       String iso8601StringStart =
           data?["notification"]["message"]["interview"]["startTime"];
       DateTime dateTimeStart = DateTime.parse(iso8601StringStart);
       String iso8601StringEnd =
-          data?["notification"]["message"]["interview"]["startTime"];
+          data?["notification"]["message"]["interview"]["endTime"];
       DateTime dateTimeEnd = DateTime.parse(iso8601StringEnd);
 
-      final schedule = ScheduleItem(
-        id: data?["notification"]["message"]["interview"]["id"],
-        isSender: BigInt.from(data?["notification"]["message"]["senderId"]) ==
-                _userInfoStore.userId
-            ? true
-            : false,
-        avatarUrl: 'https://cdn-icons-png.flaticon.com/512/147/147142.png',
-        // name: BigInt.from(data?["notification"]["message"]["senderId"]) ==
-        //         _userInfoStore.userId
-        //     ? "You"
-        //     : widget.receiverName,
-        title: data?["notification"]["message"]["interview"]["title"],
-        duration: "1 hour",
-        day: "Thursday",
-        date: DateFormat('dd/MM/yyyy').format(dateTimeStart),
-        timeMeeting: DateFormat('HH:mm').format(dateTimeStart),
-        endDay: "Thursday",
-        endDate: DateFormat('dd/MM/yyyy').format(dateTimeEnd),
-        endTimeMeeting: DateFormat('HH:mm').format(dateTimeEnd),
-        time: DateTime.now(),
-        username: _userInfoStore.username,
-        userId: _userInfoStore.userId,
-        messageFlag: 1,
-      );
+      int id = data?["notification"]["message"]["interview"]["id"];
 
-      if (_scrollController.position.pixels !=
-          _scrollController.position.minScrollExtent) {
-        hasNewMessageScrollToBottom = true;
+      int index = _messageList.indexWhere((item) => item.id == id);
+
+      if (index != -1) {
+        setState(() {
+          _messageList[index] = ScheduleItem(
+            id: id,
+            isSender:
+                BigInt.from(data?["notification"]["message"]["senderId"]) ==
+                    _userInfoStore.userId,
+            avatarUrl: 'https://cdn-icons-png.flaticon.com/512/147/147142.png',
+            title: data?["notification"]["message"]["interview"]["title"],
+            duration: durationTime(
+                dateTimeStart,
+                TimeOfDay.fromDateTime(dateTimeStart),
+                dateTimeEnd,
+                TimeOfDay.fromDateTime(dateTimeEnd)),
+            day: daysOfWeek[dateTimeStart.weekday - 1],
+            date: DateFormat('dd/MM/yyyy').format(dateTimeStart),
+            timeMeeting: DateFormat('HH:mm').format(dateTimeStart),
+            endDay: daysOfWeek[dateTimeEnd.weekday - 1],
+            endDate: DateFormat('dd/MM/yyyy').format(dateTimeEnd),
+            endTimeMeeting: DateFormat('HH:mm').format(dateTimeEnd),
+            time: DateTime.now(),
+            username: _userInfoStore.username,
+            userId: _userInfoStore.userId,
+            messageFlag: 1,
+            disableFlag: data?["notification"]["message"]["interview"]
+                ["disableFlag"],
+          );
+        });
+      } else {
+        print("======");
+        final schedule = ScheduleItem(
+          id: id,
+          isSender: BigInt.from(data?["notification"]["message"]["senderId"]) ==
+              _userInfoStore.userId,
+          avatarUrl: 'https://cdn-icons-png.flaticon.com/512/147/147142.png',
+          title: data?["notification"]["message"]["interview"]["title"],
+          duration: durationTime(
+              dateTimeStart,
+              TimeOfDay.fromDateTime(dateTimeStart),
+              dateTimeEnd,
+              TimeOfDay.fromDateTime(dateTimeEnd)),
+          day: daysOfWeek[dateTimeStart.weekday - 1],
+          date: DateFormat('dd/MM/yyyy').format(dateTimeStart),
+          timeMeeting: DateFormat('HH:mm').format(dateTimeStart),
+          endDay: daysOfWeek[dateTimeEnd.weekday - 1],
+          endDate: DateFormat('dd/MM/yyyy').format(dateTimeEnd),
+          endTimeMeeting: DateFormat('HH:mm').format(dateTimeEnd),
+          time: DateTime.now(),
+          username: _userInfoStore.username,
+          userId: _userInfoStore.userId,
+          messageFlag: 1,
+          disableFlag: data?["notification"]["message"]["interview"]
+              ["disableFlag"],
+        );
+
+        if (_scrollController.position.pixels !=
+            _scrollController.position.minScrollExtent) {
+          hasNewMessageScrollToBottom = true;
+        }
+
+        setState(() {
+          _messageList.insert(0, schedule);
+        });
       }
-
-      setState(() {
-        _messageList.insert(0, schedule);
-      });
     });
     super.didChangeDependencies();
   }
@@ -241,6 +276,46 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         duration: Duration(seconds: 1),
         curve: Curves.fastOutSlowIn,
       );
+    }
+  }
+
+  final daysOfWeek = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+
+  String durationTime(DateTime selectedDate, TimeOfDay selectedTime,
+      DateTime selectedEndDate, TimeOfDay selectedEndTime) {
+    final startDateTime = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      selectedTime.hour,
+      selectedTime.minute,
+    );
+    final endDateTime = DateTime(
+      selectedEndDate.year,
+      selectedEndDate.month,
+      selectedEndDate.day,
+      selectedEndTime.hour,
+      selectedEndTime.minute,
+    );
+
+    final duration = endDateTime.difference(startDateTime);
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+
+    if (duration <= Duration.zero) {
+      return 'Due';
+    } else if (hours == 0) {
+      return minutes > 0 ? '$minutes minutes' : '';
+    } else {
+      return '$hours hours ${minutes > 0 ? '$minutes minutes' : ''}';
     }
   }
 
@@ -317,7 +392,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
             DateTime dateTimeStart = DateTime.parse(iso8601StringStart);
             String iso8601StringEnd = message["endTime"];
             DateTime dateTimeEnd = DateTime.parse(iso8601StringEnd);
-            print(message.toString());
+            print(message["disableFlag"]);
             return ScheduleItem(
               id: message["id"],
               isSender:
@@ -330,51 +405,24 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
               //     ? "You"
               //     : widget.receiverName,
               title: message["title"],
-              duration: "1 hour",
-              day: "Thursday",
+              duration: durationTime(
+                  dateTimeStart,
+                  TimeOfDay.fromDateTime(dateTimeStart),
+                  dateTimeEnd,
+                  TimeOfDay.fromDateTime(dateTimeEnd)),
+
+              day: daysOfWeek[dateTimeStart.weekday - 1],
               date: DateFormat('dd/MM/yyyy').format(dateTimeStart),
               timeMeeting: DateFormat('HH:mm').format(dateTimeStart),
-              endDay: "Thursday",
+              endDay: daysOfWeek[dateTimeEnd.weekday - 1],
               endDate: DateFormat('dd/MM/yyyy').format(dateTimeEnd),
               endTimeMeeting: DateFormat('HH:mm').format(dateTimeEnd),
               time: DateTime.now(),
               username: _userInfoStore.username,
               userId: _userInfoStore.userId,
               messageFlag: 1,
+              disableFlag: message["disableFlag"],
             );
-            // String iso8601StringStart =
-            //     message["notification"]["message"]["interview"]["startTime"];
-            // DateTime dateTimeStart = DateTime.parse(iso8601StringStart);
-            // String iso8601StringEnd =
-            //     message["notification"]["message"]["interview"]["startTime"];
-            // DateTime dateTimeEnd = DateTime.parse(iso8601StringEnd);
-
-            // return ScheduleItem(
-            //   isSender:
-            //       BigInt.from(message["notification"]["message"]["senderId"]) ==
-            //               _userInfoStore.userId
-            //           ? true
-            //           : false,
-            //   avatarUrl:
-            //       'https://cdn-icons-png.flaticon.com/512/147/147142.png',
-            //   name:
-            //       BigInt.from(message["notification"]["message"]["senderId"]) ==
-            //               _userInfoStore.userId
-            //           ? "You"
-            //           : widget.receiverName,
-            //   title: message["notification"]["message"]["interview"]["title"],
-            //   duration: message["duration"],
-            //   day: "Thursday",
-            //   date: DateFormat('dd/MM/yyyy').format(dateTimeStart),
-            //   timeMeeting: DateFormat('HH:mm').format(dateTimeStart),
-            //   endDay: "Thursday",
-            //   endDate: DateFormat('dd/MM/yyyy').format(dateTimeEnd),
-            //   endTimeMeeting: DateFormat('HH:mm').format(dateTimeEnd),
-            //   time: DateTime.now(),
-            //   username: _userInfoStore.username,
-            //   userId: _userInfoStore.userId,
-            //   messageFlag: 1,
-            // );
           }
         }).toList();
 
@@ -489,6 +537,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
                         username: message.username,
                         userId: message.userId,
                         messageFlag: message.messageFlag,
+                        disableFlag: message.disableFlag,
                       );
 
                     default:

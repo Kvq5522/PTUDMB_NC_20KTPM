@@ -155,6 +155,12 @@ class _MyScheduleState extends State<MySchedule> {
       }
     } catch (e) {
       print('Failed to post interview: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -441,12 +447,27 @@ class _MyScheduleState extends State<MySchedule> {
                                   _isStartTimeBeforeEndTime() &&
                                   _isDurationValid()) {
                                 try {
-                                  String formattedSelectedDate =
-                                      selectedDate.toIso8601String();
-                                  String formattedSelectedEndDate =
-                                      selectedEndDate.toIso8601String();
+                                  DateTime startTime = DateTime(
+                                    selectedDate.year,
+                                    selectedDate.month,
+                                    selectedDate.day,
+                                    selectedTime.hour,
+                                    selectedTime.minute,
+                                  );
+
+                                  DateTime endTime = DateTime(
+                                    selectedEndDate.year,
+                                    selectedEndDate.month,
+                                    selectedEndDate.day,
+                                    selectedEndTime.hour,
+                                    selectedEndTime.minute,
+                                  );
                                   String formattedBigInt =
                                       widget.userId.toString();
+                                  String formattedSelectedDate =
+                                      startTime.toIso8601String();
+                                  String formattedSelectedEndDate =
+                                      endTime.toIso8601String();
                                   postInterview(
                                     jobTitleController.text,
                                     'content',
