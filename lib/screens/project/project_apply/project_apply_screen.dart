@@ -6,11 +6,12 @@ import "package:studenthub/components/input_field.dart";
 import "package:studenthub/services/project.service.dart";
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:provider/provider.dart';
+import "package:studenthub/utils/toast.dart";
 
 class ProjectApplyScreen extends StatefulWidget {
-  final projectId;
+  final String projectId;
 
-  ProjectApplyScreen({super.key, required this.projectId});
+  const ProjectApplyScreen({super.key, required this.projectId});
 
   @override
   State<ProjectApplyScreen> createState() => _ProjectApplyScreenState();
@@ -118,14 +119,20 @@ class _ProjectApplyScreenState extends State<ProjectApplyScreen> {
                     ),
                   ),
                   onPressed: () async {
-                    await postStudentProposal(
-                      widget.projectId,
-                      _userInfoStore.roleId.toString(),
-                      controller.text,
-                      0,
-                      0,
-                      context,
-                    );
+                    if (_userInfoStore.userType == "Student") {
+                      await postStudentProposal(
+                        widget.projectId,
+                        _userInfoStore.roleId.toString(),
+                        controller.text,
+                        0,
+                        0,
+                        context,
+                      );
+                    } else {
+                      showDangerToast(
+                          context: context,
+                          message: "Only students can apply for projects");
+                    }
 
                     routerConfig.go("/dashboard");
                   },

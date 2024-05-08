@@ -3,6 +3,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
+import 'package:studenthub/components/loading_screen.dart';
 import 'package:studenthub/services/dashboard.service.dart';
 import 'package:studenthub/services/project.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
@@ -30,6 +31,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
   late UserInfoStore _userInfoStore;
   Map<String, dynamic> projectDetail = {};
   Map<String, dynamic> proposalDetail = {};
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -67,6 +69,10 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
     super.didChangeDependencies();
     _userInfoStore = Provider.of<UserInfoStore>(context);
     try {
+      setState(() {
+        _isLoading = true;
+      });
+
       final Map<String, dynamic> detail =
           await _projectService.getProjectDetail(
         projectId: widget.projectId,
@@ -84,6 +90,10 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
       });
     } catch (error) {
       print('Error fetching project detail: $error');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -126,6 +136,13 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(
+        appBar: const MyAppBar(),
+        body: LoadingScreen(),
+      );
+    }
+
     return Scaffold(
       appBar: const MyAppBar(),
       body: SingleChildScrollView(
@@ -135,7 +152,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background,
+                color: Theme.of(context).colorScheme.primary,
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -150,10 +167,10 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                         children: [
                           Text(
                             projectDetail['title'] ?? "",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 46,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.background,
                             ),
                           ),
                           const SizedBox(
@@ -161,27 +178,27 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                           ),
                           Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.access_time,
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.background,
                                 size: 15,
                               ),
                               const SizedBox(width: 5),
                               Text(
                                 'Created: '.tr(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w300,
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.background,
                                 ),
                               ),
                               const SizedBox(width: 2),
                               Text(
                                 calculateTimeDifference(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w300,
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.background,
                                 ),
                               ),
                             ],
@@ -194,7 +211,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -342,7 +359,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                                 0,
                                 context,
                               );
-                              routerConfig.push('/dashboard');
+                              routerConfig.go('/dashboard');
                             } catch (e) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

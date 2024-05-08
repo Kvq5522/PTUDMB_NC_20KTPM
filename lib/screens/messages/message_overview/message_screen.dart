@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:studenthub/components/loading_screen.dart';
 import 'package:studenthub/services/message.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:studenthub/utils/toast.dart';
@@ -19,6 +20,7 @@ class MessageScreen extends StatefulWidget {
 class _MessageScreenState extends State<MessageScreen> {
   List<Map<String, dynamic>> displayList = [];
   List<Map<String, dynamic>> messageList = [];
+  bool _isLoading = false;
   MessageService messageService = MessageService();
 
   late UserInfoStore _userInfoStore;
@@ -29,6 +31,11 @@ class _MessageScreenState extends State<MessageScreen> {
     _userInfoStore = Provider.of<UserInfoStore>(context);
 
     try {
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
       List<Map<String, dynamic>> chatrooms =
           await messageService.getChatroom(token: _userInfoStore.token);
 
@@ -43,11 +50,21 @@ class _MessageScreenState extends State<MessageScreen> {
       if (mounted) {
         showDangerToast(context: context, message: "Failed to load chatroms");
       }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(body: LoadingScreen());
+    }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -107,6 +124,7 @@ class _MessageScreenState extends State<MessageScreen> {
               child: ListView.builder(
                 itemCount: displayList.length,
                 itemBuilder: (context, index) {
+                  print(displayList[index]["project"]);
                   dynamic otherUser =
                       BigInt.from(displayList[index]["sender"]["id"]) ==
                               _userInfoStore.userId

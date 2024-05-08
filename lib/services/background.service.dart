@@ -49,13 +49,38 @@ Future<void> initSocket(String token, String userId) async {
 
   socket.on('NOTI_$userId', (data) {
     try {
+      if (data?["notication"]?["sender"]["id"].toString() == userId) {
+        return;
+      }
+
       print(jsonEncode(data));
 
-      if (data?["notification"]?.containsKey("message") == true) {
+      if (data?["notification"]["message"] != null) {
+        if (data?["notification"]?["typeNotifyFlag"] == "1") {
+          _notificationService.showNotification(
+              title:
+                  "${data?["notification"]?["sender"]?["fullname"]} schedule an interview",
+              body: data?["notification"]?["title"]);
+              return;
+        }
+
         _notificationService.showNotification(
-            title: data?["notification"]?["title"],
+            title:
+                "New message from user ${data?["notification"]?["sender"]?["fullname"]}",
             body: data?["notification"]?["message"]?["content"]);
         return;
+      } else if (data?["notification"]["proposal"] != null) {
+        if (data?["notification"]?["typeNotifyFlag"] == "0" ||
+            data?["notification"]?["typeNotifyFlag"] == "2") {
+          _notificationService.showNotification(
+              title: data?["notification"]?["title"],
+              body: data?["notification"]?["content"]);
+        }
+        return;
+      } else {
+        _notificationService.showNotification(
+            title: data?["notification"]?["title"],
+            body: data?["notification"]?["content"]);
       }
     } catch (e) {
       print("Error: ${e.toString()}");

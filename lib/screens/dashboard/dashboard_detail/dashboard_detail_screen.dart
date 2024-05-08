@@ -211,6 +211,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                     filter == "Proposals"
                         ? DashboardDetailProposalList(
                             proposalList: proposals,
+                            projectId: widget.id,
                           )
                         : const SizedBox(),
                     filter == "Detail"

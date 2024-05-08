@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/screens/dashboard/dashboard_overview/dashboard_screen.dart';
 import 'package:studenthub/components/bottom_bar.dart';
-import 'package:studenthub/screens/notifications/notifications.dart';
+import 'package:studenthub/screens/notifications/notification_screen.dart';
 import 'package:studenthub/screens/project/project_screen.dart';
 import 'package:studenthub/screens/messages/message_overview/message_screen.dart';
 import 'package:studenthub/screens/saved_projects/saved_projects_screen.dart'; // Import the file
@@ -29,7 +29,7 @@ class _LayoutState extends State<Layout> {
     const ProjectScreen(),
     const DashboardScreen(),
     const MessageScreen(),
-    const NotificaitonScreen()
+    const NotificationScreen()
   ];
 
   @override

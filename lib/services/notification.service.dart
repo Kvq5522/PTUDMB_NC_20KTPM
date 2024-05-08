@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:studenthub/networks/dio_client.dart';
 
 class NotificationService {
   final flutterLocalNotificationPlugin = FlutterLocalNotificationsPlugin();
+  final DioClient _dioClient = DioClient();
 
   Future<void> initLocalNotifications() async {
     const initializationSettings = InitializationSettings(
@@ -61,5 +64,22 @@ class NotificationService {
               AndroidFlutterLocalNotificationsPlugin>()
           ?.requestPermission();
     }
+  }
+
+  Future<List<Map<String, dynamic>>> getNotificationsById({
+    required String id,
+    required String token,
+  }) async {
+    Response res = await _dioClient.get(
+      "/api/notification/getByReceiverId/$id",
+      token: token,
+    );
+
+    if (res.statusCode! >= 400) {
+      String errorMessage = res.data?["errorDetails"];
+      throw Exception(errorMessage);
+    }
+
+    return List<Map<String, dynamic>>.from(res.data?["result"] ?? []);
   }
 }

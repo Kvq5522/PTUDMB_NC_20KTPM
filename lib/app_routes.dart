@@ -20,7 +20,7 @@ import 'package:studenthub/screens/video_call/video_call_screen.dart';
 import 'package:studenthub/screens/welcome/welcome_screen.dart';
 import 'package:studenthub/screens/messages/message_detail/message_detail.dart';
 import 'package:studenthub/screens/dashboard/dashboard_posting/dashboard_project_post_screen.dart';
-import 'package:studenthub/screens/notifications/notifications.dart';
+import 'package:studenthub/screens/notifications/notification_screen.dart';
 import 'package:studenthub/screens/authentication/forgot_password.dart';
 
 GoRouter routerConfig = GoRouter(
@@ -76,7 +76,7 @@ GoRouter routerConfig = GoRouter(
     ),
     GoRoute(
       path: '/notification',
-      builder: (context, state) => const NotificaitonScreen(),
+      builder: (context, state) => const Layout(page: 4),
     ),
     // User and Profile settings
     GoRoute(

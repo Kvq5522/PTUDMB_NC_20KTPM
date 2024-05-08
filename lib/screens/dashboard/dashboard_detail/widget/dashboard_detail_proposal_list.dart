@@ -8,8 +8,10 @@ import 'package:studenthub/services/dashboard.service.dart';
 
 class DashboardDetailProposalList extends StatefulWidget {
   final List proposalList;
+  final String projectId;
 
-  const DashboardDetailProposalList({super.key, required this.proposalList});
+  const DashboardDetailProposalList(
+      {super.key, required this.proposalList, required this.projectId});
 
   @override
   State<DashboardDetailProposalList> createState() =>
@@ -161,7 +163,7 @@ class _DashboardDetailProposalListState
                     child: ElevatedButton(
                   onPressed: () {
                     routerConfig.push('/message_detail', extra: {
-                      "projectId": proposal["id"],
+                      "projectId": widget.projectId,
                       "receiverId": proposal["student"]["userId"],
                       "receiverName": proposal["student"]["user"]["fullname"],
                     });

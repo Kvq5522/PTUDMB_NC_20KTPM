@@ -76,8 +76,8 @@ class _DashboardDetailMessageListState
                             // Name
                             Text(
                               otherUser["fullname"],
-                              style: const TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
