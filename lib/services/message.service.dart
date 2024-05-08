@@ -155,7 +155,6 @@ class MessageService {
 
   Future<Map<String, dynamic>> patchInterview(
     String title,
-    String content,
     String startTime,
     String endTime,
     String token,
@@ -165,14 +164,16 @@ class MessageService {
       "/api/interview/$id",
       body: {
         "title": title,
-        "content": content,
         "startTime": startTime,
         "endTime": endTime,
       },
       token: token,
     );
     if (res.statusCode! >= 400) {
-      String errorDetailsString = res.data?["errorDetails"];
+      var errorDetailsData = res.data?["errorDetails"];
+      String errorDetailsString = errorDetailsData is List
+          ? errorDetailsData.join("\n")
+          : errorDetailsData;
       List<dynamic> errorDetails = errorDetailsString.split("\n");
       String errorMessage = errorDetails.join("\n");
       throw Exception(errorMessage);
@@ -188,9 +189,32 @@ class MessageService {
     int id,
     String token,
   ) async {
+    print(id);
     Response res = await _dioClient.delete(
       "/api/interview/$id",
       token,
+    );
+    if (res.statusCode! >= 400) {
+      String errorDetailsString = res.data?["errorDetails"];
+      List<dynamic> errorDetails = errorDetailsString.split("\n");
+      String errorMessage = errorDetails.join("\n");
+      throw Exception(errorMessage);
+    }
+
+    Map<String, dynamic> result =
+        Map<String, dynamic>.from(res.data?["result"] ?? {});
+
+    return result;
+  }
+
+  Future<Map<String, dynamic>> disableInterview(
+    int id,
+    String token,
+  ) async {
+    print(id);
+    Response res = await _dioClient.patch(
+      "/api/interview/$id/disable",
+      token: token,
     );
     if (res.statusCode! >= 400) {
       String errorDetailsString = res.data?["errorDetails"];
