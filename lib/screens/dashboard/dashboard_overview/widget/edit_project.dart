@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_literals_to_create_immutables
 
+import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:studenthub/app_routes.dart";
 import "package:studenthub/services/dashboard.service.dart";
@@ -37,8 +38,11 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Edit Project', style: TextStyle(color: Colors.black)),
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      title: Text('Edit Project'.tr(),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+          )),
+      backgroundColor: Theme.of(context).colorScheme.background,
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -48,8 +52,10 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
               DropdownButtonFormField<int>(
                 itemHeight: null,
                 decoration: InputDecoration(
-                  labelText: 'Project time',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelText: 'Project time'.tr(),
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -61,6 +67,7 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                 onSaved: (value) {
                   _projectScopeFlag = value!;
                 },
+                value: _projectScopeFlag,
                 onChanged: (value) {
                   setState(() {
                     _projectScopeFlag = value!;
@@ -81,8 +88,10 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
               TextFormField(
                 initialValue: _title,
                 decoration: InputDecoration(
-                  labelText: 'Title',
-                  labelStyle: TextStyle(color: Colors.black, fontSize: 16),
+                  labelText: 'Title'.tr(),
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                      fontSize: 16),
                   hintText: 'Enter project title',
                   hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
                   border: OutlineInputBorder(
@@ -106,8 +115,10 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
               TextFormField(
                 initialValue: _numberOfStudents.toString(),
                 decoration: InputDecoration(
-                  labelText: 'Number of Students',
-                  labelStyle: TextStyle(color: Colors.black, fontSize: 16),
+                  labelText: 'Number of Students'.tr(),
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                      fontSize: 16),
                   hintText: 'Enter number of students',
                   hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
                   border: OutlineInputBorder(
@@ -132,8 +143,10 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
               TextFormField(
                 initialValue: _description,
                 decoration: InputDecoration(
-                  labelText: 'Description',
-                  labelStyle: TextStyle(color: Colors.black, fontSize: 16),
+                  labelText: 'Description'.tr(),
+                  labelStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                      fontSize: 16),
                   hintText: 'Enter project description',
                   hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
                   border: OutlineInputBorder(
@@ -155,10 +168,13 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
               ),
               SizedBox(height: 16.0),
               DropdownButtonFormField<int>(
-                // value: _typeFlag,
+                value: _typeFlag,
+                // value: _projectScopeFlag,
                 decoration: InputDecoration(
-                  labelText: 'Project status',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelText: 'Project status'.tr(),
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -170,6 +186,7 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                 onSaved: (value) {
                   _typeFlag = value!;
                 },
+
                 onChanged: (value) {
                   setState(() {
                     _typeFlag = value!;
@@ -181,7 +198,7 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                     child: Text('Working'),
                   ),
                   DropdownMenuItem<int>(
-                    value: 2,
+                    value: 1,
                     child: Text('Archived'),
                   ),
                 ],
@@ -192,13 +209,19 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text('Cancel', style: TextStyle(color: Colors.black)),
+          child: Text('Cancel'.tr(),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              )),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         TextButton(
-          child: Text('Save', style: TextStyle(color: Colors.black)),
+          child: Text('Save'.tr(),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              )),
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();

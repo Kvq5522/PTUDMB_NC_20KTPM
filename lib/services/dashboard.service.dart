@@ -288,4 +288,22 @@ class DashBoardService {
 
     return Map<String, dynamic>.from(res.data?["result"]);
   }
+
+  Future<Map<String, dynamic>> getProposal(
+      String proposalId, String token) async {
+    Response res = await _dioClient.get(
+      "/api/proposal/$proposalId",
+      token: token,
+    );
+
+    if (res.statusCode! >= 400) {
+      String errorMessage = res.data?["errorDetails"];
+
+      throw Exception(errorMessage);
+    }
+    Map<String, dynamic> result =
+        Map<String, dynamic>.from(res.data?["result"] ?? {});
+
+    return result;
+  }
 }

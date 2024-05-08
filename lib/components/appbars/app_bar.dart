@@ -27,9 +27,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       // elevation: 2,
       // shadowColor: Colors.black,
-      iconTheme: Theme.of(context)
-          .iconTheme
-          .copyWith(color: Theme.of(context).colorScheme.tertiary),
+      iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.white),
       actions: [
         currentPath == "/choose-user"
             ? IconButton(

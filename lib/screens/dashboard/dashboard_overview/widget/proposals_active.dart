@@ -152,7 +152,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -189,7 +189,8 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w300,
-                                  color: Theme.of(context).colorScheme.background,
+                                  color:
+                                      Theme.of(context).colorScheme.background,
                                 ),
                               ),
                               const SizedBox(width: 2),
@@ -198,7 +199,8 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w300,
-                                  color: Theme.of(context).colorScheme.background,
+                                  color:
+                                      Theme.of(context).colorScheme.background,
                                 ),
                               ),
                             ],

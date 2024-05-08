@@ -17,8 +17,19 @@ class DashboardProjectDetail extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Project description
+          Text(
+            'Description:'.tr(),
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           Text(
             projectDescription,
             style: const TextStyle(
@@ -98,16 +109,16 @@ class DashboardProjectDetail extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-                border: Border(
-              bottom: BorderSide(
-                color: Colors.grey.shade300,
-                width: 1,
-              ),
-            )),
-          ),
+          // Container(
+          //   margin: const EdgeInsets.symmetric(vertical: 10),
+          //   decoration: BoxDecoration(
+          //       border: Border(
+          //     bottom: BorderSide(
+          //       color: Colors.grey.shade300,
+          //       width: 1,
+          //     ),
+          //   )),
+          // ),
         ],
       ),
     );

@@ -30,12 +30,28 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   int? _selectedOption;
   int? _studentCount;
   int? _proposalCount;
+  final _scrollController = ScrollController();
 
   @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-    _userInfoStore = Provider.of<UserInfoStore>(context);
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+    _userInfoStore = Provider.of<UserInfoStore>(context, listen: false);
     _loadProjects();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      _loadMoreProjects();
+    }
   }
 
   void _loadProjects() async {
@@ -47,7 +63,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       List<Map<String, dynamic>> projects = await _projectService.searchProject(
         title: widget.searchQuery ?? "",
         page: _page,
-        perPage: 10,
+        perPage: 5,
         token: _userInfoStore.token,
       );
 
@@ -77,17 +93,28 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
     try {
       _page++;
-      List<Map<String, dynamic>> projects = await _projectService.searchProject(
+      List<Map<String, dynamic>> newProjects =
+          await _projectService.searchProject(
         title: widget.searchQuery ?? "",
         page: _page,
         perPage: 10,
         token: _userInfoStore.token,
       );
 
-      _hasMore = projects.isNotEmpty;
+      _hasMore = newProjects.isNotEmpty;
+
       if (mounted) {
         setState(() {
-          _projects.addAll(projects);
+          // Thêm các dự án mới vào danh sách chính
+          for (var newProject in newProjects) {
+            // Kiểm tra xem dự án mới đã tồn tại trong danh sách chưa
+            bool exists = _projects.any(
+                (existingProject) => existingProject['id'] == newProject['id']);
+            if (!exists) {
+              _projects.add(newProject);
+            }
+          }
+
           _loadingMore = false;
         });
       }
@@ -169,14 +196,10 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                             return MyFillTer(
                               onApply: (selectedOption, studentCount,
                                   proposalCount) {
-                                // print('Selected option: $selectedOption');
-                                // print('Students needed: $studentCount');
-                                // print('Proposals less than: $proposalCount');
                                 if (mounted) {
                                   setState(() {
                                     _selectedOption = selectedOption;
                                     _studentCount = int.tryParse(studentCount);
-
                                     _proposalCount =
                                         int.tryParse(proposalCount);
                                   });
@@ -203,7 +226,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               ),
             ),
           ),
-          // ProjectList(),
           Expanded(
             child: _isLoading && _projects.isEmpty
                 ? const Center(
@@ -212,16 +234,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                     ),
                   )
                 : NotificationListener<ScrollNotification>(
-                    onNotification: (ScrollNotification scrollInfo) {
-                      if (!_loadingMore &&
-                          _hasMore &&
-                          scrollInfo.metrics.pixels ==
-                              scrollInfo.metrics.maxScrollExtent) {
-                        _loadMoreProjects();
-                      }
-                      return true;
-                    },
                     child: SingleChildScrollView(
+                      controller: _scrollController,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 15),
@@ -230,19 +244,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                 child: Text('Project not found'),
                               )
                             : Column(
-                                children: _projects
-                                    .where((project) =>
-                                        (_selectedOption == null ||
-                                            _selectedOption == -1 ||
-                                            project['projectScopeFlag'] ==
-                                                _selectedOption) &&
-                                        (_studentCount == null ||
-                                            project['numberOfStudents'] ==
-                                                _studentCount) &&
-                                        (_proposalCount == null ||
-                                            project['countProposals'] ==
-                                                _proposalCount))
-                                    .map((project) {
+                                children: _projects.map((project) {
                                   return ProjectItem(
                                     projectId: project['id'],
                                     createdAt: project['createdAt'],

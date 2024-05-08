@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:studenthub/app_routes.dart";
 
@@ -24,22 +25,24 @@ class DashboardDetailHiredList extends StatelessWidget {
   Widget hiredDetail(hired) {
     return Container(
       decoration: BoxDecoration(
+        color: Colors.white,
         border: Border.all(
           color: Colors.grey.shade300,
           width: 1,
         ),
         borderRadius: BorderRadius.circular(10),
       ),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(20),
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage("assets/images/avatar.png"),
+                backgroundImage: NetworkImage(
+                    "https://cdn-icons-png.flaticon.com/512/147/147142.png"),
               ),
               const SizedBox(
                 width: 20,
@@ -52,14 +55,16 @@ class DashboardDetailHiredList extends StatelessWidget {
                     style: const TextStyle(
                       color: Color(0xFF008ABD),
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 18,
                       overflow: TextOverflow.visible,
                     ),
                   ),
                   Text(
-                    "4th year student",
-                    style: const TextStyle(
+                    hired["student"]['techStack']['name'],
+                    style: TextStyle(
                       color: Colors.grey,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
@@ -67,24 +72,17 @@ class DashboardDetailHiredList extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 10,
+            height: 15,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(hired["student"]['techStack']['name']),
-              Text("Excellent"),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            hired['coverLetter'],
-            style: const TextStyle(
-              overflow: TextOverflow.visible,
-            ),
-          ),
+          // Text(
+          //   hired['coverLetter'],
+          //   style: const TextStyle(
+          //     overflow: TextOverflow.visible,
+          //   ),
+          // ),
+          // const SizedBox(
+          //   height: 15,
+          // ),
           Row(
             children: [
               Expanded(
@@ -97,15 +95,15 @@ class DashboardDetailHiredList extends StatelessWidget {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xFF008ABD),
                   textStyle: const TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                child: const Text(
-                  "Message",
-                  style: TextStyle(color: Colors.blue),
+                child: Text(
+                  'Message'.tr(),
+                  style: const TextStyle(color: Colors.white),
                 ),
               )),
             ],

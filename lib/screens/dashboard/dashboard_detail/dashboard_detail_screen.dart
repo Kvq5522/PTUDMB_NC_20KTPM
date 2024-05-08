@@ -89,12 +89,12 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                 style: const TextStyle(
                   color: Color(0xFF008ABD),
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 24,
                   overflow: TextOverflow.visible,
                 ),
               ),
               const SizedBox(
-                height: 10,
+                height: 14,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -229,30 +229,31 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                             hiredList: proposals,
                             projectId: widget.id,
                           )
-                        : filter == "Message"
-                            ? DashboardDetailMessageList(
-                                messageList: messages,
-                                projectId: widget.id,
-                              )
-                            : const SizedBox(),
+                        : const SizedBox(),
+                    filter == "Message"
+                        ? DashboardDetailMessageList(
+                            messageList: messages,
+                            projectId: widget.id,
+                          )
+                        : const SizedBox(),
                   ],
                 )),
               ),
             ],
           )),
-      floatingActionButton: filter == "Detail"
-          ? ElevatedButton(
-              onPressed: () {},
-              child: Text(
-                'Post job'.tr(),
-                style: const TextStyle(
-                  color: Colors.blue,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            )
-          : const SizedBox(),
+      // floatingActionButton: filter == "Detail"
+      //     ? ElevatedButton(
+      //         onPressed: () {},
+      //         child: Text(
+      //           'Post job'.tr(),
+      //           style: const TextStyle(
+      //             color: Colors.blue,
+      //             fontSize: 16.0,
+      //             fontWeight: FontWeight.bold,
+      //           ),
+      //         ),
+      //       )
+      //     : const SizedBox(),
     );
   }
 }

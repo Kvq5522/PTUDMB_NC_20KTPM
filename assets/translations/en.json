@@ -170,5 +170,33 @@
   "Old password": "Old password",
   "New password": "New password",
   "Confirm new password": "Confirm new password",
-  "Reset password": "Reset password"
+  "Reset password": "Reset password",
+
+  "Proposal Detail": "Proposal Detail",
+  "No Email Provided": "No Email Provided",
+  "Tech Stack:": "Tech Stack:",
+  "No Tech Stack Provided": "No Tech Stack Provided",
+  "Cover letter:": "Cover letter:",
+  "Education:": "Education:",
+  "No Education Provided": "No Education Provided",
+  "Skills:": "Skills:",
+  "No Skills Provided": "No Skills Provided",
+  "Resume:": "Resume:",
+  "View Resume": "View Resume",
+  "Transcript:": "Transcript:",
+  "View Transcript": "View Transcript",
+
+  "Yes": "Yes",
+  "Hire": "Hire",
+  "Confirmation": "Confirmation",
+  "Sent hired offer": "Sent hired offer",
+  "Do you want to cancel hiring?": "Do you want to cancel hiring?",
+  "Do you really want to send hire offer for student to this project?": "Do you really want to send hire offer for student to this project?",
+
+  "Project time": "Project time",
+  "Number of Students": "Number of Students",
+  "Description": "Description",
+  "Project status": "Project status",
+  "Save": "Save",
+  "Description:": "Description:"
 }

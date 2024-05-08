@@ -167,5 +167,33 @@
   "Old password": "Mật khẩu cũ",
   "New password": "Mật khẩu mới",
   "Confirm new password": "Xác nhận mật khẩu",
-  "Reset password": "Đổi mật khẩu"
+  "Reset password": "Đổi mật khẩu",
+
+  "Proposal Detail": "Chi tiết đề xuất",
+  "No Email Provided": "Không cung cấp Email",
+  "Tech Stack:": "Công nghệ:",
+  "No Tech Stack Provided": "Không cung cấp",
+  "Cover letter:": "Thư Xin Việc:",
+  "Education:": "Học vấn:",
+  "No Education Provided": "Không cung cấp",
+  "Skills:": "Kỹ năng:",
+  "No Skills Provided": "Không cung cấp",
+  "Resume:": "Sơ yếu lý lịch:",
+  "View Resume": "Xem CV",
+  "Transcript:": "Bảng điểm:",
+  "View Transcript": "Xem bảng điểm",
+
+  "Yes": "Có",
+  "Hire": "Tuyển",
+  "Confirmation": "Xác nhận",
+  "Sent hired offer": "Đã gửi",
+  "Do you want to cancel hiring?": "Bạn có muốn hủy việc thuê không?",
+  "Do you really want to send hire offer for student to this project?": "Bạn có muốn tuyển sinh viên cho dự án này không",
+
+  "Project time": "Thời gian",
+  "Number of Students": "Số lượng sinh viên",
+  "Description": "Mô tả",
+  "Project status": "Tình trạng",
+  "Save": "Lưu",
+  "Description:": "Mô tả:"
 }

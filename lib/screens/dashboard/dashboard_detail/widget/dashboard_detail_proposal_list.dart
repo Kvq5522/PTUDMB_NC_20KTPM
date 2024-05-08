@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -71,17 +72,17 @@ class _DashboardDetailProposalListState
             ),
           );
         } else {
-          if (filteredList.isEmpty) {
-            return Center(
-              child: Text('No items found!'),
-            );
-          } else {
-            return Column(
-              children: List.generate(filteredList.length,
-                  (index) => proposalDetail(widget.proposalList[index])),
-            );
-          }
+          // if (filteredList.isEmpty) {
+          //   return Center(
+          //     child: Text('No items found!'),
+          //   );
+          // } else {
+          return Column(
+            children: List.generate(filteredList.length,
+                (index) => proposalDetail(widget.proposalList[index])),
+          );
         }
+        // }
       },
     );
   }
@@ -89,23 +90,41 @@ class _DashboardDetailProposalListState
   Widget proposalDetail(proposal) {
     return GestureDetector(
       onTap: () {
-        print("Proposal clicked");
-        print(proposal.toString());
-        routerConfig.push('/project/proposal/${proposal?["student"]?["id"]}');
+        routerConfig.push('/project/proposal/${proposal?["id"]}');
       },
       child: Container(
         decoration: BoxDecoration(
+          color: Colors.white,
           border: Border.all(
             color: Colors.grey.shade300,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(20),
         margin: const EdgeInsets.symmetric(vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                Text(
+                  "Created: ".tr(),
+                  style: const TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+                Text(
+                  "${DateFormat('dd-MM-yyyy').format(DateTime.parse(proposal["createdAt"]))}",
+                  style: const TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             Row(
               children: [
                 CircleAvatar(
@@ -128,9 +147,11 @@ class _DashboardDetailProposalListState
                       ),
                     ),
                     Text(
-                      "Proposals created: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(proposal["createdAt"]))}",
-                      style: const TextStyle(
+                      proposal["student"]["techStack"]["name"],
+                      style: TextStyle(
                         color: Colors.grey,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -140,22 +161,32 @@ class _DashboardDetailProposalListState
             const SizedBox(
               height: 10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(proposal["student"]["techStack"]["name"]),
-                Text('Excellent')
-                // Text(proposal['skills'])
-              ],
-            ),
+            Divider(color: Color.fromARGB(255, 231, 231, 231)),
             const SizedBox(
-              height: 10,
+              height: 5,
+            ),
+            Text(
+              'Cover letter:'.tr(),
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                overflow: TextOverflow.visible,
+              ),
             ),
             Text(
               proposal['coverLetter'],
-              style: const TextStyle(
+              style: TextStyle(
+                color: Colors.black,
                 overflow: TextOverflow.visible,
               ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Divider(color: Color.fromARGB(255, 231, 231, 231)),
+            const SizedBox(
+              height: 10,
             ),
             Row(
               children: [
@@ -169,14 +200,14 @@ class _DashboardDetailProposalListState
                     });
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.white,
                     textStyle: const TextStyle(
                       fontSize: 15.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  child: const Text(
-                    "Message",
+                  child: Text(
+                    "Message".tr(),
                     style: TextStyle(color: Colors.blue),
                   ),
                 )),
@@ -188,21 +219,22 @@ class _DashboardDetailProposalListState
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text('Confirmation'),
+                                title: Text('Confirmation'.tr()),
                                 content: Text(
                                   proposal["statusFlag"] == 2
-                                      ? 'Do you want to cancel hiring?'
-                                      : 'Do you really want to send hire offer for student to this project?',
+                                      ? 'Do you want to cancel hiring?'.tr()
+                                      : 'Do you really want to send hire offer for student to this project?'
+                                          .tr(),
                                 ),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: Text('Cancel'),
+                                    child: Text('Cancel'.tr()),
                                     onPressed: () {
                                       Navigator.of(context).pop(false);
                                     },
                                   ),
                                   TextButton(
-                                    child: Text('Yes'),
+                                    child: Text('Yes'.tr()),
                                     onPressed: () {
                                       Navigator.of(context).pop(true);
                                     },
@@ -243,7 +275,7 @@ class _DashboardDetailProposalListState
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
+                          backgroundColor: Color(0xFF008ABD),
                           textStyle: const TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,
@@ -251,9 +283,9 @@ class _DashboardDetailProposalListState
                         ),
                         child: Text(
                           proposal["statusFlag"] == 0
-                              ? "Hire"
-                              : "Sent hired offer",
-                          style: TextStyle(color: Colors.blue),
+                              ? 'Hire'.tr()
+                              : 'Sent hired offer'.tr(),
+                          style: TextStyle(color: Colors.white),
                         ))),
               ],
             )
