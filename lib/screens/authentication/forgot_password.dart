@@ -46,13 +46,6 @@ class forgotPasswordScreen extends StatelessWidget {
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.primary,
-                  shadows: [
-                    Shadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: Offset(1.0, 1.0),
-                      blurRadius: 1.0,
-                    ),
-                  ],
                 ),
                 textAlign: TextAlign.center,
               ),

@@ -170,7 +170,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                             style: TextStyle(
                               fontSize: 46,
                               fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.background,
+                              color: Theme.of(context).colorScheme.tertiary,
                             ),
                           ),
                           const SizedBox(

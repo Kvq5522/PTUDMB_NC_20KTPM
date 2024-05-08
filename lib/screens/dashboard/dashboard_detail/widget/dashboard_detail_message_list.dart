@@ -47,12 +47,14 @@ class _DashboardDetailMessageListState
                   });
                 },
                 child: Container(
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(
-                  //     color: Colors.grey.shade300,
-                  //   ),
-                  //   borderRadius: BorderRadius.circular(10),
-                  // ),
+                  decoration: BoxDecoration(
+                    color:
+                        Color.fromARGB(255, 192, 192, 192).withOpacity(0.075),
+                    // border: Border.all(
+                    //   color: Colors.grey.shade300,
+                    // ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   padding: const EdgeInsets.all(20),
                   margin: const EdgeInsets.only(bottom: 20),
                   child: Row(

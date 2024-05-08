@@ -140,13 +140,15 @@ class _MessageScreenState extends State<MessageScreen> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey.shade300,
-                        ),
+                        color: Color.fromARGB(255, 192, 192, 192)
+                            .withOpacity(0.075),
+                        // border: Border.all(
+                        //   color: Colors.grey.shade300,
+                        // ),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       padding: const EdgeInsets.all(20),
-                      margin: const EdgeInsets.only(bottom: 20),
+                      margin: const EdgeInsets.only(bottom: 14),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [

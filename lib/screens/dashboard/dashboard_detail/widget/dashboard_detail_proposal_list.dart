@@ -284,7 +284,7 @@ class _DashboardDetailProposalListState
                         child: Text(
                           proposal["statusFlag"] == 0
                               ? 'Hire'.tr()
-                              : 'Sent hired offer'.tr(),
+                              : 'Sent hired'.tr(),
                           style: TextStyle(color: Colors.white),
                         ))),
               ],

@@ -189,7 +189,7 @@
   "Yes": "Yes",
   "Hire": "Hire",
   "Confirmation": "Confirmation",
-  "Sent hired offer": "Sent hired offer",
+  "Sent hired": "Sent hired",
   "Do you want to cancel hiring?": "Do you want to cancel hiring?",
   "Do you really want to send hire offer for student to this project?": "Do you really want to send hire offer for student to this project?",
 
@@ -198,5 +198,11 @@
   "Description": "Description",
   "Project status": "Project status",
   "Save": "Save",
-  "Description:": "Description:"
+  "Description:": "Description:",
+
+  "Messages": "Messages",
+  "Interview": "Interview",
+  "View Proposal": "View Proposal",
+  "Accept now": "Accept now",
+  "Join meeting": "Join meeting"
 }

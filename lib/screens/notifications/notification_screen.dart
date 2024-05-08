@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
@@ -150,7 +151,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           : Colors.white,
                       padding: const EdgeInsets.all(0),
                     ),
-                    child: Text('All',
+                    child: Text('All'.tr(),
                         style: TextStyle(
                           color: filter == "All" ? Colors.white : Colors.black,
                         )),
@@ -177,7 +178,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           : Colors.white,
                       padding: const EdgeInsets.all(0),
                     ),
-                    child: Text('Messages',
+                    child: Text('Messages'.tr(),
                         style: TextStyle(
                             color: filter == "Messages"
                                 ? Colors.white
@@ -206,7 +207,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           : Colors.white,
                       padding: const EdgeInsets.all(0),
                     ),
-                    child: Text('Proposals',
+                    child: Text('Proposals'.tr(),
                         style: TextStyle(
                             color: filter == "Proposals"
                                 ? Colors.white
@@ -235,7 +236,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           : Colors.white,
                       padding: const EdgeInsets.all(0),
                     ),
-                    child: Text('Interview',
+                    child: Text('Interview'.tr(),
                         style: TextStyle(
                             color: filter == "Interview"
                                 ? Colors.white
@@ -323,8 +324,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   ),
                                   child: Text(
                                       _userInfoStore.userType == "Company"
-                                          ? "View Proposal"
-                                          : "Accept now"),
+                                          ? 'View Proposal'.tr()
+                                          : 'Accept now'.tr()),
                                   onPressed: () async {
                                     if (_userInfoStore.userType == "Company") {
                                       try {
@@ -393,8 +394,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20, vertical: 10),
                                     ),
-                                    child: const Text(
-                                      "Join meeting",
+                                    child: Text(
+                                      'Join meeting'.tr(),
                                     ))
                             ],
                           ),

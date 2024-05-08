@@ -186,7 +186,7 @@
   "Yes": "Có",
   "Hire": "Tuyển",
   "Confirmation": "Xác nhận",
-  "Sent hired offer": "Đã gửi",
+  "Sent hired": "Đã gửi",
   "Do you want to cancel hiring?": "Bạn có muốn hủy việc thuê không?",
   "Do you really want to send hire offer for student to this project?": "Bạn có muốn tuyển sinh viên cho dự án này không",
 
@@ -195,5 +195,11 @@
   "Description": "Mô tả",
   "Project status": "Tình trạng",
   "Save": "Lưu",
-  "Description:": "Mô tả:"
+  "Description:": "Mô tả:",
+
+  "Messages": "Tin nhắn",
+  "Interview": "Phỏng vấn",
+  "View Proposal": "Xem đề xuất",
+  "Accept now": "Chấp nhận",
+  "Join meeting": "Tham gia"
 }
