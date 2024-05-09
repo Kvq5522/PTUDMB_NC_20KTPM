@@ -24,6 +24,7 @@ class _DashboardDetailProposalListState
   final DashBoardService _dashBoardService = DashBoardService();
   late UserInfoStore userInfoStore;
   Map<String, dynamic> proposal = {};
+  late bool _isLoading = true;
 
   Future<void> updateProject(
     int? id,
@@ -58,34 +59,26 @@ class _DashboardDetailProposalListState
 
   @override
   Widget build(BuildContext context) {
-    var filteredList =
-        widget.proposalList.where((item) => item["statusFlag"] == 0).toList();
-    return FutureBuilder(
-      future: Future.delayed(Duration(milliseconds: 550)),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Padding(
-            padding: EdgeInsets.only(top: 50.0),
-            child: Center(
-              child: const CircularProgressIndicator(
-                color: Color(0xFF008ABD),
-              ),
-            ),
-          );
-        } else {
-          // if (filteredList.isEmpty) {
-          //   return Center(
-          //     child: Text('No items found!'),
-          //   );
-          // } else {
-          return Column(
-            children: List.generate(filteredList.length,
-                (index) => proposalDetail(widget.proposalList[index])),
-          );
-        }
-        // }
-      },
-    );
+    if (_isLoading) {
+      setState(() {
+        _isLoading = false;
+      });
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      var filteredList =
+          widget.proposalList.where((item) => item["statusFlag"] == 0).toList();
+      if (filteredList.isEmpty) {
+        return Center(
+          child: Text('No proposal found'.tr()),
+        );
+      }
+      return Column(
+        children: List.generate(filteredList.length,
+            (index) => proposalDetail(filteredList[index])),
+      );
+    }
   }
 
   Widget proposalDetail(proposal) {
@@ -116,7 +109,8 @@ class _DashboardDetailProposalListState
                   ),
                 ),
                 Text(
-                  "${DateFormat('dd-MM-yyyy').format(DateTime.parse(proposal["createdAt"]))}",
+                  DateFormat('dd-MM-yyyy')
+                      .format(DateTime.parse(proposal["createdAt"])),
                   style: const TextStyle(
                     color: Colors.grey,
                   ),
