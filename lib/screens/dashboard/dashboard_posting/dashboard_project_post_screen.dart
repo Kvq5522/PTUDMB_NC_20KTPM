@@ -7,6 +7,7 @@ import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/services/dashboard.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
+import 'package:studenthub/utils/toast.dart';
 // import '../'
 
 class ProjectPosting extends StatefulWidget {
@@ -49,9 +50,7 @@ class _ProjectPostingState extends State<ProjectPosting> {
       );
 
       String message = 'Project posted successfully';
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      showSuccessToast(context: context, message: message);
     } catch (e) {
       print('Failed to update project: $e');
     }

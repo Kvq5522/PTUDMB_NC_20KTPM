@@ -40,9 +40,7 @@ class _ProjectApplyScreenState extends State<ProjectApplyScreen> {
       );
 
       String message = 'Proposal posted successfully';
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      showSuccessToast(context: context, message: message);
     } catch (e) {
       print('Failed to update project: $e');
     }

@@ -7,6 +7,7 @@ import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/services/message.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:intl/intl.dart';
+import 'package:studenthub/utils/toast.dart';
 
 class ScheduleItem extends StatelessWidget {
   final int id;
@@ -372,17 +373,12 @@ class _OptionsDialogState extends State<OptionsDialog> {
     try {
       await _messageService.disableInterview(id, _userInfoStore.token);
       String message = 'Interview disabled successfully';
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      showSuccessToast(context: context, message: message);
     } catch (e) {
       print('Failed to post interview: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-          backgroundColor: Colors.red,
-        ),
-      );
+      showDangerToast(
+          context: context,
+          message: "Failed to post interview please try again");
     }
   }
 
@@ -639,17 +635,12 @@ class _ScheduleModalState extends State<ScheduleModal> {
       await _messageService.patchInterview(
           title, startTime, endTime, _userInfoStore.token, id);
       String message = 'Interview updated successfully';
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      showSuccessToast(context: context, message: message);
     } catch (e) {
       print('Failed to patch interview: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-          backgroundColor: Colors.red,
-        ),
-      );
+      showDangerToast(
+          context: context,
+          message: "Failed to patch interview, please try again");
     }
   }
 
@@ -945,12 +936,10 @@ class _ScheduleModalState extends State<ScheduleModal> {
                             context,
                           );
                         } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(e.toString()),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
+                          showDangerToast(
+                              context: context,
+                              message:
+                                  "Cannot update interview please try again.");
                         }
                         Navigator.pop(context);
                       } else {

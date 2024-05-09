@@ -176,22 +176,57 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
         print("Error: ${e.toString()}");
       }
     });
+
     socket.on('RECEIVE_INTERVIEW', (data) {
-      print(data?["notification"]["message"]["interview"]["disableFlag"]);
-      String iso8601StringStart =
-          data?["notification"]["message"]["interview"]["startTime"];
-      DateTime dateTimeStart = DateTime.parse(iso8601StringStart);
-      String iso8601StringEnd =
-          data?["notification"]["message"]["interview"]["endTime"];
-      DateTime dateTimeEnd = DateTime.parse(iso8601StringEnd);
+      try {
+        String iso8601StringStart =
+            data?["notification"]["message"]["interview"]["startTime"];
+        DateTime dateTimeStart = DateTime.parse(iso8601StringStart);
+        String iso8601StringEnd =
+            data?["notification"]["message"]["interview"]["endTime"];
+        DateTime dateTimeEnd = DateTime.parse(iso8601StringEnd);
 
-      int id = data?["notification"]["message"]["interview"]["id"];
+        int id = data?["notification"]?["message"]?["interview"]?["id"];
 
-      int index = _messageList.indexWhere((item) => item.id == id);
+        int index = _messageList.indexWhere((item) {
+          if (item is ScheduleItem) {
+            return item.id == id;
+          } else {
+            return false;
+          }
+        });
 
-      if (index != -1) {
-        setState(() {
-          _messageList[index] = ScheduleItem(
+        if (index != -1) {
+          setState(() {
+            _messageList[index] = ScheduleItem(
+              id: id,
+              isSender:
+                  BigInt.from(data?["notification"]["message"]["senderId"]) ==
+                      _userInfoStore.userId,
+              avatarUrl:
+                  'https://cdn-icons-png.flaticon.com/512/147/147142.png',
+              title: data?["notification"]["message"]["interview"]["title"],
+              duration: durationTime(
+                  dateTimeStart,
+                  TimeOfDay.fromDateTime(dateTimeStart),
+                  dateTimeEnd,
+                  TimeOfDay.fromDateTime(dateTimeEnd)),
+              day: daysOfWeek[dateTimeStart.weekday - 1],
+              date: DateFormat('dd/MM/yyyy').format(dateTimeStart),
+              timeMeeting: DateFormat('HH:mm').format(dateTimeStart),
+              endDay: daysOfWeek[dateTimeEnd.weekday - 1],
+              endDate: DateFormat('dd/MM/yyyy').format(dateTimeEnd),
+              endTimeMeeting: DateFormat('HH:mm').format(dateTimeEnd),
+              time: DateTime.now(),
+              username: _userInfoStore.username,
+              userId: _userInfoStore.userId,
+              messageFlag: 1,
+              disableFlag: data?["notification"]["message"]["interview"]
+                  ["disableFlag"],
+            );
+          });
+        } else {
+          final schedule = ScheduleItem(
             id: id,
             isSender:
                 BigInt.from(data?["notification"]["message"]["senderId"]) ==
@@ -216,41 +251,18 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
             disableFlag: data?["notification"]["message"]["interview"]
                 ["disableFlag"],
           );
-        });
-      } else {
-        final schedule = ScheduleItem(
-          id: id,
-          isSender: BigInt.from(data?["notification"]["message"]["senderId"]) ==
-              _userInfoStore.userId,
-          avatarUrl: 'https://cdn-icons-png.flaticon.com/512/147/147142.png',
-          title: data?["notification"]["message"]["interview"]["title"],
-          duration: durationTime(
-              dateTimeStart,
-              TimeOfDay.fromDateTime(dateTimeStart),
-              dateTimeEnd,
-              TimeOfDay.fromDateTime(dateTimeEnd)),
-          day: daysOfWeek[dateTimeStart.weekday - 1],
-          date: DateFormat('dd/MM/yyyy').format(dateTimeStart),
-          timeMeeting: DateFormat('HH:mm').format(dateTimeStart),
-          endDay: daysOfWeek[dateTimeEnd.weekday - 1],
-          endDate: DateFormat('dd/MM/yyyy').format(dateTimeEnd),
-          endTimeMeeting: DateFormat('HH:mm').format(dateTimeEnd),
-          time: DateTime.now(),
-          username: _userInfoStore.username,
-          userId: _userInfoStore.userId,
-          messageFlag: 1,
-          disableFlag: data?["notification"]["message"]["interview"]
-              ["disableFlag"],
-        );
 
-        if (_scrollController.position.pixels !=
-            _scrollController.position.minScrollExtent) {
-          hasNewMessageScrollToBottom = true;
+          if (_scrollController.position.pixels !=
+              _scrollController.position.minScrollExtent) {
+            hasNewMessageScrollToBottom = true;
+          }
+
+          setState(() {
+            _messageList.insert(0, schedule);
+          });
         }
-
-        setState(() {
-          _messageList.insert(0, schedule);
-        });
+      } catch (e) {
+        print("Error: ${e.toString()}");
       }
     });
     super.didChangeDependencies();

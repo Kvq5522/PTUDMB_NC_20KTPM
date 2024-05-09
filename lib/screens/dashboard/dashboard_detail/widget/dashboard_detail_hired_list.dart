@@ -15,7 +15,11 @@ class DashboardDetailHiredList extends StatelessWidget {
   Widget build(BuildContext context) {
     var filteredHiredList =
         hiredList.where((item) => item["statusFlag"] == 3).toList();
-
+    if (hiredList.isEmpty) {
+      return Center(
+        child: Text('Not yet hired anyone'.tr()),
+      );
+    }
     return Column(
       children: List.generate(filteredHiredList.length,
           (index) => hiredDetail(filteredHiredList[index])),

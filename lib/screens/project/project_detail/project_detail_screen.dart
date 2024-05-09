@@ -5,6 +5,7 @@ import 'package:studenthub/services/project.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
+import 'package:studenthub/utils/toast.dart';
 
 class DetailProjectScreen extends StatefulWidget {
   final String projectId;
@@ -338,14 +339,11 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                               token: _userInfoStore.token,
                             );
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(isLiked
+                            showSuccessToast(
+                                context: context,
+                                message: isLiked
                                     ? 'Project unsaved'.tr()
-                                    : 'Project saved'.tr()),
-                                duration: const Duration(seconds: 2),
-                              ),
-                            );
+                                    : 'Project saved'.tr());
 
                             setState(() {
                               isLiked = !isLiked;

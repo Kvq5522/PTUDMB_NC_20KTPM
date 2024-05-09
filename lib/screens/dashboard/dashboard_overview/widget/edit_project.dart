@@ -4,6 +4,7 @@ import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:studenthub/app_routes.dart";
 import "package:studenthub/services/dashboard.service.dart";
+import "package:studenthub/utils/toast.dart";
 
 class EditProjectDialog extends StatefulWidget {
   final Map<String, dynamic>? projectInfo;
@@ -238,12 +239,9 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
 
                 routerConfig.push('/dashboard');
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(e.toString()),
-                    backgroundColor: Colors.red,
-                  ),
-                );
+                showDangerToast(
+                    context: context,
+                    message: "Cannot edit project please try again.");
               }
             }
           },

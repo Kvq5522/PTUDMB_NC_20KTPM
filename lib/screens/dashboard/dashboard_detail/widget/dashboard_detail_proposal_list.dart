@@ -6,13 +6,18 @@ import 'package:intl/intl.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:studenthub/services/dashboard.service.dart';
+import 'package:studenthub/utils/toast.dart';
 
 class DashboardDetailProposalList extends StatefulWidget {
   final List proposalList;
   final String projectId;
+  final bool trigger;
 
   const DashboardDetailProposalList(
-      {super.key, required this.proposalList, required this.projectId});
+      {super.key,
+      required this.proposalList,
+      required this.projectId,
+      required this.trigger});
 
   @override
   State<DashboardDetailProposalList> createState() =>
@@ -24,7 +29,7 @@ class _DashboardDetailProposalListState
   final DashBoardService _dashBoardService = DashBoardService();
   late UserInfoStore userInfoStore;
   Map<String, dynamic> proposal = {};
-  late bool _isLoading = true;
+  bool _isLoading = true;
 
   Future<void> updateProject(
     int? id,
@@ -43,9 +48,7 @@ class _DashboardDetailProposalListState
       );
 
       String message = statusFlag == 0 ? 'Hire cancelled' : 'Hire successfully';
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      showSuccessToast(context: context, message: message);
     } catch (e) {
       print('Failed to update project: $e');
     }
@@ -59,10 +62,7 @@ class _DashboardDetailProposalListState
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      setState(() {
-        _isLoading = false;
-      });
+    if (widget.trigger) {
       return Center(
         child: CircularProgressIndicator(),
       );
@@ -254,12 +254,10 @@ class _DashboardDetailProposalListState
                                 context,
                               );
                             } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(e.toString()),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
+                              showDangerToast(
+                                  context: context,
+                                  message:
+                                      "Cannot update project project please try again.");
 
                               print('Failed to update project: $e');
                               setState(() {

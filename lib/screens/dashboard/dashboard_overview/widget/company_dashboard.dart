@@ -7,6 +7,7 @@ import "package:studenthub/app_routes.dart";
 import "package:studenthub/screens/dashboard/dashboard_overview/widget/edit_project.dart";
 import "package:studenthub/services/dashboard.service.dart";
 import "package:studenthub/stores/user_info/user_info.dart";
+import "package:studenthub/utils/toast.dart";
 
 class CompanyDashboard extends StatefulWidget {
   final List projectList;
@@ -160,21 +161,16 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                 project["numberOfStudents"],
                                 typeFlag,
                                 token);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: project["typeFlag"] == 1
-                                    ? Text("Project started successfully!")
-                                    : Text("Project archived successfully!"),
-                              ),
-                            );
+                            showSuccessToast(
+                                context: context,
+                                message: project["typeFlag"] == 2
+                                    ? "Project started successfully!"
+                                    : "Project archived successfully!");
                             routerConfig.push('/dashboard');
                           } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(e.toString()),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
+                            showDangerToast(
+                                context: context,
+                                message: "Error while updating project.");
                           }
                         },
                       ),
@@ -241,19 +237,17 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                           try {
                             await _dashBoardService.deleteProject(
                                 project["id"], token);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("Project removed successfully."),
-                              ),
-                            );
+
+                            showSuccessToast(
+                                context: context,
+                                message: "Project removed successfully.");
+
                             routerConfig.push('/dashboard');
                           } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(e.toString()),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
+                            showDangerToast(
+                                context: context,
+                                message:
+                                    "Cannot remove project please try again.");
                           }
                         },
                       ),

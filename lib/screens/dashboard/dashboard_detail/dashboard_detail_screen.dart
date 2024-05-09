@@ -39,6 +39,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
     2: '3-6',
     3: '>6',
   };
+  bool isLoading = false;
 
   @override
   void didChangeDependencies() async {
@@ -46,6 +47,11 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
     _userInfoStore = Provider.of<UserInfoStore>(context);
 
     try {
+      if (mounted) {
+        setState(() {
+          isLoading = true;
+        });
+      }
       var proposalsData =
           await _dashBoardService.getProposals(widget.id, _userInfoStore.token);
 
@@ -54,8 +60,6 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
 
       var messageList = await _dashBoardService.getProjectMessages(
           BigInt.parse(widget.id), _userInfoStore.token);
-
-      print(messageList);
 
       setState(() {
         proposals = proposalsData;
@@ -70,6 +74,12 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
       if (mounted) {
         showDangerToast(
             context: context, message: "Failed to load data, please try again");
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
       }
     }
   }
@@ -212,6 +222,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                         ? DashboardDetailProposalList(
                             proposalList: proposals,
                             projectId: widget.id,
+                            trigger: isLoading,
                           )
                         : const SizedBox(),
                     filter == "Detail"

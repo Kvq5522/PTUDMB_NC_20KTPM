@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
+import 'package:studenthub/utils/toast.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({super.key});
@@ -33,20 +34,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             ? IconButton(
                 onPressed: () {
                   if (!_userInfoStore.hasProfile) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Please create a profile first.',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                        backgroundColor: Colors.redAccent,
-                        behavior: SnackBarBehavior.floating,
-                        margin: EdgeInsets.all(30),
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
+                    showDangerToast(
+                        context: context,
+                        message: "Please create a profile first.");
 
                     return;
                   }

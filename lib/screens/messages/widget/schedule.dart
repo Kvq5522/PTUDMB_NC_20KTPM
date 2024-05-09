@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/screens/messages/widget/schedule_item.dart';
 import 'package:studenthub/services/message.service.dart';
+import 'package:studenthub/utils/toast.dart';
 
 class MySchedule extends StatefulWidget {
   final String username;
@@ -149,18 +150,14 @@ class _MyScheduleState extends State<MySchedule> {
       );
       if (mounted) {
         String message = 'Interview posted successfully';
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+        showSuccessToast(context: context, message: message);
       }
     } catch (e) {
       print('Failed to post interview: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        showDangerToast(
+            context: context, message: "Failed to post interview try again.");
+      }
     }
   }
 
@@ -482,12 +479,10 @@ class _MyScheduleState extends State<MySchedule> {
                                     context,
                                   );
                                 } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(e.toString()),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
+                                  showDangerToast(
+                                      context: context,
+                                      message:
+                                          "Failed to post interview please try again");
                                 }
                                 Navigator.pop(context);
                                 // print('Title: ${jobTitleController.text}');

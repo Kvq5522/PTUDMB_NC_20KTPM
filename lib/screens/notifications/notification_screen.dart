@@ -396,7 +396,46 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     ),
                                     child: Text(
                                       'Join meeting'.tr(),
-                                    ))
+                                    )),
+                              if (notificationListFiltered[index]?["message"] !=
+                                      null &&
+                                  notificationListFiltered[index]?["message"]
+                                          ?["interview"] ==
+                                      null)
+                                ElevatedButton(
+                                    onPressed: () {
+                                      // print(notificationListFiltered[index]
+                                      //     ["message"]);
+                                      if (true) {
+                                        routerConfig
+                                            .push('/message_detail', extra: {
+                                          'projectId':
+                                              notificationListFiltered[index]
+                                                      ["message"]["projectId"]
+                                                  .toString(),
+                                          'receiverId':
+                                              notificationListFiltered[index]
+                                                      ["message"]["senderId"]
+                                                  .toString(),
+                                          'receiverName':
+                                              notificationListFiltered[index]
+                                                  ["receiver"]["fullname"],
+                                        });
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.blue,
+                                      foregroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      elevation: 5,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                    ),
+                                    child: Text(
+                                      'View message'.tr(),
+                                    )),
                             ],
                           ),
                         ],

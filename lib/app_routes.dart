@@ -2,7 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/dashboard_detail_proposal_detail.dart';
 import 'package:studenthub/screens/dashboard/dashboard_detail/dashboard_detail_screen.dart';
 import 'package:studenthub/screens/dashboard/dashboard_overview/widget/proposals_active.dart';
-import 'package:studenthub/screens/interviews/interview.dart';
 import 'package:studenthub/screens/user/reset_password/reset_password_screen.dart';
 import 'package:studenthub/screens/user/settings/settings_screen.dart';
 import 'package:studenthub/screens/project/project_apply/project_apply_screen.dart';
@@ -20,7 +19,6 @@ import 'package:studenthub/screens/video_call/video_call_screen.dart';
 import 'package:studenthub/screens/welcome/welcome_screen.dart';
 import 'package:studenthub/screens/messages/message_detail/message_detail.dart';
 import 'package:studenthub/screens/dashboard/dashboard_posting/dashboard_project_post_screen.dart';
-import 'package:studenthub/screens/notifications/notification_screen.dart';
 import 'package:studenthub/screens/authentication/forgot_password.dart';
 
 GoRouter routerConfig = GoRouter(

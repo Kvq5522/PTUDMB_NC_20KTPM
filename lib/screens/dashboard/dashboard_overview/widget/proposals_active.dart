@@ -9,6 +9,7 @@ import 'package:studenthub/services/project.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
+import 'package:studenthub/utils/toast.dart';
 
 class ActiveProposalScreen extends StatefulWidget {
   final String projectId;
@@ -56,9 +57,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
       );
 
       String message = "Join project successfully";
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      showSuccessToast(context: context, message: message);
     } catch (e) {
       print('Failed to update project: $e');
     }
@@ -363,12 +362,10 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                               );
                               routerConfig.go('/dashboard');
                             } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(e.toString()),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
+                              showDangerToast(
+                                  context: context,
+                                  message:
+                                      "Error accept offer. Please try again.");
                               print('Failed to update project: $e');
                             }
                           }
