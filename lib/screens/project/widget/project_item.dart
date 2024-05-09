@@ -80,7 +80,6 @@ class _ProjectItemState extends State<ProjectItem> {
       var userInfo = await _authService.getUserInfo(_userInfoStore.token);
       setState(() {
         _studentId = (userInfo["student"]["id"]).toString();
-        // print(_studentId);
         _isLoading = false;
       });
     } catch (e) {
@@ -114,8 +113,13 @@ class _ProjectItemState extends State<ProjectItem> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: GestureDetector(
         onTap: () {
-          routerConfig
-              .push('/project/${widget.projectId}', extra: {"isInfo": false});
+          routerConfig.push(
+            '/project/${widget.projectId}',
+            extra: {
+              "isInfo": false,
+              "isLiked": isLiked,
+            },
+          );
         },
         child: Container(
           width: double.infinity,

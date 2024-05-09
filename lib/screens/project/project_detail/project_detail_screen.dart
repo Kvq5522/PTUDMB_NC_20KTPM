@@ -9,9 +9,13 @@ import 'package:studenthub/app_routes.dart';
 class DetailProjectScreen extends StatefulWidget {
   final String projectId;
   final bool isInfo;
+  final bool isLiked;
 
   const DetailProjectScreen(
-      {super.key, required this.projectId, required this.isInfo});
+      {super.key,
+      required this.projectId,
+      required this.isInfo,
+      required this.isLiked});
 
   @override
   State<DetailProjectScreen> createState() => _DetailProjectScreenState();
@@ -20,6 +24,7 @@ class DetailProjectScreen extends StatefulWidget {
 class _DetailProjectScreenState extends State<DetailProjectScreen> {
   final ProjectService _projectService = ProjectService();
   late UserInfoStore _userInfoStore;
+  bool isLiked = false;
   Map<String, dynamic> projectDetail = {};
 
   @override
@@ -27,6 +32,7 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
     super.didChangeDependencies();
     _userInfoStore = Provider.of<UserInfoStore>(context);
     fetchProjectDetail();
+    isLiked = widget.isLiked;
   }
 
   Future<void> fetchProjectDetail() async {
@@ -85,7 +91,36 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            routerConfig.push('/project');
+          },
+        ),
+        title: SizedBox(
+          width: 160,
+          height: MediaQuery.of(context).size.width * 0.2,
+          child: Image.asset('assets/images/logo.png'),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.white),
+        actions: [
+          IconButton(
+            onPressed: () {
+              routerConfig.push('/choose-user');
+            },
+            icon: const Icon(
+              Icons.person,
+              size: 30,
+              color: Colors.white,
+            ),
+          )
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -287,15 +322,40 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                       child: ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                              const Color.fromARGB(255, 255, 255, 255)),
+                            isLiked ? Colors.white : Colors.white,
+                          ),
                           padding:
                               MaterialStateProperty.all<EdgeInsetsGeometry>(
                             const EdgeInsets.all(16),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          try {
+                            await _projectService.updateFavoriteProject(
+                              studentId: _userInfoStore.roleId.toString(),
+                              projectId: int.parse(widget.projectId),
+                              disableFlag: isLiked ? 1 : 0,
+                              token: _userInfoStore.token,
+                            );
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(isLiked
+                                    ? 'Project unsaved'.tr()
+                                    : 'Project saved'.tr()),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+
+                            setState(() {
+                              isLiked = !isLiked;
+                            });
+                          } catch (e) {
+                            print('Error updating favorite status: $e');
+                          }
+                        },
                         child: Text(
-                          'Saved'.tr(),
+                          isLiked ? 'Saved'.tr() : 'Save'.tr(),
                           style: const TextStyle(
                             color: Color(0xFF008ABD),
                             fontWeight: FontWeight.w600,

@@ -23,6 +23,7 @@ class _DashboardDetailProposalListState
     extends State<DashboardDetailProposalList> {
   final DashBoardService _dashBoardService = DashBoardService();
   late UserInfoStore userInfoStore;
+  Map<String, dynamic> proposal = {};
 
   Future<void> updateProject(
     int? id,

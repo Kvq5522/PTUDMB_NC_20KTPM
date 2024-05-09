@@ -136,7 +136,11 @@ GoRouter routerConfig = GoRouter(
         final projectId = state.pathParameters['projectId'] as String;
         final isInfo = (state.extra as Map<String, dynamic>)['isInfo'] as bool;
 
-        return DetailProjectScreen(projectId: projectId, isInfo: isInfo);
+        final isLiked =
+            (state.extra as Map<String, dynamic>)['isLiked'] as bool;
+
+        return DetailProjectScreen(
+            projectId: projectId, isInfo: isInfo, isLiked: isLiked);
       },
     ),
     GoRoute(
