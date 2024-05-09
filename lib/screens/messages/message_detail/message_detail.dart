@@ -218,7 +218,6 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
           );
         });
       } else {
-        print("======");
         final schedule = ScheduleItem(
           id: id,
           isSender: BigInt.from(data?["notification"]["message"]["senderId"]) ==
@@ -392,7 +391,7 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
             DateTime dateTimeStart = DateTime.parse(iso8601StringStart);
             String iso8601StringEnd = message["endTime"];
             DateTime dateTimeEnd = DateTime.parse(iso8601StringEnd);
-            print(message["disableFlag"]);
+
             return ScheduleItem(
               id: message["id"],
               isSender:

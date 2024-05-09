@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
 
 class VideoCallScreen extends StatelessWidget {
-  final String conferenceID;
+  final int conferenceID;
   final String username;
   final BigInt userId;
 
@@ -23,7 +23,7 @@ class VideoCallScreen extends StatelessWidget {
             "b0476b84ec3131ff865de9ef67a0297eaa59da066e81f68ef454ba9940fe2d48",
         userID: userId.toString(),
         userName: username,
-        conferenceID: conferenceID,
+        conferenceID: conferenceID.toString(),
         config: ZegoUIKitPrebuiltVideoConferenceConfig(),
       ),
     );

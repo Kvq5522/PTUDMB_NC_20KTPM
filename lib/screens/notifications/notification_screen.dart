@@ -370,19 +370,19 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 ElevatedButton(
                                     onPressed: () {
                                       // print(notificationListFiltered[index]
-                                      //     ?["message"]);
-                                      // if (true) {
-                                      //   routerConfig
-                                      //       .push('/video-call', extra: {
-                                      //     'conferenceID':
-                                      //         notificationListFiltered[index]
-                                      //                 ?["message"]?["interview"]
-                                      //             ?["title"],
-                                      //     'username': _userInfoStore.username,
-                                      //     'userId':
-                                      //         _userInfoStore.userId.toString(),
-                                      //   });
-                                      // }
+                                      //     ["message"]);
+                                      if (true) {
+                                        routerConfig
+                                            .push('/video-call', extra: {
+                                          'conferenceID':
+                                              notificationListFiltered[index]
+                                                      ["message"]["interview"]
+                                                  ?["id"],
+                                          'username': _userInfoStore.username,
+                                          'userId':
+                                              _userInfoStore.userId.toString(),
+                                        });
+                                      }
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.blue,

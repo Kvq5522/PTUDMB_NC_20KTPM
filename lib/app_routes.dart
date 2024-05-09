@@ -176,7 +176,7 @@ GoRouter routerConfig = GoRouter(
       builder: (context, state) {
         final Map<String, dynamic> extraInfo =
             state.extra as Map<String, dynamic>;
-        final String conferenceID = extraInfo['conferenceID'] as String;
+        final int conferenceID = extraInfo['conferenceID'] as int;
         final String username = extraInfo['username'] as String;
         final BigInt userId = BigInt.parse(extraInfo['userId'].toString());
 

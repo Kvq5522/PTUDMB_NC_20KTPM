@@ -75,7 +75,7 @@ class ScheduleItem extends StatelessWidget {
         children: [
           if (!isSender)
             CircleAvatar(
-              backgroundImage: AssetImage(avatarUrl),
+              backgroundImage: NetworkImage(avatarUrl),
               radius: 20,
             ),
           if (!isSender) const SizedBox(width: 8),
@@ -93,15 +93,15 @@ class ScheduleItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (!isSender)
-                    Text(
-                      "name",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  const SizedBox(height: 4),
+                  // if (!isSender)
+                  //   Text(
+                  //     "name",
+                  //     style: const TextStyle(
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Colors.black,
+                  //     ),
+                  //   ),
+                  // const SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -235,7 +235,7 @@ class ScheduleItem extends StatelessWidget {
                             ? null
                             : () {
                                 routerConfig.push('/video-call', extra: {
-                                  'conferenceID': title,
+                                  'conferenceID': id,
                                   'username': username,
                                   'userId': userId,
                                 });
@@ -249,7 +249,7 @@ class ScheduleItem extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 4),
-                      disableFlag == 1
+                      (disableFlag == 1 || !isSender)
                           ? const SizedBox(width: 0)
                           : OptionsButton(
                               id: id,
