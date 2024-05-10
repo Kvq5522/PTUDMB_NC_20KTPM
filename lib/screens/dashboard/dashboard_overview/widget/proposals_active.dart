@@ -83,16 +83,22 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
         _userInfoStore.token,
       );
 
-      setState(() {
-        projectDetail = detail;
-        proposalDetail = proposal;
-      });
+      // Check if the widget is still mounted before updating the state
+      if (mounted) {
+        setState(() {
+          projectDetail = detail;
+          proposalDetail = proposal;
+        });
+      }
     } catch (error) {
       print('Error fetching project detail: $error');
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      // Check if the widget is still mounted before updating the state
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

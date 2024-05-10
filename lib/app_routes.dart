@@ -133,12 +133,17 @@ GoRouter routerConfig = GoRouter(
       builder: (context, state) {
         final projectId = state.pathParameters['projectId'] as String;
         final isInfo = (state.extra as Map<String, dynamic>)['isInfo'] as bool;
-
         final isLiked =
             (state.extra as Map<String, dynamic>)['isLiked'] as bool;
+        final String studentId =
+            (state.extra as Map<String, dynamic>)['_studentId'] as String;
 
         return DetailProjectScreen(
-            projectId: projectId, isInfo: isInfo, isLiked: isLiked);
+          projectId: projectId,
+          isInfo: isInfo,
+          isLiked: isLiked,
+          studentId: studentId, // Sửa lỗi chính tả ở đây
+        );
       },
     ),
     GoRoute(

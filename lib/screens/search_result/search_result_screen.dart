@@ -127,6 +127,19 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     }
   }
 
+  bool _isProjectListEmpty() {
+    return _projects
+        .where((project) =>
+            (_selectedOption == null ||
+                _selectedOption == -1 ||
+                project['projectScopeFlag'] == _selectedOption) &&
+            (_studentCount == null ||
+                project['numberOfStudents'] == _studentCount) &&
+            (_proposalCount == null ||
+                project['countProposals'] == _proposalCount))
+        .isEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -196,14 +209,16 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                             return MyFillTer(
                               onApply: (selectedOption, studentCount,
                                   proposalCount) {
-                                if (mounted) {
-                                  setState(() {
-                                    _selectedOption = selectedOption;
-                                    _studentCount = int.tryParse(studentCount);
-                                    _proposalCount =
-                                        int.tryParse(proposalCount);
-                                  });
-                                }
+                                print('Selected option: $selectedOption');
+                                print('Students needed: $studentCount');
+                                print('Proposals less than: $proposalCount');
+                                setState(() {
+                                  _selectedOption = selectedOption;
+                                  _studentCount = int.tryParse(studentCount);
+
+                                  _proposalCount = int.tryParse(proposalCount);
+                                });
+                                print(_selectedOption);
                               },
                             );
                           });
@@ -239,12 +254,24 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 15),
-                        child: _projects.isEmpty
+                        child: _projects.isEmpty || _isProjectListEmpty()
                             ? const Center(
                                 child: Text('Project not found'),
                               )
                             : Column(
-                                children: _projects.map((project) {
+                                children: _projects
+                                    .where((project) =>
+                                        (_selectedOption == null ||
+                                            _selectedOption == -1 ||
+                                            project['projectScopeFlag'] ==
+                                                _selectedOption) &&
+                                        (_studentCount == null ||
+                                            project['numberOfStudents'] ==
+                                                _studentCount) &&
+                                        (_proposalCount == null ||
+                                            project['countProposals'] ==
+                                                _proposalCount))
+                                    .map((project) {
                                   return ProjectItem(
                                     projectId: project['id'],
                                     createdAt: project['createdAt'],

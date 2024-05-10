@@ -118,6 +118,7 @@ class _ProjectItemState extends State<ProjectItem> {
             extra: {
               "isInfo": false,
               "isLiked": isLiked,
+              "_studentId": _studentId,
             },
           );
         },

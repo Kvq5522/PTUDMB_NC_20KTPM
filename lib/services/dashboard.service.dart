@@ -44,7 +44,9 @@ class DashBoardService {
     }
     var result =
         List<Map<String, dynamic>>.from(res.data?["result"]["items"] ?? []);
-
+    // print("===================");
+    // print(result);
+    // print("===================");
     return result;
   }
 
@@ -293,6 +295,48 @@ class DashBoardService {
       String proposalId, String token) async {
     Response res = await _dioClient.get(
       "/api/proposal/$proposalId",
+      token: token,
+    );
+
+    if (res.statusCode! >= 400) {
+      String errorMessage = res.data?["errorDetails"];
+
+      throw Exception(errorMessage);
+    }
+    Map<String, dynamic> result =
+        Map<String, dynamic>.from(res.data?["result"] ?? {});
+
+    return result;
+  }
+
+  Future<String> getResume(String studentId, String token) async {
+    try {
+      Response res = await _dioClient.get(
+        "/api/profile/student/$studentId/resume",
+        token: token,
+      );
+
+      if (res.statusCode! >= 400) {
+        String errorMessage = res.data?["errorDetails"];
+        throw Exception(errorMessage ?? "Unknown error");
+      }
+
+      dynamic responseData = res.data;
+      if (responseData is String) {
+        // Nếu phản hồi là một chuỗi, đây là URL của tệp PDF
+        return responseData;
+      } else {
+        throw Exception("Invalid response format");
+      }
+    } catch (e) {
+      throw Exception("Failed to fetch resume: $e");
+    }
+  }
+
+  Future<Map<String, dynamic>> getTranscript(
+      String studentId, String token) async {
+    Response res = await _dioClient.get(
+      "/api/profile/student/$studentId/transcript",
       token: token,
     );
 

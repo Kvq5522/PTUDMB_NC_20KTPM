@@ -96,7 +96,7 @@
   "Project search": "Tìm kiếm dự án",
   "Apply Now": "Ứng tuyển",
   "Saved": "Đã lưu",
-  "Thư giới thiệu": "Cover letter",
+  "Cover letter": "Thư giới thiệu",
   "Describe why do you fit for this project": "Mô tả tại sao bạn lại phù hợp với dự án",
   "Cancel": "Hủy",
   "Post a jobs": "Đăng dự án",
@@ -202,5 +202,9 @@
   "View Proposal": "Xem đề xuất",
   "Accept now": "Chấp nhận",
   "Join meeting": "Tham gia",
-  "View message": "Xem tin nhắn"
+  "View message": "Xem tin nhắn",
+
+  "Tech Stack": "Vai trò",
+  "Skills": "Kĩ năng",
+  "Resume & Transcript": "CV & Bảng điểm"
 }

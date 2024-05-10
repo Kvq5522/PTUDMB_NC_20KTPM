@@ -440,6 +440,52 @@ class UserService {
     }
   }
 
+  Future<String> getResume({
+    required String token,
+    required BigInt userId,
+  }) async {
+    try {
+      Response res = await _dioClient.get(
+        "/api/profile/student/$userId/resume",
+        token: token,
+      );
+
+      if (res.statusCode! >= 400) {
+        String errorMessage = res.data?["errorDetails"];
+        throw Exception(errorMessage);
+      }
+
+      String resumeUrl = res.data?["result"];
+
+      return resumeUrl;
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<String> getTranscript({
+    required String token,
+    required BigInt userId,
+  }) async {
+    try {
+      Response res = await _dioClient.get(
+        "/api/profile/student/$userId/transcript",
+        token: token,
+      );
+
+      if (res.statusCode! >= 400) {
+        String errorMessage = res.data?["errorDetails"];
+        throw Exception(errorMessage);
+      }
+
+      String transcriptUrl = res.data?["result"];
+
+      return transcriptUrl;
+    } catch (_) {
+      rethrow;
+    }
+  }
+
   // Download user transcript
   Future<File> downloadUserTranscript({
     required String token,

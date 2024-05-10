@@ -69,6 +69,7 @@ class _DashboardDetailProposalListState
     } else {
       var filteredList =
           widget.proposalList.where((item) => item["statusFlag"] == 0).toList();
+
       if (filteredList.isEmpty) {
         return Center(
           child: Text('No proposal found'.tr()),
@@ -170,7 +171,7 @@ class _DashboardDetailProposalListState
               ),
             ),
             Text(
-              proposal['coverLetter'],
+              proposal["coverLetter"],
               style: TextStyle(
                 color: Colors.black,
                 overflow: TextOverflow.visible,

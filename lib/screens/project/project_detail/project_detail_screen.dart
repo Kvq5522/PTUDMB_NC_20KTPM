@@ -11,12 +11,14 @@ class DetailProjectScreen extends StatefulWidget {
   final String projectId;
   final bool isInfo;
   final bool isLiked;
+  final String studentId;
 
   const DetailProjectScreen(
       {super.key,
       required this.projectId,
       required this.isInfo,
-      required this.isLiked});
+      required this.isLiked,
+      required this.studentId});
 
   @override
   State<DetailProjectScreen> createState() => _DetailProjectScreenState();
@@ -333,7 +335,7 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                         onPressed: () async {
                           try {
                             await _projectService.updateFavoriteProject(
-                              studentId: _userInfoStore.roleId.toString(),
+                              studentId: widget.studentId,
                               projectId: int.parse(widget.projectId),
                               disableFlag: isLiked ? 1 : 0,
                               token: _userInfoStore.token,

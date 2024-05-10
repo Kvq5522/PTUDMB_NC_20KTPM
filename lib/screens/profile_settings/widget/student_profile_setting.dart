@@ -17,6 +17,7 @@ import 'package:studenthub/services/user.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:studenthub/utils/string.dart';
 import 'package:studenthub/utils/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'dart:io';
 
@@ -1292,9 +1293,20 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                 name: "resume",
                 uploadFileFunc: _uploadResumeFunc,
                 downloadFileFunc: () async {
-                  await _userService.downloadUserResume(
+                  final String resume = await _userService.getResume(
                       token: _userInfoStore.token,
                       userId: _userInfoStore.roleId);
+                  if (resume.isNotEmpty) {
+                    Uri url = Uri.parse(resume);
+
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(url);
+                    } else {
+                      throw "Could not launch $url";
+                    }
+                  } else {
+                    throw "No resume link available";
+                  }
                 },
                 onSaved: (value) {},
                 validator: (String? value) {
@@ -1366,9 +1378,20 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                   name: "transcript",
                   uploadFileFunc: _uploadTranscriptFunc,
                   downloadFileFunc: () async {
-                    await _userService.downloadUserTranscript(
+                    final String transcript = await _userService.getTranscript(
                         token: _userInfoStore.token,
                         userId: _userInfoStore.roleId);
+                    if (transcript.isNotEmpty) {
+                      Uri url = Uri.parse(transcript);
+
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url);
+                      } else {
+                        throw "Could not launch $url";
+                      }
+                    } else {
+                      throw "No resume link available";
+                    }
                   },
                   onSaved: (value) {},
                   validator: (String? value) {

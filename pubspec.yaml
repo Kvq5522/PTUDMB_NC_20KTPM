@@ -28,6 +28,8 @@ dependencies:
   zego_uikit_prebuilt_video_conference: ^2.7.4
   easy_localization: ^3.0.6
   intl: ^0.18.1
+  webview_flutter: ^4.2.4
+  url_launcher: ^6.2.6
 
 dev_dependencies:
   flutter_test:

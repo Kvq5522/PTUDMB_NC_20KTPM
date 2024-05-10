@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/services/dashboard.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DashboardDetailProposalDetail extends StatefulWidget {
   final String studentId;
@@ -106,7 +108,7 @@ class _DashboardDetailProposalDetailState
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Tech Stack:'.tr(),
+                  'Tech Stack'.tr(),
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -130,7 +132,7 @@ class _DashboardDetailProposalDetailState
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Cover letter:'.tr(),
+                  'Cover letter'.tr(),
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -138,6 +140,11 @@ class _DashboardDetailProposalDetailState
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 2),
+            Container(
+              color: Theme.of(context).colorScheme.primary,
+              height: 1,
             ),
             const SizedBox(height: 10),
             Row(
@@ -159,13 +166,25 @@ class _DashboardDetailProposalDetailState
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Education:'.tr(),
+                  'Education'.tr(),
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 2),
+            Container(
+              color: Theme.of(context).colorScheme.primary,
+              height: 1,
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
                 if (_proposalDetails?['student']['educations'] != null &&
                     _proposalDetails?['student']['educations'].isNotEmpty)
                   Column(
@@ -197,7 +216,7 @@ class _DashboardDetailProposalDetailState
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Skills:'.tr(),
+                  'Skills'.tr(),
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -205,6 +224,11 @@ class _DashboardDetailProposalDetailState
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 2),
+            Container(
+              color: Theme.of(context).colorScheme.primary,
+              height: 1,
             ),
             const SizedBox(height: 10),
             Row(
@@ -236,6 +260,26 @@ class _DashboardDetailProposalDetailState
                   ),
               ],
             ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Resume & Transcript'.tr(),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 2),
+            Container(
+              color: Theme.of(context).colorScheme.primary,
+              height: 1,
+            ),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -243,10 +287,10 @@ class _DashboardDetailProposalDetailState
               children: [
                 Text(
                   'Resume:'.tr(),
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    // fontWeight: FontWeight.bold,
+                    // color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
                 const SizedBox(height: 5),
@@ -257,7 +301,21 @@ class _DashboardDetailProposalDetailState
                       color: Colors.blue,
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        String? resumeLink =
+                            _proposalDetails?['student']['resumeLink'];
+                        if (resumeLink != null && resumeLink.isNotEmpty) {
+                          Uri url = Uri.parse(resumeLink);
+
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(url);
+                          } else {
+                            throw "Could not launch $url";
+                          }
+                        } else {
+                          throw "No resume link available";
+                        }
+                      },
                       child: Text(
                         'View Resume'.tr(),
                         style: const TextStyle(
@@ -277,10 +335,10 @@ class _DashboardDetailProposalDetailState
               children: [
                 Text(
                   'Transcript:'.tr(),
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    // fontWeight: FontWeight.bold,
+                    // color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
                 const SizedBox(height: 5),
@@ -291,7 +349,22 @@ class _DashboardDetailProposalDetailState
                       color: Colors.blue,
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        String? transcriptLink =
+                            _proposalDetails?['student']['transcriptLink'];
+                        if (transcriptLink != null &&
+                            transcriptLink.isNotEmpty) {
+                          Uri url = Uri.parse(transcriptLink);
+
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(url);
+                          } else {
+                            throw "Could not launch $url";
+                          }
+                        } else {
+                          throw "No resume link available";
+                        }
+                      },
                       child: Text(
                         'View Transcript'.tr(),
                         style: const TextStyle(

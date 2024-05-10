@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:url_launcher/url_launcher.dart';
 
 class FileUploadFormField extends FormField<String> {
   final String uploadFile;
@@ -56,13 +57,17 @@ class FileUploadFormField extends FormField<String> {
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text(
-                                  '${uploadFile.split('/').last}',
-                                  style: TextStyle(
-                                    color: loadedFile.isNotEmpty
-                                        ? Colors.black
-                                        : null,
+                                Container(
+                                  width: 200,
+                                  child: Text(
+                                    '${uploadFile.split('/').last}',
+                                    style: TextStyle(
+                                      color: loadedFile.isNotEmpty
+                                          ? Colors.black
+                                          : null,
+                                    ),
                                     overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                   ),
                                 ),
                                 IconButton(
