@@ -76,19 +76,11 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios_rounded,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              routerConfig.push('/project');
-            },
-          ),
           title: Text(
             'Saved project'.tr(),
             style: const TextStyle(color: Colors.white),
           ),
+          iconTheme: Theme.of(context).iconTheme.copyWith(color: Colors.white),
           centerTitle: true,
           backgroundColor: Theme.of(context).colorScheme.secondary,
           actions: [

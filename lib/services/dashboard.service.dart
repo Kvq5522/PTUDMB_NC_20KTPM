@@ -253,10 +253,12 @@ class DashBoardService {
       BigInt studentId, int typeFlag, String token) async {
     try {
       Response res = await _dioClient.get(
-        "/api/project/student/$studentId",
+        "/api/proposal/project/$studentId",
         queries: {
           "studentId": studentId,
           "typeFlag": typeFlag,
+          "disableFlag": 0,
+          // "statusFlag": 3,
         },
         token: token,
       );

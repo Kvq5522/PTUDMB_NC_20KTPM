@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
+import 'package:studenthub/components/loading_screen.dart';
 import 'package:studenthub/services/project.service.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,7 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
   late UserInfoStore _userInfoStore;
   bool isLiked = false;
   Map<String, dynamic> projectDetail = {};
+  bool isLoading = false;
 
   @override
   void didChangeDependencies() async {
@@ -40,17 +42,31 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
 
   Future<void> fetchProjectDetail() async {
     try {
+      if (mounted) {
+        setState(() {
+          isLoading = true;
+        });
+      }
+
       final Map<String, dynamic> detail =
           await _projectService.getProjectDetail(
         projectId: widget.projectId,
         token: _userInfoStore.token,
       );
 
-      setState(() {
-        projectDetail = detail;
-      });
+      if (mounted) {
+        setState(() {
+          projectDetail = detail;
+        });
+      }
     } catch (error) {
       print('Error fetching project detail: $error');
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -93,17 +109,35 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+          appBar: AppBar(
+            title: SizedBox(
+              width: 160,
+              height: MediaQuery.of(context).size.width * 0.2,
+              child: Image.asset('assets/images/logo.png'),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            iconTheme:
+                Theme.of(context).iconTheme.copyWith(color: Colors.white),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  routerConfig.push('/choose-user');
+                },
+                icon: const Icon(
+                  Icons.person,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ),
+          body: const LoadingScreen());
+    }
+
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_rounded,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            routerConfig.push('/project');
-          },
-        ),
         title: SizedBox(
           width: 160,
           height: MediaQuery.of(context).size.width * 0.2,

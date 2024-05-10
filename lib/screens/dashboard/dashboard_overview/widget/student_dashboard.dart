@@ -144,7 +144,10 @@ class _StudentDashboardState extends State<StudentDashboard> {
                   (index) {
                     if (isCollapsed) return const SizedBox();
 
-                    return list[index][field] == status
+                    return (list[index][field] == status &&
+                                field == "statusFlag") ||
+                            (list[index]["project"][field] == status &&
+                                field == "typeFlag")
                         ? GestureDetector(
                             onTap: () {
                               if (field == "statusFlag") {
@@ -159,7 +162,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                               } else if (field == "typeFlag") {
                                 final projectId = list[index]["id"];
                                 routerConfig.push('/project/$projectId',
-                                    extra: {"isInfo": true});
+                                    extra: {"isInfo": true, "isLiked": false});
                               }
                             },
                             child: Row(
@@ -202,9 +205,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                         ),
 
                                         Text(
-                                          field == "statusFlag"
-                                              ? list[index]["project"]["title"]
-                                              : list[index]["title"],
+                                          list[index]["project"]["title"],
                                           style: const TextStyle(
                                             color: Color(0xFF008ABD),
                                             fontWeight: FontWeight.bold,
@@ -248,7 +249,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                             const SizedBox(width: 2),
                                             Text(
                                               // ignore: unnecessary_string_interpolations
-                                              '${getProjectScopeText(field == "statusFlag" ? list[index]["project"]["projectScopeFlag"] : list[index]["projectScopeFlag"])}',
+                                              '${getProjectScopeText(list[index]["project"]["projectScopeFlag"])}',
                                               style: const TextStyle(
                                                 fontSize: 12,
                                                 color: Colors.grey,
@@ -282,10 +283,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                         const SizedBox(height: 10),
                                         //Description
                                         Text(
-                                          field == "statusFlag"
-                                              ? list[index]["project"]
-                                                  ["description"]
-                                              : list[index]["description"],
+                                          list[index]["project"]["description"],
                                           style: const TextStyle(
                                             color: Colors.black,
                                             overflow: TextOverflow.visible,

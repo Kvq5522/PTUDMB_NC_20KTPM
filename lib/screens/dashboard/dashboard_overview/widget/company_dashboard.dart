@@ -163,7 +163,8 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                 token);
                             showSuccessToast(
                                 context: context,
-                                message: project["typeFlag"] == 2
+                                message: project["typeFlag"] == 2 ||
+                                        project["typeFlag"] == 0
                                     ? "Project started successfully!"
                                     : "Project archived successfully!");
                             routerConfig.push('/dashboard');
