@@ -117,6 +117,7 @@ class DashBoardService {
     String description,
     int numberOfStudents,
     int typeFlag,
+    int status,
     String token,
   ) async {
     Response res = await _dioClient.patch(
@@ -126,7 +127,8 @@ class DashBoardService {
         "title": title,
         "description": description,
         "numberOfStudents": numberOfStudents,
-        "typeFlag": typeFlag
+        "typeFlag": typeFlag,
+        "status": status,
       },
       token: token,
     );

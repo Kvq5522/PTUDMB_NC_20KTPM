@@ -234,6 +234,7 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                   _description,
                   _numberOfStudents,
                   _typeFlag,
+                  0,
                   widget.token,
                 );
 

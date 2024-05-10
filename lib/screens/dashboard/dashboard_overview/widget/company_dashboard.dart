@@ -58,14 +58,14 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
           child: collapsibleList(
               list: widget.projectList,
               title: 'Working Projects'.tr(),
-              status: 0),
+              status: 1),
         );
       case 1:
         return Container(
           child: collapsibleList(
               list: widget.projectList,
               title: 'Archived Projects'.tr(),
-              status: 1),
+              status: 2),
         );
       default:
         return const SizedBox(
@@ -87,6 +87,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
           count++;
         }
       }
+
       return count;
     }
 
@@ -147,31 +148,109 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                         onTap: () async {
                           try {
                             int typeFlag;
+                            int status = 0;
+
                             if (project["typeFlag"] == 1) {
-                              typeFlag = 2;
+                              showDialog<bool>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  String dropdownValue = 'Success';
+                                  return StatefulBuilder(
+                                    builder: (BuildContext context,
+                                        StateSetter setState) {
+                                      return AlertDialog(
+                                        title: Text('Archiving project'.tr()),
+                                        content: Row(
+                                          children: <Widget>[
+                                            Text('This project status?'),
+                                            SizedBox(width: 10),
+                                            DropdownButton<String>(
+                                              value: dropdownValue,
+                                              onChanged: (String? newValue) {
+                                                setState(() {
+                                                  dropdownValue = newValue!;
+                                                });
+                                              },
+                                              items: <String>[
+                                                'Success',
+                                                'Failed'
+                                              ].map<DropdownMenuItem<String>>(
+                                                  (String value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(value),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ],
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('Cancel'.tr()),
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text('Okay'.tr()),
+                                            onPressed: () async {
+                                              typeFlag = 2;
+                                              status =
+                                                  dropdownValue == 'Success'
+                                                      ? 1
+                                                      : 2;
+
+                                              await _dashBoardService
+                                                  .patchProjectDetails(
+                                                      project["id"],
+                                                      project[
+                                                          "projectScopeFlag"],
+                                                      project["title"],
+                                                      project["description"],
+                                                      project[
+                                                          "numberOfStudents"],
+                                                      typeFlag,
+                                                      status,
+                                                      token);
+                                              showSuccessToast(
+                                                  context: context,
+                                                  message: project[
+                                                                  "typeFlag"] ==
+                                                              2 ||
+                                                          project["typeFlag"] ==
+                                                              0
+                                                      ? "Project started successfully!"
+                                                      : "Project archived successfully!");
+                                              routerConfig.push('/dashboard');
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              );
                             } else {
                               typeFlag = 1;
+                              await _dashBoardService.patchProjectDetails(
+                                  project["id"],
+                                  project["projectScopeFlag"],
+                                  project["title"],
+                                  project["description"],
+                                  project["numberOfStudents"],
+                                  typeFlag,
+                                  status,
+                                  token);
+                              showSuccessToast(
+                                  context: context,
+                                  message: project["typeFlag"] == 2 ||
+                                          project["typeFlag"] == 0
+                                      ? "Project started successfully!"
+                                      : "Project archived successfully!");
+                              routerConfig.push('/dashboard');
                             }
-
-                            await _dashBoardService.patchProjectDetails(
-                                project["id"],
-                                project["projectScopeFlag"],
-                                project["title"],
-                                project["description"],
-                                project["numberOfStudents"],
-                                typeFlag,
-                                token);
-                            showSuccessToast(
-                                context: context,
-                                message: project["typeFlag"] == 2 ||
-                                        project["typeFlag"] == 0
-                                    ? "Project started successfully!"
-                                    : "Project archived successfully!");
-                            routerConfig.push('/dashboard');
                           } catch (e) {
-                            showDangerToast(
-                                context: context,
-                                message: "Error while updating project.");
+                            showDangerToast(context: context, message: "$e ");
                           }
                         },
                       ),
@@ -302,7 +381,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                   final timeAgo = difference.inDays == 0
                       ? '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago'
                       : '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
-
+                  // if (list[index]["typeFlag"] == 2) print(list[0]);
                   return list[index]["typeFlag"] == status
                       ? GestureDetector(
                           onTap: () {
@@ -363,7 +442,11 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                 const SizedBox(height: 5),
                                 // Project name
                                 Text(
-                                  list[index]["title"],
+                                  list[index]["typeFlag"] == 2
+                                      ? (list[index]["status"] == 1
+                                          ? list[index]["title"] + " (Success)"
+                                          : list[index]["title"] + " (Failed)")
+                                      : list[index]["title"],
                                   style: const TextStyle(
                                     color: Color(0xFF008ABD),
                                     fontWeight: FontWeight.bold,
