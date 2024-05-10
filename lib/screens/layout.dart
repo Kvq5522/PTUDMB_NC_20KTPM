@@ -5,7 +5,6 @@ import 'package:studenthub/components/bottom_bar.dart';
 import 'package:studenthub/screens/notifications/notification_screen.dart';
 import 'package:studenthub/screens/project/project_screen.dart';
 import 'package:studenthub/screens/messages/message_overview/message_screen.dart';
-import 'package:studenthub/screens/saved_projects/saved_projects_screen.dart'; // Import the file
 
 class Layout extends StatefulWidget {
   final int page;

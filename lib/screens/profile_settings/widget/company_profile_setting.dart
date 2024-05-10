@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/app_routes.dart';
-import 'package:studenthub/components/appbars/app_bar.dart';
 import 'package:studenthub/components/loading_screen.dart';
 import 'package:studenthub/components/radio_group.dart';
 import 'package:studenthub/services/user.service.dart';

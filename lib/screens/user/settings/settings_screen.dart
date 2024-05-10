@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/components/appbars/appbar_setting.dart';
 import 'package:studenthub/themes/theme_provider.dart';
 import 'package:easy_localization/easy_localization.dart';

@@ -2,7 +2,6 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:studenthub/screens/messages/widget/schedule_item.dart';
 import 'package:studenthub/services/message.service.dart';
 import 'package:studenthub/utils/toast.dart';
 
