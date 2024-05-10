@@ -20,6 +20,15 @@ class SettingAppBar extends StatelessWidget implements PreferredSizeWidget {
     final currentPath = currentConfig.uri.toString();
 
     return AppBar(
+      leading: IconButton(
+        icon: const Icon(
+          Icons.arrow_back_ios_rounded,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          routerConfig.push('/choose-user');
+        },
+      ),
       title: SizedBox(
         width: 160,
         height: MediaQuery.of(context).size.width * 0.2,
