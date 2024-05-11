@@ -25,8 +25,6 @@ class _StudentDashboardState extends State<StudentDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    // print("-----------------");
-    // print(widget.projectList);
     switch (widget.filter) {
       case 2:
         return Column(
@@ -93,6 +91,8 @@ class _StudentDashboardState extends State<StudentDashboard> {
       int count = 0;
       for (var i = 0; i < list.length; i++) {
         if (list[i][field] == status) {
+          count++;
+        } else if (list[i]["project"][field] == status) {
           count++;
         }
       }
