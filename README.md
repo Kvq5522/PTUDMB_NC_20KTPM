@@ -1,7 +1,5 @@
 # studenthub
 
-A new Flutter project.
-
 Video demo
 
 Phasing 1: [Phasing 1 Demo](https://www.youtube.com/watch?v=QWbywkZ6DdU&list=PLaYfQOqAbjRzae-28AcnNB31wlYdcXfz6&index=4)
