@@ -67,9 +67,9 @@ class _DashboardDetailProposalListState
         child: CircularProgressIndicator(),
       );
     } else {
-      var filteredList =
-          widget.proposalList.where((item) => item["statusFlag"] == 0).toList();
-
+      var filteredList = widget.proposalList
+          .where((item) => item["statusFlag"] == 2 || item["statusFlag"] == 0)
+          .toList();
       if (filteredList.isEmpty) {
         return Center(
           child: Text('No proposal found'.tr()),
