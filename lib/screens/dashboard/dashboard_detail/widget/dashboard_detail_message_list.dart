@@ -29,7 +29,10 @@ class _DashboardDetailMessageListState
   @override
   Widget build(BuildContext context) {
     return messageList.isEmpty
-        ? Container(
+        ? const Center(
+            child: Text('No message found'),
+          )
+        : Container(
             margin: EdgeInsets.only(top: 10.0),
             child: Column(
               children: List.generate(
@@ -137,9 +140,6 @@ class _DashboardDetailMessageListState
                   );
                 },
               ),
-            ))
-        : const Center(
-            child: Text('No message found'),
-          );
+            ));
   }
 }
