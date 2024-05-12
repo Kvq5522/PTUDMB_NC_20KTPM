@@ -1,11 +1,23 @@
-# studenthub
+# StudentHub
 
-Video demo
+Welcome to **StudentHub**! 🎓 This Flutter project aims to create a centralized platform for students, offering various features to efficiently manage their academic life.
 
-Phasing 1: [Phasing 1 Demo](https://www.youtube.com/watch?v=QWbywkZ6DdU&list=PLaYfQOqAbjRzae-28AcnNB31wlYdcXfz6&index=4)
+## Team Members
 
-Phasing 2: [Phasing 2 Demo](https://www.youtube.com/watch?v=LEM30RwscYs&list=PLaYfQOqAbjRzae-28AcnNB31wlYdcXfz6&index=1)
+1. **Quách Vĩnh Khang** - _20127528_
 
-Phasing 3: [Phasing 3 Demo](https://www.youtube.com/watch?v=HyFdKSmYqHE&list=PLaYfQOqAbjRzae-28AcnNB31wlYdcXfz6&index=2)
+   - **Contact**: [GitHub](https://github.com/Kvq5522)
 
-Phasing 4: [Phasing 4 Demo](https://www.youtube.com/watch?v=qvRZrbEYIHY&list=PLaYfQOqAbjRzae-28AcnNB31wlYdcXfz6&index=3&t=21s)
+2. **Trần Xuân Quang** - _20127608_
+
+   - **Contact**: [GitHub](https://github.com/txquang2202)
+
+3. **Hồ Quốc Duy** - _20127145_
+   - **Contact**: [GitHub](https://github.com/HQDuy47)
+
+## Video Demo 📽️
+
+[Phasing 1 Demo Video](https://www.youtube.com/watch?v=QWbywkZ6DdU)
+[Phasing 2 Demo Video](https://www.youtube.com/watch?v=LEM30RwscYs)
+[Phasing 3 Demo Video](https://www.youtube.com/watch?v=HyFdKSmYqHE)
+[Phasing 4 Demo Video](https://www.youtube.com/watch?v=qvRZrbEYIHY)
