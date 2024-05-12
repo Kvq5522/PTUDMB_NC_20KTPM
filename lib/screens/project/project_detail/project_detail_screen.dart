@@ -11,14 +11,14 @@ class DetailProjectScreen extends StatefulWidget {
   final String projectId;
   final bool isInfo;
   final bool isLiked;
-  final String studentId;
+  final String? studentId;
 
   const DetailProjectScreen(
       {super.key,
       required this.projectId,
       required this.isInfo,
       required this.isLiked,
-      required this.studentId});
+      this.studentId});
 
   @override
   State<DetailProjectScreen> createState() => _DetailProjectScreenState();
@@ -60,6 +60,8 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
       }
     } catch (error) {
       print('Error fetching project detail: $error');
+      showDangerToast(context: context, message: 'Project has been deleted');
+      Navigator.of(context).pop();
     } finally {
       if (mounted) {
         setState(() {
@@ -368,7 +370,7 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                         onPressed: () async {
                           try {
                             await _projectService.updateFavoriteProject(
-                              studentId: widget.studentId,
+                              studentId: widget.studentId ?? "",
                               projectId: int.parse(widget.projectId),
                               disableFlag: isLiked ? 1 : 0,
                               token: _userInfoStore.token,
