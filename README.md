@@ -18,4 +18,4 @@ Welcome to **StudentHub**! 🎓 This Flutter project aims to create a centralize
 ## Video Demo 📽️
 
 [Phasing 1 Demo Video](https://www.youtube.com/watch?v=QWbywkZ6DdU)
-[Phasing 2 Demo Video](https://youtu.be/9FPeyrwrnTk)
+[Phasing 2 Demo Video](https://www.youtube.com/watch?v=LEM30RwscYs)
