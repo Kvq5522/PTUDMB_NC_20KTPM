@@ -66,6 +66,13 @@ class ScheduleItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime current = DateTime.now().toUtc().add(Duration(hours: 7));
+    DateFormat format = DateFormat("dd/MM/yyyy HH:mm");
+    DateTime start = format.parse("$date $timeMeeting", true).toUtc();
+    DateTime end = format.parse("$endDate $endTimeMeeting", true).toUtc();
+    bool inTime =
+        !(current.isAfter(start) == true && !current.isAfter(end) == true);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
@@ -212,8 +219,9 @@ class ScheduleItem extends StatelessWidget {
                           backgroundColor:
                               MaterialStateProperty.resolveWith<Color>(
                             (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.disabled))
-                                return Colors.grey;
+                              if (states.contains(MaterialState.disabled) ||
+                                  disableFlag == 1 ||
+                                  !inTime) return Colors.grey;
                               return const Color(
                                   0xFF008ABD); // Use the existing color when enabled
                             },
@@ -232,7 +240,7 @@ class ScheduleItem extends StatelessWidget {
                             ),
                           ),
                         ),
-                        onPressed: disableFlag == 1
+                        onPressed: disableFlag == 1 || !inTime
                             ? null
                             : () {
                                 routerConfig.push('/video-call', extra: {

@@ -148,13 +148,15 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
 
     socket.on('RECEIVE_MESSAGE', (data) {
       try {
+        print(
+            "print: ${data?["notification"]?["sender"]}, =========, ${data?["notification"]?["receiver"]}");
         final message = Message(
           isSender: BigInt.from(data?["notification"]?["sender"]?["id"]) ==
               _userInfoStore.userId,
           name: BigInt.from(data?["notification"]?["sender"]?["id"]) ==
                   _userInfoStore.userId
               ? "You"
-              : data?["notification"]?["receiver"]?["fullname"],
+              : data?["notification"]?["sender"]?["fullname"],
           avatarUrl: 'https://cdn-icons-png.flaticon.com/512/147/147142.png',
           text: data?["notification"]?["message"]?["content"],
           time: DateTime.parse(data?["notification"]?["message"]?["createdAt"]),

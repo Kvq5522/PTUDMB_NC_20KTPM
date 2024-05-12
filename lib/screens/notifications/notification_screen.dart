@@ -47,8 +47,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
       if (mounted) {
         setState(() {
-          notificationList = fetchedNotifications.reversed.toList();
-          notificationListFiltered = fetchedNotifications.reversed.toList();
+          notificationList = fetchedNotifications.toList();
+          notificationListFiltered = fetchedNotifications.toList();
         });
       }
 
