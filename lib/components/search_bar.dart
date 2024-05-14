@@ -50,7 +50,13 @@ class _MySearchBarState extends State<MySearchBar> {
     List<String> suggestions = [
       'reactJS',
       'flutter',
-      'education app'
+      'education app',
+      'flutter development',
+      'react native',
+      'javascript',
+      'dart',
+      'java',
+      'python',
     ]; // Danh sách từ gợi ý
 
     showModalBottomSheet(
@@ -60,7 +66,7 @@ class _MySearchBarState extends State<MySearchBar> {
       builder: (BuildContext context) {
         List<String> searchResults = suggestions;
 
-        return Container(
+        return SizedBox(
           width: double.infinity,
           height: MediaQuery.of(context).size.height * 0.9,
           child: Padding(

@@ -53,7 +53,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   controller: _oldPasswordController,
                   validator: (String? value) {
                     if (value!.isEmpty) {
-                      return 'Old password is required';
+                      return 'Old password is required'.tr();
                     } else {
                       return null;
                     }
@@ -84,11 +84,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   controller: _newPasswordController,
                   validator: (String? value) {
                     if (value!.isEmpty) {
-                      return 'New password is required';
+                      return 'New password is required'.tr();
                     } else if (value.length < 6) {
-                      return 'Password must be at least 6 characters long';
+                      return 'Password must be at least 6 characters long'.tr();
                     } else if (value == _oldPasswordController.text) {
-                      return 'New password must be different from old password';
+                      return 'New password must be different from old password'
+                          .tr();
                     } else {
                       return null;
                     }
@@ -133,9 +134,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   controller: _confirmPasswordController,
                   validator: (String? value) {
                     if (value!.isEmpty) {
-                      return 'Confirmation password is required';
+                      return 'Confirmation password is required'.tr();
                     } else if (value != _newPasswordController.text) {
-                      return 'Passwords do not match';
+                      return 'Passwords do not match'.tr();
                     } else {
                       return null;
                     }
@@ -206,7 +207,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         showDangerToast(
                             context: context,
                             message:
-                                _errorMessage ?? "An unknown error occurred");
+                                "Cant reset password. Please try again later."
+                                    .tr());
                       } finally {
                         setState(() {
                           _isLoading = false;

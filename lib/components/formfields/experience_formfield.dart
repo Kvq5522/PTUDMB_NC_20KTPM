@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/tile/project_tile.dart';
 
@@ -48,10 +49,10 @@ class ExperienceFormField extends FormField<List<Map<String, dynamic>>> {
                           );
                         })
                       : [
-                          const Center(
+                          Center(
                               child: Text(
-                            "You have not added any experience yet.",
-                            style: TextStyle(
+                            "You have not added any experience yet.".tr(),
+                            style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,
                             ),

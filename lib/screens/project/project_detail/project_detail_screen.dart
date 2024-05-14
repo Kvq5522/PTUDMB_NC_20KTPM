@@ -60,7 +60,8 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
       }
     } catch (error) {
       print('Error fetching project detail: $error');
-      showDangerToast(context: context, message: 'Project has been deleted');
+      showDangerToast(
+          context: context, message: 'Project has been deleted.'.tr());
       Navigator.of(context).pop();
     } finally {
       if (mounted) {
@@ -82,11 +83,11 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
       final Duration difference = now.difference(createdAt);
 
       if (difference.inDays > 0) {
-        return '${difference.inDays} days ago';
+        return '${difference.inDays} ${"days".tr()} ${"ago".tr()}';
       } else if (difference.inHours > 0) {
-        return '${difference.inHours} hours ago';
+        return '${difference.inHours} ${"hours".tr()} ${"ago".tr()}';
       } else {
-        return '${difference.inMinutes} minutes ago';
+        return '${difference.inMinutes} ${"minutes".tr()} ${"ago".tr()}';
       }
     } else {
       return 'Invalid date format';

@@ -77,11 +77,11 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                 items: [
                   DropdownMenuItem<int>(
                     value: 1,
-                    child: Text('1-3 Months'),
+                    child: Text('1 to 3 months'.tr()),
                   ),
                   DropdownMenuItem<int>(
                     value: 2,
-                    child: Text('3-6 Months'),
+                    child: Text('3 to 6 months'.tr()),
                   ),
                 ],
               ),
@@ -93,7 +93,7 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                   labelStyle: TextStyle(
                       color: Theme.of(context).colorScheme.inversePrimary,
                       fontSize: 16),
-                  hintText: 'Enter project title',
+                  hintText: 'Enter project title'.tr(),
                   hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -120,7 +120,7 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                   labelStyle: TextStyle(
                       color: Theme.of(context).colorScheme.inversePrimary,
                       fontSize: 16),
-                  hintText: 'Enter number of students',
+                  hintText: 'Enter number of students'.tr(),
                   hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -132,7 +132,7 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the number of students';
+                    return 'Please enter the number of students'.tr();
                   }
                   return null;
                 },
@@ -148,7 +148,7 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                   labelStyle: TextStyle(
                       color: Theme.of(context).colorScheme.inversePrimary,
                       fontSize: 16),
-                  hintText: 'Enter project description',
+                  hintText: 'Enter project description'.tr(),
                   hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -159,7 +159,7 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
+                    return 'Please enter a description'.tr();
                   }
                   return null;
                 },
@@ -180,7 +180,7 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                 ),
                 validator: (value) {
                   if (value == null) {
-                    return 'Please select project status';
+                    return 'Please select project status'.tr();
                   }
                   return null;
                 },
@@ -196,11 +196,11 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                 items: [
                   DropdownMenuItem<int>(
                     value: 0,
-                    child: Text('Working'),
+                    child: Text('Working'.tr()),
                   ),
                   DropdownMenuItem<int>(
                     value: 1,
-                    child: Text('Archived'),
+                    child: Text('Archived'.tr()),
                   ),
                 ],
               ),
@@ -242,7 +242,7 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
               } catch (e) {
                 showDangerToast(
                     context: context,
-                    message: "Cannot edit project please try again.");
+                    message: "Cannot edit project please try again.".tr());
               }
             }
           },

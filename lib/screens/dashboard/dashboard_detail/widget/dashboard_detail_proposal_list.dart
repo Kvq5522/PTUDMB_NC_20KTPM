@@ -47,10 +47,14 @@ class _DashboardDetailProposalListState
         userInfoStore.token,
       );
 
-      String message = statusFlag == 0 ? 'Hire cancelled' : 'Hire successfully';
+      String message =
+          statusFlag == 0 ? 'Hire cancelled'.tr() : 'Hire successfully'.tr();
       showSuccessToast(context: context, message: message);
     } catch (e) {
       print('Failed to update project: $e');
+      showDangerToast(
+          context: context,
+          message: "Can't perform hire now, please try again.".tr());
     }
   }
 

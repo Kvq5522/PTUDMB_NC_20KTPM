@@ -39,10 +39,11 @@ class _ProjectApplyScreenState extends State<ProjectApplyScreen> {
         _userInfoStore.token,
       );
 
-      String message = 'Proposal posted successfully';
+      String message = 'Proposal posted successfully.'.tr();
       showSuccessToast(context: context, message: message);
     } catch (e) {
-      print('Failed to update project: $e');
+      print('Fail to apply for project.');
+      showDangerToast(context: context, message: "Fail to apply for project.");
     }
   }
 

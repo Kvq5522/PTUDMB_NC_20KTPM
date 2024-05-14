@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -36,21 +37,22 @@ class _AddInterviewDialogState extends State<AddInterviewDialog> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text("Add Interview",
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-          SizedBox(height: 20.0),
+          Text("Add Interview".tr(),
+              style:
+                  const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 20.0),
           TextField(
-            decoration: InputDecoration(labelText: "Title"),
+            decoration: InputDecoration(labelText: "Title".tr()),
             onChanged: (value) {
               setState(() {
                 _title = value;
               });
             },
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           ListTile(
             title: Text(
-              "Start Time: ${DateFormat('yyyy-MM-dd HH:mm').format(_selectedStartDate)}",
+              "${"Start Time: ".tr()} ${DateFormat('yyyy-MM-dd HH:mm').format(_selectedStartDate)}",
             ),
             onTap: () async {
               final DateTime? picked = await showDatePicker(
@@ -80,7 +82,7 @@ class _AddInterviewDialogState extends State<AddInterviewDialog> {
           ),
           ListTile(
             title: Text(
-              "End Time: ${DateFormat('yyyy-MM-dd HH:mm').format(_selectedEndDate)}",
+              "${"End Time: ".tr()} ${DateFormat('yyyy-MM-dd HH:mm').format(_selectedEndDate)}",
             ),
             onTap: () async {
               final DateTime? picked = await showDatePicker(
@@ -108,18 +110,18 @@ class _AddInterviewDialogState extends State<AddInterviewDialog> {
               }
             },
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                child: const Text("Cancel"),
+                child: Text("Cancel".tr()),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: const Text("Create"),
+                child:  Text("Create".tr()),
                 onPressed: () {
                   if (_title.isNotEmpty) {
                     int startTimestamp =

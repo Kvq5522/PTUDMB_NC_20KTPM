@@ -104,9 +104,9 @@ class _StudentDashboardState extends State<StudentDashboard> {
               field: "typeFlag"),
         );
       default:
-        return const SizedBox(
+        return SizedBox(
           child: Center(
-            child: Text("Error, please try again."),
+            child: Text("Error, please try again.".tr()),
           ),
         );
     }
@@ -231,7 +231,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                             ),
                                             const SizedBox(width: 2),
                                             Text(
-                                              "${field == "statusFlag" ? DateTime.now().difference(DateTime.parse(list[index]["project"]["createdAt"])).inDays : DateTime.now().difference(DateTime.parse(list[index]["createdAt"])).inDays} days ago",
+                                              "${field == "statusFlag" ? DateTime.now().difference(DateTime.parse(list[index]["project"]["createdAt"])).inDays : DateTime.now().difference(DateTime.parse(list[index]["createdAt"])).inDays} ${"days ago".tr()}",
                                               style: const TextStyle(
                                                 fontSize: 12,
                                                 color: Colors.grey,

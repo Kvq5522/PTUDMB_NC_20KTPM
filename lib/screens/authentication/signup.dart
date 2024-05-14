@@ -124,7 +124,7 @@ class _SignUpFormState extends State<SignUpForm> {
               controller: _fullNameController,
               validator: (String? value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your full name';
+                  return "Please enter your full name".tr();
                 }
 
                 return null;
@@ -157,7 +157,7 @@ class _SignUpFormState extends State<SignUpForm> {
               controller: _emailController,
               validator: (String? value) {
                 if (value == null || value.isEmpty) {
-                  return 'Email is required';
+                  return "Email is required".tr();
                 } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                     .hasMatch(value)) {
                   return 'Please enter a valid email address';
@@ -192,7 +192,7 @@ class _SignUpFormState extends State<SignUpForm> {
               controller: _passwordController,
               validator: (String? value) {
                 if (value == null || value.isEmpty) {
-                  return 'Password is required';
+                  return "Password is required".tr();
                 } else if (!RegExp(
                         r'((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$')
                     .hasMatch(value)) {
@@ -264,14 +264,14 @@ class _SignUpFormState extends State<SignUpForm> {
               onSaved: (value) {},
               validator: (value) {
                 if (value == false) {
-                  return 'You must agree to the terms';
+                  return "You must agree to the terms".tr();
                 }
                 return null;
               },
             ),
             if (_errorMessage != null)
               Text(
-                _errorMessage!,
+                "Can't sign up, please choose different email and try again.".tr(),
                 style: TextStyle(color: Colors.red, fontSize: 16),
               ),
             const SizedBox(height: 20.0),
