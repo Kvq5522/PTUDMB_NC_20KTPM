@@ -53,15 +53,13 @@ Future<void> initSocket(String token, String userId) async {
         return;
       }
 
-      print(jsonEncode(data));
-
       if (data?["notification"]["message"] != null) {
         if (data?["notification"]?["typeNotifyFlag"] == "1") {
           _notificationService.showNotification(
               title:
                   "${data?["notification"]?["sender"]?["fullname"]} schedule an interview",
               body: data?["notification"]?["title"]);
-              return;
+          return;
         }
 
         _notificationService.showNotification(

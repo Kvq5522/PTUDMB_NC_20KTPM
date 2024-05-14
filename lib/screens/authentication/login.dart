@@ -195,7 +195,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             if (_errorMessage != null)
               Text(
-                _errorMessage!,
+                "Please check your email and password and try again.".tr(),
                 style: TextStyle(color: Colors.red, fontSize: 16),
               ),
             const SizedBox(height: 8.0),

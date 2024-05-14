@@ -51,7 +51,8 @@ class _InterviewScreenState extends State<InterviewScreen> {
                   ),
                 ),
                 Text(
-                  "${calculateDuration(interviews[index].startTime, interviews[index].endTime)}",
+                  calculateDuration(
+                      interviews[index].startTime, interviews[index].endTime),
                   style: const TextStyle(
                     fontSize: 14,
                   ),
@@ -63,8 +64,8 @@ class _InterviewScreenState extends State<InterviewScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Start Time:",
+                    Text(
+                      "Start Time: ".tr(),
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
@@ -83,15 +84,15 @@ class _InterviewScreenState extends State<InterviewScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "End Time:",
-                      style: TextStyle(
+                    Text(
+                      "End Time: ".tr(),
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
                       ),
                     ),
                     Text(
-                      "${formatDateTime(interviews[index].endTime)}",
+                      formatDateTime(interviews[index].endTime),
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
@@ -99,7 +100,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -216,9 +217,9 @@ class OptionsDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
-      title: const Text(
-        'Options',
-        style: TextStyle(
+      title: Text(
+        'Options: '.tr(),
+        style: const TextStyle(
           color: Color(0xFF008ABD),
           fontSize: 18,
           fontWeight: FontWeight.bold,
@@ -228,9 +229,9 @@ class OptionsDialog extends StatelessWidget {
         child: ListBody(
           children: <Widget>[
             GestureDetector(
-              child: const Text(
-                'Re-schedule the meeting',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              child:  Text(
+                'Re-schedule the meeting'.tr(),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               onTap: () {
                 Navigator.of(context).pop(); // Close dialog
@@ -247,9 +248,9 @@ class OptionsDialog extends StatelessWidget {
               height: 10,
             ),
             GestureDetector(
-              child: const Text(
-                'Cancel the meeting',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              child:  Text(
+                'Cancel the meeting'.tr(),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               onTap: () {
                 Navigator.of(context).pop(); // Close dialog

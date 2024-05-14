@@ -29,7 +29,7 @@ class NotificationService {
 
   notificationDetails() {
     return const NotificationDetails(
-        android: AndroidNotificationDetails('com.studenthub', 'channel name',
+        android: AndroidNotificationDetails('com.hcmus_20127145_20127528_20127608.studenthub', 'channel name',
             importance: Importance.max,
             priority: Priority.high,
             enableVibration: true,

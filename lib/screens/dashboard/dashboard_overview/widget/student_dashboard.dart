@@ -1,6 +1,10 @@
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:studenthub/app_routes.dart";
+import 'package:studenthub/stores/user_info/user_info.dart';
+import 'package:studenthub/services/project.service.dart';
+import 'package:provider/provider.dart';
+import 'package:studenthub/services/auth.service.dart';
 
 class StudentDashboard extends StatefulWidget {
   final List proposalList;
@@ -18,9 +22,37 @@ class StudentDashboard extends StatefulWidget {
 }
 
 class _StudentDashboardState extends State<StudentDashboard> {
+  final AuthenticationService _authService = AuthenticationService();
+  late final ProjectService _projectService = ProjectService();
+  late UserInfoStore _userInfoStore;
+  String _studentId = "";
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
+    _loadUserInfo();
+  }
+
+  Future<void> _loadUserInfo() async {
+    try {
+      // Đợi cho Provider được khởi tạo trước khi sử dụng
+      await Future.delayed(Duration.zero);
+      _userInfoStore = Provider.of<UserInfoStore>(context, listen: false);
+      var userInfo = await _authService.getUserInfo(_userInfoStore.token);
+      setState(() {
+        _studentId = (userInfo["student"]["id"]).toString();
+        _isLoading = false;
+      });
+    } catch (e) {
+      print(e);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -72,9 +104,9 @@ class _StudentDashboardState extends State<StudentDashboard> {
               field: "typeFlag"),
         );
       default:
-        return const SizedBox(
+        return SizedBox(
           child: Center(
-            child: Text("Error, please try again."),
+            child: Text("Error, please try again.".tr()),
           ),
         );
     }
@@ -162,7 +194,11 @@ class _StudentDashboardState extends State<StudentDashboard> {
                               } else if (field == "typeFlag") {
                                 final projectId = list[index]["id"];
                                 routerConfig.push('/project/$projectId',
-                                    extra: {"isInfo": true, "isLiked": false});
+                                    extra: {
+                                      "isInfo": true,
+                                      "isLiked": false,
+                                      "_studentId": _studentId
+                                    });
                               }
                             },
                             child: Row(
@@ -195,7 +231,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                             ),
                                             const SizedBox(width: 2),
                                             Text(
-                                              "${field == "statusFlag" ? DateTime.now().difference(DateTime.parse(list[index]["project"]["createdAt"])).inDays : DateTime.now().difference(DateTime.parse(list[index]["createdAt"])).inDays} days ago",
+                                              "${field == "statusFlag" ? DateTime.now().difference(DateTime.parse(list[index]["project"]["createdAt"])).inDays : DateTime.now().difference(DateTime.parse(list[index]["createdAt"])).inDays} ${"days ago".tr()}",
                                               style: const TextStyle(
                                                 fontSize: 12,
                                                 color: Colors.grey,

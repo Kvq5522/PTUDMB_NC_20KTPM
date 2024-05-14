@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:studenthub/app_routes.dart';
 import 'package:studenthub/components/filter.dart';
+import 'package:studenthub/components/loading_screen.dart';
 import 'package:studenthub/components/search_bar.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
 import 'package:provider/provider.dart';
@@ -209,16 +210,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                             return MyFillTer(
                               onApply: (selectedOption, studentCount,
                                   proposalCount) {
-                                print('Selected option: $selectedOption');
-                                print('Students needed: $studentCount');
-                                print('Proposals less than: $proposalCount');
                                 setState(() {
                                   _selectedOption = selectedOption;
                                   _studentCount = int.tryParse(studentCount);
 
                                   _proposalCount = int.tryParse(proposalCount);
                                 });
-                                print(_selectedOption);
                               },
                             );
                           });
@@ -243,11 +240,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           ),
           Expanded(
             child: _isLoading && _projects.isEmpty
-                ? const Center(
-                    child: const CircularProgressIndicator(
-                      color: Color(0xFF008ABD),
-                    ),
-                  )
+                ? const LoadingScreen()
                 : NotificationListener<ScrollNotification>(
                     child: SingleChildScrollView(
                       controller: _scrollController,
@@ -255,8 +248,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 15),
                         child: _projects.isEmpty || _isProjectListEmpty()
-                            ? const Center(
-                                child: Text('Project not found'),
+                            ? Center(
+                                child: Text('Project not found.'.tr()),
                               )
                             : Column(
                                 children: _projects

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/components/appbars/app_bar.dart';
@@ -36,8 +37,9 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
       case 'Student':
         return const StudentProfileSetting();
       default:
-        return const Center(
-          child: Text('Error loading profile setting. Please try again later.'),
+        return Center(
+          child: Text(
+              'Error loading profile setting. Please try again later.'.tr()),
         );
     }
   }

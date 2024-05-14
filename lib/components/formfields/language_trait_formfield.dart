@@ -1,3 +1,4 @@
+import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 
 class LanguageTraitFormField extends FormField<List<dynamic>> {
@@ -41,7 +42,8 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                               Row(
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.edit, color: Color(0xFF008ABD)),
+                                    icon: const Icon(Icons.edit,
+                                        color: Color(0xFF008ABD)),
                                     onPressed: () {
                                       var formKey = GlobalKey<FormState>();
                                       TextEditingController languageController =
@@ -53,13 +55,14 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                                         context: context,
                                         builder: (context) {
                                           return AlertDialog(
-                                            title: const Text('Add Language'),
+                                            title: Text('Add Language'.tr()),
                                             content: Form(
                                               key: formKey,
                                               child: TextFormField(
                                                 validator: (String? value) {
                                                   if (value!.isEmpty) {
-                                                    return 'Please type proper language';
+                                                    return 'Please type proper language'
+                                                        .tr();
                                                   } else if (languageData.any(
                                                       (element) =>
                                                           element['languageName']
@@ -67,14 +70,15 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                                                               .toLowerCase() ==
                                                           value
                                                               .toLowerCase())) {
-                                                    return 'You are already added this language';
+                                                    return 'You are already added this language'
+                                                        .tr();
                                                   }
                                                   return null;
                                                 },
                                                 controller: languageController,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  hintText: 'Enter language',
+                                                decoration: InputDecoration(
+                                                  hintText:
+                                                      'Enter language'.tr(),
                                                 ),
                                               ),
                                             ),
@@ -84,7 +88,7 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                                                   // Close the dialog
                                                   Navigator.of(context).pop();
                                                 },
-                                                child: const Text('Cancel'),
+                                                child: Text('Cancel'.tr()),
                                               ),
                                               ElevatedButton(
                                                 onPressed: () {
@@ -99,7 +103,7 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                                                     Navigator.of(context).pop();
                                                   }
                                                 },
-                                                child: const Text('Edit'),
+                                                child: Text('Edit'.tr()),
                                               ),
                                             ],
                                           );
@@ -108,16 +112,18 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                                     },
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.delete, color: Color(0xFF008ABD)),
+                                    icon: const Icon(Icons.delete,
+                                        color: Color(0xFF008ABD)),
                                     onPressed: () async {
                                       await showDialog(
                                           context: context,
                                           builder: (context) {
                                             return AlertDialog(
-                                              title: const Text(
-                                                  'Delete Education'),
-                                              content: const Text(
-                                                  'Are you sure you want to delete this education?'),
+                                              title:
+                                                  Text('Delete Language'.tr()),
+                                              content: Text(
+                                                  'Are you sure you want to delete this language?'
+                                                      .tr()),
                                               actions: [
                                                 ElevatedButton(
                                                   onPressed: () {
@@ -135,7 +141,7 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  child: const Text('Cancel'),
+                                                  child: Text('Cancel'.tr()),
                                                 ),
                                                 ElevatedButton(
                                                   onPressed: () {
@@ -155,7 +161,7 @@ class LanguageTraitFormField extends FormField<List<dynamic>> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  child: const Text('Delete'),
+                                                  child: Text('Delete'.tr()),
                                                 ),
                                               ],
                                             );

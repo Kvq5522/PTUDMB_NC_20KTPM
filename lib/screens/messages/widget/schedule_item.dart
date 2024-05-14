@@ -66,6 +66,13 @@ class ScheduleItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime current = DateTime.now().toUtc().add(Duration(hours: 7));
+    DateFormat format = DateFormat("dd/MM/yyyy HH:mm");
+    DateTime start = format.parse("$date $timeMeeting", true).toUtc();
+    DateTime end = format.parse("$endDate $endTimeMeeting", true).toUtc();
+    bool inTime =
+        !(current.isAfter(start) == true && !current.isAfter(end) == true);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
@@ -212,8 +219,9 @@ class ScheduleItem extends StatelessWidget {
                           backgroundColor:
                               MaterialStateProperty.resolveWith<Color>(
                             (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.disabled))
-                                return Colors.grey;
+                              if (states.contains(MaterialState.disabled) ||
+                                  disableFlag == 1 ||
+                                  !inTime) return Colors.grey;
                               return const Color(
                                   0xFF008ABD); // Use the existing color when enabled
                             },
@@ -232,7 +240,7 @@ class ScheduleItem extends StatelessWidget {
                             ),
                           ),
                         ),
-                        onPressed: disableFlag == 1
+                        onPressed: disableFlag == 1 || !inTime
                             ? null
                             : () {
                                 routerConfig.push('/video-call', extra: {
@@ -390,7 +398,7 @@ class _OptionsDialogState extends State<OptionsDialog> {
         borderRadius: BorderRadius.circular(16.0),
       ),
       title: Text(
-        'Options'.tr(),
+        'Options: '.tr(),
         style: const TextStyle(
           color: Color(0xFF008ABD),
           fontSize: 18,
@@ -653,7 +661,7 @@ class _ScheduleModalState extends State<ScheduleModal> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Re-schedule',
+      title: Text('Re-schedule'.tr(),
           style:
               TextStyle(color: Color(0xFF008ABD), fontWeight: FontWeight.bold)),
       content: SingleChildScrollView(
@@ -689,8 +697,8 @@ class _ScheduleModalState extends State<ScheduleModal> {
             ),
             const SizedBox(height: 2),
             isJobTitleEmpty
-                ? const Text(
-                    "Title cannot be empty",
+                ? Text(
+                    "Title cannot be empty".tr(),
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.red,
@@ -764,8 +772,8 @@ class _ScheduleModalState extends State<ScheduleModal> {
               ],
             ),
             isDateCheck
-                ? const Text(
-                    "Start time must be before end time.",
+                ? Text(
+                    "Start time must be before end time.".tr(),
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.red,
@@ -841,7 +849,7 @@ class _ScheduleModalState extends State<ScheduleModal> {
             const SizedBox(height: 20),
             isTimeCheck
                 ? const Text(
-                    "Duration must be greater than or equal 2 minutes",
+                    "Duration must be greater than or equal 2 minutes.",
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.red,
@@ -853,7 +861,7 @@ class _ScheduleModalState extends State<ScheduleModal> {
                   ),
             const SizedBox(height: 10),
             Text(
-              "Duration: $durationTime",
+              "${"Duration".tr()}: $durationTime",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
@@ -939,7 +947,8 @@ class _ScheduleModalState extends State<ScheduleModal> {
                           showDangerToast(
                               context: context,
                               message:
-                                  "Cannot update interview please try again.");
+                                  "Cannot update interview please try again."
+                                      .tr());
                         }
                         Navigator.pop(context);
                       } else {

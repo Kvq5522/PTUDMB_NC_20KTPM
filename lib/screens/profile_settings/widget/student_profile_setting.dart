@@ -256,7 +256,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                       selectedChoices: _loadedSkillSet,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Please select at least one skillset";
+                          return "Please select at least one skillset".tr();
                         }
 
                         return null;
@@ -306,7 +306,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                           if (mounted) {
                             showDangerToast(
                                 context: context,
-                                message: "Cannot add skillset");
+                                message: "Cannot add skillset".tr());
                           }
                         } finally {
                           if (mounted) {
@@ -343,26 +343,28 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: const Text('Add Language'),
+                                      title: Text('Add Language'.tr()),
                                       content: Form(
                                         key: formKey,
                                         child: TextFormField(
                                           validator: (String? value) {
                                             if (value!.isEmpty) {
-                                              return 'Please type proper language';
+                                              return 'Please type proper language'
+                                                  .tr();
                                             } else if (_loadedLanguage.any(
                                                 (element) =>
                                                     element['name']
                                                         .toString()
                                                         .toLowerCase() ==
                                                     value.toLowerCase())) {
-                                              return 'You are already added this language';
+                                              return 'You are already added this language'
+                                                  .tr();
                                             }
                                             return null;
                                           },
                                           controller: languageController,
-                                          decoration: const InputDecoration(
-                                            hintText: 'Enter language',
+                                          decoration: InputDecoration(
+                                            hintText: 'Enter language'.tr(),
                                           ),
                                         ),
                                       ),
@@ -381,7 +383,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          child: const Text('Cancel'),
+                                          child: Text('Cancel'.tr()),
                                         ),
                                         ElevatedButton(
                                           onPressed: () {
@@ -407,7 +409,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          child: const Text('Add'),
+                                          child: Text('Add'.tr()),
                                         ),
                                       ],
                                     );
@@ -425,7 +427,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                           context: context,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "Please add at least one language";
+                              return "Please add at least one language".tr();
                             }
                             return null;
                           },
@@ -470,7 +472,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                       child: IntrinsicWidth(
                                         child: IntrinsicHeight(
                                           child: AlertDialog(
-                                            title: const Text('Add Education'),
+                                            title: Text('Add Education'.tr()),
                                             content: Form(
                                               key: formKey,
                                               child: Column(
@@ -480,7 +482,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                                   TextFormField(
                                                     validator: (String? value) {
                                                       if (value!.isEmpty) {
-                                                        return 'Please type proper education';
+                                                        return 'Please type proper education'
+                                                            .tr();
                                                       } else if (_loadedEducation
                                                           .any((element) =>
                                                               element['schoolName']
@@ -488,16 +491,17 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                                                   .toLowerCase() ==
                                                               value
                                                                   .toLowerCase())) {
-                                                        return 'You are already added this education';
+                                                        return 'You are already added this education'
+                                                            .tr();
                                                       }
                                                       return null;
                                                     },
                                                     controller:
                                                         educationController,
-                                                    decoration:
-                                                        const InputDecoration(
+                                                    decoration: InputDecoration(
                                                       hintText:
-                                                          'Enter education',
+                                                          'Enter education'
+                                                              .tr(),
                                                     ),
                                                   ),
                                                   const SizedBox(height: 10),
@@ -513,10 +517,12 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                                           validator: (DateTime?
                                                               value) {
                                                             if (value == null) {
-                                                              return 'Please select a date';
+                                                              return 'Please select a date'
+                                                                  .tr();
                                                             } else if (value
                                                                 .isAfter(to)) {
-                                                              return 'From date must be before today';
+                                                              return 'From date must be before today'
+                                                                  .tr();
                                                             }
 
                                                             from = value;
@@ -534,11 +540,13 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                                           onSaved: (value) {},
                                                           validator: (value) {
                                                             if (value == null) {
-                                                              return 'Please select a date';
+                                                              return 'Please select a date'
+                                                                  .tr();
                                                             } else if (from
                                                                 .isAfter(
                                                                     value)) {
-                                                              return 'From date must be before to date';
+                                                              return 'From date must be before to date'
+                                                                  .tr();
                                                             }
 
                                                             to = value;
@@ -567,7 +575,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                                child: const Text('Cancel'),
+                                                child: Text('Cancel'.tr()),
                                               ),
                                               ElevatedButton(
                                                 onPressed: () {
@@ -597,7 +605,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                                child: const Text('Add'),
+                                                child: Text('Add'.tr()),
                                               ),
                                             ],
                                           ),
@@ -616,7 +624,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                           context: context,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "Please add at least one education";
+                              return "Please add at least one education".tr();
                             }
                             return null;
                           },
@@ -792,7 +800,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(isEdited ? "Edit project" : "Add project",
+                        Text(
+                            isEdited ? "Edit project".tr() : "Add project".tr(),
                             style: const TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 20),
@@ -802,17 +811,17 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                         const SizedBox(height: 10),
                         TextFormField(
                           controller: projectNameController,
-                          decoration: const InputDecoration(
-                            hintText: "Project name",
+                          decoration: InputDecoration(
+                            hintText: "Project name".tr(),
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "Please enter project name";
+                              return "Please enter project name".tr();
                             } else if (_loadedExperience.any((element) =>
                                     element["title"]!.toLowerCase() ==
                                     value.toLowerCase()) &&
                                 !isEdited) {
-                              return "You are already added this project";
+                              return "You are already added this project".tr();
                             }
 
                             return null;
@@ -821,7 +830,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
 
                         // Project duration
                         const SizedBox(height: 20),
-                        const Text("Project duration"),
+                        Text("Project duration".tr()),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -829,7 +838,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                               context: context,
                               validator: (DateTime? value) {
                                 if (value == null) {
-                                  return 'Please select a date';
+                                  return 'Please select a date'.tr();
                                 } else if (value.isAfter(DateTime.now())) {
                                   return 'From date must be before today';
                                 }
@@ -843,10 +852,11 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                               context: context,
                               validator: (DateTime? value) {
                                 if (value == null) {
-                                  return 'Please select a date';
+                                  return 'Please select a date'.tr();
                                 } else if (DateTime.parse(from)
                                     .isAfter(value)) {
-                                  return 'From date must be before to date';
+                                  return 'From date must be before to date'
+                                      .tr();
                                 }
 
                                 to = value.toString();
@@ -859,16 +869,16 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                         const SizedBox(height: 10),
 
                         // Project description
-                        const Text("Project description"),
+                        Text("Project description".tr()),
                         const SizedBox(height: 10),
                         TextFormField(
                           controller: descriptionController,
-                          decoration: const InputDecoration(
-                            hintText: "Project description",
+                          decoration: InputDecoration(
+                            hintText: "Project description".tr(),
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "Please enter project description";
+                              return "Please enter project description".tr();
                             }
 
                             return null;
@@ -886,7 +896,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                           isExpanded: false,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "Please select at least one skillset";
+                              return "Please select at least one skillset".tr();
                             }
 
                             return null;
@@ -962,8 +972,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                child: const Text(
-                                  "Cancel",
+                                child: Text(
+                                  "Cancel".tr(),
                                 )),
                             const SizedBox(width: 10),
                             ElevatedButton(
@@ -1005,8 +1015,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                child: const Text(
-                                  "Save",
+                                child: Text(
+                                  "Save".tr(),
                                 )),
                           ],
                         )
@@ -1073,9 +1083,10 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  title: const Text("Delete project"),
-                                  content: const Text(
-                                      "Are you sure you want to delete this project?"),
+                                  title: Text("Delete project".tr()),
+                                  content: Text(
+                                      "Are you sure you want to delete this project?"
+                                          .tr()),
                                   actions: [
                                     ElevatedButton(
                                       onPressed: () {
@@ -1090,7 +1101,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      child: const Text("Cancel"),
+                                      child: Text("Cancel".tr()),
                                     ),
                                     ElevatedButton(
                                       onPressed: () {
@@ -1108,7 +1119,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      child: const Text("Delete"),
+                                      child: Text("Delete".tr()),
                                     ),
                                   ],
                                 );
@@ -1117,7 +1128,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                         onSaved: (value) {},
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "Please add at least one project";
+                            return "Please add at least one project".tr();
                           }
 
                           return null;
@@ -1208,8 +1219,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                     if (mounted) {
                                       showDangerToast(
                                           context: context,
-                                          message:
-                                              "Failed to update experience");
+                                          message: "Failed to update experience"
+                                              .tr());
                                     }
                                   } finally {
                                     if (mounted) {
@@ -1312,7 +1323,6 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                 validator: (String? value) {
                   List<String> files = value!.split(',');
                   if (files.every((element) => element.isEmpty)) {
-                    print('Please upload a resume');
                     return 'Please upload a resume';
                   }
                   return null;
@@ -1322,9 +1332,10 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: const Text('Delete resume'),
-                          content: const Text(
-                              'Are you sure you want to delete this resume?'),
+                          title: Text('Delete resume'.tr()),
+                          content: Text(
+                              'Are you sure you want to delete this resume?'
+                                  .tr()),
                           actions: [
                             ElevatedButton(
                               onPressed: () {
@@ -1338,7 +1349,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              child: const Text('Cancel'),
+                              child: Text('Cancel'.tr()),
                             ),
                             ElevatedButton(
                               onPressed: () {
@@ -1355,7 +1366,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              child: const Text('Delete'),
+                              child: Text('Delete'.tr()),
                             ),
                           ],
                         );
@@ -1397,8 +1408,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                   validator: (String? value) {
                     List<String> files = value!.split(',');
                     if (files.every((element) => element.isEmpty)) {
-                      print('Please upload a transcript');
-                      return 'Please upload a transcript';
+                      return 'Please upload a transcript'.tr();
                     }
                     return null;
                   },
@@ -1407,9 +1417,10 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: const Text('Delete transcript'),
-                            content: const Text(
-                                'Are you sure you want to delete this transcript?'),
+                            title: Text('Delete transcript'.tr()),
+                            content: Text(
+                                'Are you sure you want to delete this transcript?'
+                                    .tr()),
                             actions: [
                               ElevatedButton(
                                 onPressed: () {
@@ -1423,7 +1434,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                child: const Text('Cancel'),
+                                child: Text('Cancel'.tr()),
                               ),
                               ElevatedButton(
                                 onPressed: () {
@@ -1440,7 +1451,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                child: const Text('Delete'),
+                                child: Text('Delete'.tr()),
                               ),
                             ],
                           );
@@ -1521,7 +1532,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                             if (mounted) {
                               showDangerToast(
                                   context: context,
-                                  message: "Fail to update CV and Transcript");
+                                  message: "Fail to update CV and Transcript".tr());
                             }
                           } finally {
                             if (mounted) {

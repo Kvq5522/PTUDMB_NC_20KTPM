@@ -47,8 +47,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
       if (mounted) {
         setState(() {
-          notificationList = fetchedNotifications.reversed.toList();
-          notificationListFiltered = fetchedNotifications.reversed.toList();
+          notificationList = fetchedNotifications.toList();
+          notificationListFiltered = fetchedNotifications.toList();
         });
       }
 
@@ -77,7 +77,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
             if (mounted)
               {
                 showDangerToast(
-                    context: context, message: "Please check your connection!")
+                    context: context,
+                    message: "Please check your connection!".tr())
               }
           });
       socket.onError((data) => print(data));
@@ -104,7 +105,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
     } catch (e) {
       print(e);
       if (mounted) {
-        showDangerToast(context: context, message: "Can't get notifications");
+        showDangerToast(
+            context: context, message: "Can't get notifications".tr());
       }
     } finally {
       if (mounted) {

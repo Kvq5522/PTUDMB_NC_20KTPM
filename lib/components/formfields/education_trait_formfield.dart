@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/components/formfields/datetime_formfield.dart';
 import 'package:studenthub/utils/string.dart';
@@ -72,8 +73,8 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                               child: IntrinsicWidth(
                                                 child: IntrinsicHeight(
                                                   child: AlertDialog(
-                                                    title: const Text(
-                                                        'Add Education'),
+                                                    title: Text(
+                                                        "Add Education".tr()),
                                                     content: Form(
                                                       key: formKey,
                                                       child: Column(
@@ -85,7 +86,8 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                                                 value) {
                                                               if (value!
                                                                   .isEmpty) {
-                                                                return 'Please type proper education';
+                                                                return "Please type proper education"
+                                                                    .tr();
                                                               } else if (educationData.any((element) =>
                                                                   element['schoolName']
                                                                           .toString()
@@ -94,16 +96,18 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                                                           .toLowerCase() &&
                                                                   element !=
                                                                       education)) {
-                                                                return 'You are already added this education';
+                                                                return "You are already added this education"
+                                                                    .tr();
                                                               }
                                                               return null;
                                                             },
                                                             controller:
                                                                 educationController,
                                                             decoration:
-                                                                const InputDecoration(
+                                                                InputDecoration(
                                                               hintText:
-                                                                  'Enter education',
+                                                                  "Enter education"
+                                                                      .tr(),
                                                             ),
                                                           ),
                                                           const SizedBox(
@@ -124,11 +128,13 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                                                       (value) {
                                                                     if (value ==
                                                                         null) {
-                                                                      return 'Please select a date';
+                                                                      return "Please select a date"
+                                                                          .tr();
                                                                     } else if (value
                                                                         .isAfter(
                                                                             to)) {
-                                                                      return 'From date must be before today';
+                                                                      return "From date must be before today"
+                                                                          .tr();
                                                                     }
 
                                                                     from =
@@ -154,11 +160,13 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                                                       (value) {
                                                                     if (value ==
                                                                         null) {
-                                                                      return 'Please select a date';
+                                                                      return 'Please select a date'
+                                                                          .tr();
                                                                     } else if (from
                                                                         .isAfter(
                                                                             value)) {
-                                                                      return 'From date must be before to date';
+                                                                      return 'From date must be before to date'
+                                                                          .tr();
                                                                     }
 
                                                                     to = value;
@@ -179,8 +187,8 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                                           Navigator.of(context)
                                                               .pop();
                                                         },
-                                                        child: const Text(
-                                                            'Cancel'),
+                                                        child:
+                                                            Text('Cancel'.tr()),
                                                       ),
                                                       ElevatedButton(
                                                         onPressed: () {
@@ -209,7 +217,7 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                                           }
                                                         },
                                                         child:
-                                                            const Text('Edit'),
+                                                            Text('Edit'.tr()),
                                                       ),
                                                     ],
                                                   ),
@@ -230,10 +238,11 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                             context: context,
                                             builder: (context) {
                                               return AlertDialog(
-                                                title: const Text(
-                                                    'Delete Education'),
-                                                content: const Text(
-                                                    'Are you sure you want to delete this education?'),
+                                                title: Text(
+                                                    'Delete Education'.tr()),
+                                                content: Text(
+                                                    'Are you sure you want to delete this education?'
+                                                        .tr()),
                                                 actions: [
                                                   ElevatedButton(
                                                     onPressed: () {
@@ -253,7 +262,7 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                                             FontWeight.bold,
                                                       ),
                                                     ),
-                                                    child: const Text('Cancel'),
+                                                    child: Text('Cancel'.tr()),
                                                   ),
                                                   ElevatedButton(
                                                     onPressed: () {
@@ -275,7 +284,7 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                                                             FontWeight.bold,
                                                       ),
                                                     ),
-                                                    child: const Text('Delete'),
+                                                    child: Text('Delete'.tr()),
                                                   ),
                                                 ],
                                               );
@@ -309,10 +318,10 @@ class EducationTraitFormField extends FormField<List<dynamic>> {
                         );
                       }).toList()
                     : [
-                        const Center(
+                        Center(
                           child: Text(
-                            "You have not added any education yet.",
-                            style: TextStyle(
+                            "You have not added any education yet.".tr(),
+                            style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 16.0,
                             ),

@@ -1,3 +1,4 @@
+import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
 import "package:provider/provider.dart";
@@ -29,8 +30,8 @@ class _DashboardDetailMessageListState
   @override
   Widget build(BuildContext context) {
     return messageList.isEmpty
-        ? const Center(
-            child: Text('No message found'),
+        ? Center(
+            child: Text('No message found'.tr()),
           )
         : Container(
             margin: EdgeInsets.only(top: 10.0),

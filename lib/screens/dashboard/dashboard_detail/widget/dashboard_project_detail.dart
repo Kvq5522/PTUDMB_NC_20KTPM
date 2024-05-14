@@ -99,7 +99,7 @@ class DashboardProjectDetail extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "$projectTeamNumber students",
+                    "$projectTeamNumber ${"students".tr()}",
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w300,

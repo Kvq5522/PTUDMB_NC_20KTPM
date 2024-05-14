@@ -26,7 +26,7 @@ class _MyFillTerState extends State<MyFillTer> {
     if (value != null && value.isNotEmpty) {
       final validNumber = int.tryParse(value);
       if (validNumber == null) {
-        return 'Please enter a valid number';
+        return 'Please enter a valid number'.tr();
       }
     }
     return null;
@@ -105,7 +105,7 @@ class _MyFillTerState extends State<MyFillTer> {
                           ),
                         ),
                         ListTile(
-                          title: const Text('1 to 3 months'),
+                          title: Text('1 to 3 months'.tr()),
                           leading: Radio<int>(
                             value: 1,
                             groupValue: selectedOption,

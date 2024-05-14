@@ -68,9 +68,9 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
               status: 2),
         );
       default:
-        return const SizedBox(
+        return SizedBox(
           child: Center(
-            child: Text("Error, please try again."),
+            child: Text("Error, please try again.".tr()),
           ),
         );
     }
@@ -162,7 +162,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                         title: Text('Archiving project'.tr()),
                                         content: Row(
                                           children: <Widget>[
-                                            Text('This project status?'),
+                                            Text('This project status?'.tr()),
                                             SizedBox(width: 10),
                                             DropdownButton<String>(
                                               value: dropdownValue,
@@ -172,8 +172,8 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                                 });
                                               },
                                               items: <String>[
-                                                'Success',
-                                                'Failed'
+                                                'Success'.tr(),
+                                                'Failed'.tr()
                                               ].map<DropdownMenuItem<String>>(
                                                   (String value) {
                                                 return DropdownMenuItem<String>(
@@ -320,7 +320,7 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
 
                             showSuccessToast(
                                 context: context,
-                                message: "Project removed successfully.");
+                                message: "Project removed successfully.".tr());
 
                             routerConfig.push('/dashboard');
                           } catch (e) {
@@ -379,8 +379,8 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
 
                   final difference = DateTime.now().difference(createdDate);
                   final timeAgo = difference.inDays == 0
-                      ? '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago'
-                      : '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
+                      ? '${difference.inHours} ${difference.inHours == 1 ? 'hour'.tr() : 'hours'.tr()} ${"ago".tr()}'
+                      : '${difference.inDays} ${difference.inDays == 1 ? 'day'.tr() : 'days'.tr()} ${"ago".tr()}';
                   // if (list[index]["typeFlag"] == 2) print(list[0]);
                   return list[index]["typeFlag"] == status
                       ? GestureDetector(
@@ -444,8 +444,10 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                                 Text(
                                   list[index]["typeFlag"] == 2
                                       ? (list[index]["status"] == 1
-                                          ? list[index]["title"] + " (Success)"
-                                          : list[index]["title"] + " (Failed)")
+                                          ? list[index]["title"] +
+                                              " ${"(Success)".tr()}"
+                                          : list[index]["title"] +
+                                              " ${"(Failed)".tr()}")
                                       : list[index]["title"],
                                   style: const TextStyle(
                                     color: Color(0xFF008ABD),

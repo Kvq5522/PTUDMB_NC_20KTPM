@@ -17,7 +17,8 @@ Welcome to **StudentHub**! 🎓 This Flutter project aims to create a centralize
 
 ## Video Demo 📽️
 
-[Phasing 1 Demo Video](https://www.youtube.com/watch?v=QWbywkZ6DdU)
-[Phasing 2 Demo Video](https://www.youtube.com/watch?v=LEM30RwscYs)
-[Phasing 3 Demo Video](https://www.youtube.com/watch?v=HyFdKSmYqHE)
-[Phasing 4 Demo Video](https://www.youtube.com/watch?v=qvRZrbEYIHY)
+#### [Phasing 1 Demo Video](https://www.youtube.com/watch?v=QWbywkZ6DdU)
+#### [Phasing 2 Demo Video](https://www.youtube.com/watch?v=LEM30RwscYs)
+#### [Phasing 3 Demo Video](https://www.youtube.com/watch?v=HyFdKSmYqHE)
+#### [Phasing 4 Demo Video](https://www.youtube.com/watch?v=qvRZrbEYIHY)
+#### [Self assesment document](https://docs.google.com/document/d/1pdO04TK0IfsUZ1rl44RMO6QLtzIHF0WE/edit)

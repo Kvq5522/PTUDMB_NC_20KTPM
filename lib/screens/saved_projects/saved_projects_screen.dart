@@ -47,8 +47,6 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
           await _projectService.getAllSavedProject(
               studentId: _studentId, token: _userInfoStore.token);
 
-      print("projects length: ${projects.length}");
-
       if (mounted) {
         setState(() {
           _savedProjects = projects;
@@ -110,8 +108,8 @@ class _SavedProjectScreenState extends State<SavedProjectScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   child: _savedProjects.isEmpty
-                      ? const Center(
-                          child: Text('No project found.'),
+                      ? Center(
+                          child: Text('No project found.'.tr()),
                         )
                       : Column(
                           children: _savedProjects.map((item) {

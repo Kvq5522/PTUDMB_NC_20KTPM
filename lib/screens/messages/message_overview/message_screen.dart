@@ -194,7 +194,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                 ),
                                 // Job
                                 Text(
-                                  "Job: ${displayList[index]["project"]["title"]}",
+                                  "${"Job".tr()}: ${displayList[index]["project"]["title"]}",
                                   style: const TextStyle(
                                     color: Color(0xFF008ABD),
                                     fontWeight: FontWeight.bold,

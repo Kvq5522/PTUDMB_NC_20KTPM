@@ -11,14 +11,14 @@ class DetailProjectScreen extends StatefulWidget {
   final String projectId;
   final bool isInfo;
   final bool isLiked;
-  final String studentId;
+  final String? studentId;
 
   const DetailProjectScreen(
       {super.key,
       required this.projectId,
       required this.isInfo,
       required this.isLiked,
-      required this.studentId});
+      this.studentId});
 
   @override
   State<DetailProjectScreen> createState() => _DetailProjectScreenState();
@@ -60,6 +60,9 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
       }
     } catch (error) {
       print('Error fetching project detail: $error');
+      showDangerToast(
+          context: context, message: 'Project has been deleted.'.tr());
+      Navigator.of(context).pop();
     } finally {
       if (mounted) {
         setState(() {
@@ -80,11 +83,11 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
       final Duration difference = now.difference(createdAt);
 
       if (difference.inDays > 0) {
-        return '${difference.inDays} days ago';
+        return '${difference.inDays} ${"days".tr()} ${"ago".tr()}';
       } else if (difference.inHours > 0) {
-        return '${difference.inHours} hours ago';
+        return '${difference.inHours} ${"hours".tr()} ${"ago".tr()}';
       } else {
-        return '${difference.inMinutes} minutes ago';
+        return '${difference.inMinutes} ${"minutes".tr()} ${"ago".tr()}';
       }
     } else {
       return 'Invalid date format';
@@ -368,7 +371,7 @@ class _DetailProjectScreenState extends State<DetailProjectScreen> {
                         onPressed: () async {
                           try {
                             await _projectService.updateFavoriteProject(
-                              studentId: widget.studentId,
+                              studentId: widget.studentId ?? "",
                               projectId: int.parse(widget.projectId),
                               disableFlag: isLiked ? 1 : 0,
                               token: _userInfoStore.token,

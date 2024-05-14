@@ -335,19 +335,20 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text('Confirmation'),
+                                title: Text('Confirmation'.tr()),
                                 content: Text(
-                                  'Do you really want to accept this hire offer ?',
+                                  'Do you really want to accept this hire offer ?'
+                                      .tr(),
                                 ),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: Text('Cancel'),
+                                    child: Text('Cancel'.tr()),
                                     onPressed: () {
                                       Navigator.of(context).pop(false);
                                     },
                                   ),
                                   TextButton(
-                                    child: Text('Yes'),
+                                    child: Text('Yes'.tr()),
                                     onPressed: () {
                                       Navigator.of(context).pop(true);
                                     },
@@ -371,13 +372,14 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                               showDangerToast(
                                   context: context,
                                   message:
-                                      "Error accept offer. Please try again.");
+                                      "Error accept offer. Please try again."
+                                          .tr());
                               print('Failed to update project: $e');
                             }
                           }
                         },
-                        child: const Text(
-                          "Accept Offer",
+                        child: Text(
+                          "Accept Offer".tr(),
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,

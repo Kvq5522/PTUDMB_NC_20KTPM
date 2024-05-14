@@ -58,21 +58,21 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
           _companyWebsiteController.text = res['website'];
           _companyDescriptionController.text = res['description'];
         });
-
-        print("Chosend Company Size: $_chosenCompanySize");
       } catch (e) {
         if (e.toString().contains("Unauthorized")) {
           _userInfoStore.reset();
 
           if (mounted) {
-            showDangerToast(context: context, message: "Please sign in again.");
+            showDangerToast(
+                context: context, message: "Please sign in again.".tr());
             routerConfig.go('/login');
           }
         } else {
           print(e);
           if (mounted) {
             showDangerToast(
-                context: context, message: "Failed to get company profile.");
+                context: context,
+                message: "Failed to get company profile.".tr());
           }
         }
       } finally {
@@ -129,12 +129,12 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                       controller: _companyNameController,
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your company name';
+                          return 'Please enter your company name'.tr();
                         }
                         return null;
                       },
                       decoration: InputDecoration(
-                        hintText: "Input your company name here",
+                        hintText: "Input your company name here".tr(),
                         labelStyle: const TextStyle(color: Colors.black),
                         focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF008ABD)),
@@ -157,12 +157,12 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                       controller: _companyWebsiteController,
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your company website';
+                          return 'Please enter your company website'.tr();
                         }
                         return null;
                       },
                       decoration: InputDecoration(
-                        hintText: "Input your company website here",
+                        hintText: "Input your company website here".tr(),
                         labelStyle: const TextStyle(color: Colors.black),
                         focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF008ABD)),
@@ -182,13 +182,13 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                       controller: _companyDescriptionController,
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your company description';
+                          return 'Please enter your company description'.tr();
                         }
                         return null;
                       },
                       maxLines: 5,
                       decoration: InputDecoration(
-                        hintText: "Input your company description here",
+                        hintText: "Input your company description here".tr(),
                         labelStyle: const TextStyle(color: Colors.black),
                         focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF008ABD)),
@@ -235,7 +235,8 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                                     if (mounted) {
                                       showSuccessToast(
                                           context: context,
-                                          message: "Company profile updated.");
+                                          message:
+                                              "Company profile updated.".tr());
                                     }
                                   } else if (res.isNotEmpty) {
                                     print("res: $res");
@@ -245,7 +246,8 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
 
                                     showSuccessToast(
                                         context: context,
-                                        message: "Company profile created.");
+                                        message:
+                                            "Company profile created.".tr());
                                   }
 
                                   routerConfig.go('/welcome',
@@ -258,7 +260,7 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                                   if (mounted) {
                                     showDangerToast(
                                         context: context,
-                                        message: "Please sign in again.");
+                                        message: "Please sign in again.".tr());
                                     routerConfig.go('/login');
                                   }
                                 } else {
@@ -267,7 +269,7 @@ class _CompanyProfileSettingState extends State<CompanyProfileSetting> {
                                     showDangerToast(
                                         context: context,
                                         message:
-                                            "Failed to create company profile.");
+                                            "Failed to create company profile.".tr());
                                   }
                                 }
                               } finally {

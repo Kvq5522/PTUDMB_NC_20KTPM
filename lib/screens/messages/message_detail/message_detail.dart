@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -136,25 +137,27 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
           if (mounted)
             {
               showDangerToast(
-                  context: context, message: "Please check your connection!")
+                  context: context, message: "Please check your connection!".tr())
             }
         });
     socket.onError((data) => print(data));
 
     socket.on("ERROR", (data) {
       showDangerToast(
-          context: context, message: "Please check your connection!");
+          context: context, message: "Please check your connection!".tr());
     });
 
     socket.on('RECEIVE_MESSAGE', (data) {
       try {
+        print(
+            "print: ${data?["notification"]?["sender"]}, =========, ${data?["notification"]?["receiver"]}");
         final message = Message(
           isSender: BigInt.from(data?["notification"]?["sender"]?["id"]) ==
               _userInfoStore.userId,
           name: BigInt.from(data?["notification"]?["sender"]?["id"]) ==
                   _userInfoStore.userId
               ? "You"
-              : data?["notification"]?["receiver"]?["fullname"],
+              : data?["notification"]?["sender"]?["fullname"],
           avatarUrl: 'https://cdn-icons-png.flaticon.com/512/147/147142.png',
           text: data?["notification"]?["message"]?["content"],
           time: DateTime.parse(data?["notification"]?["message"]?["createdAt"]),
@@ -444,7 +447,6 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
       if (mounted) {
         showDangerToast(context: context, message: e.toString());
       }
-      print("****");
       print(e);
     } finally {
       if (mounted) {
@@ -467,7 +469,8 @@ class _MessageDetailScreen extends State<MessageDetailScreen> {
       print('Error sending message: $e');
       if (mounted) {
         showDangerToast(
-            context: context, message: "Can't send message, please try again");
+            context: context,
+            message: "Can't send message, please try again".tr());
       }
     }
 

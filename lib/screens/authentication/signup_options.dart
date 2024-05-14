@@ -151,7 +151,7 @@ class _SignUpOptionsState extends State<SignUpOptions> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Already have an account ?",
+              "Already have an account ?".tr(),
               style: TextStyle(
                 fontSize: 16.0,
                 // color: Theme.of(context).colorScheme.primary,

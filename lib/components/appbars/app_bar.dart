@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +37,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                   if (!_userInfoStore.hasProfile) {
                     showDangerToast(
                         context: context,
-                        message: "Please create a profile first.");
+                        message: "Please create a profile first.".tr());
 
                     return;
                   }

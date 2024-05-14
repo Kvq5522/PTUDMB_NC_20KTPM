@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:studenthub/utils/string.dart';
 
@@ -112,7 +113,7 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
               child: IntrinsicHeight(
                 child: AlertDialog(
                   title: Text(
-                      'Add New ${widget.labelField != "" ? capitalize(widget.labelField) : 'Item'}'),
+                      '${"Add New".tr()} ${widget.labelField != "" ? capitalize(widget.labelField) : 'Item'.tr()}'),
                   content: Form(
                     key: formKey,
                     child: Column(
@@ -121,7 +122,7 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                           controller: textEditingController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter item';
+                              return 'Please enter item'.tr();
                             } else if (widget.itemList
                                     .map((e) => e.toString().toLowerCase())
                                     .contains(value.toLowerCase()) ||
@@ -131,14 +132,14 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                                             .toString()
                                             .toLowerCase() ==
                                         value.toLowerCase()))) {
-                              return 'Item already exists';
+                              return 'Item already exists'.tr();
                             }
                             return null;
                           },
                           decoration: InputDecoration(
                             labelText: widget.labelField != ""
                                 ? capitalize(widget.labelField)
-                                : 'Item',
+                                : 'Item'.tr(),
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -158,7 +159,7 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              child: const Text('Cancel'),
+                              child: Text('Cancel'.tr()),
                             ),
                             const SizedBox(width: 10),
                             ElevatedButton(
@@ -179,7 +180,7 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              child: const Text('Add'),
+                              child: Text('Add'.tr()),
                             ),
                           ],
                         ),
@@ -235,7 +236,7 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                               : "",
                           label: Text(widget.labelField != ""
                               ? capitalize(widget.labelField)
-                              : "Select item"),
+                              : "Select item".tr()),
                           dropdownMenuEntries: widget.itemList
                               .map<DropdownMenuEntry<dynamic>>((item) {
                             return DropdownMenuEntry<dynamic>(
@@ -283,7 +284,7 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                                 Icons.add_circle_rounded,
                                 color: Color(0xFF008ABD),
                               ),
-                              tooltip: "Add new item",
+                              tooltip: "Add new item".tr(),
                             )
                           : const SizedBox()
                     ],

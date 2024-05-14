@@ -148,14 +148,14 @@ class _MyScheduleState extends State<MySchedule> {
         widget.token,
       );
       if (mounted) {
-        String message = 'Interview posted successfully';
+        String message = 'Interview posted successfully.'.tr();
         showSuccessToast(context: context, message: message);
       }
     } catch (e) {
       print('Failed to post interview: $e');
       if (mounted) {
         showDangerToast(
-            context: context, message: "Failed to post interview try again.");
+            context: context, message: "Failed to post interview try again.".tr());
       }
     }
   }
@@ -217,8 +217,8 @@ class _MyScheduleState extends State<MySchedule> {
                     ),
                     const SizedBox(height: 2),
                     isJobTitleEmpty
-                        ? const Text(
-                            "Title cannot be empty",
+                        ? Text(
+                            "Title cannot be empty".tr(),
                             style: TextStyle(
                               fontSize: 13,
                               color: Colors.red,
@@ -294,8 +294,8 @@ class _MyScheduleState extends State<MySchedule> {
                       ],
                     ),
                     isDateCheck
-                        ? const Text(
-                            "Start time must be before end time.",
+                        ? Text(
+                            "Start time must be before end time.".tr(),
                             style: TextStyle(
                               fontSize: 13,
                               color: Colors.red,
@@ -371,8 +371,9 @@ class _MyScheduleState extends State<MySchedule> {
                       ],
                     ),
                     isTimeCheck
-                        ? const Text(
-                            "Duration must be greater than or equal 2 minutes",
+                        ? Text(
+                            "Duration must be greater than or equal 2 minutes."
+                                .tr(),
                             style: TextStyle(
                               fontSize: 13,
                               color: Colors.red,
@@ -384,7 +385,7 @@ class _MyScheduleState extends State<MySchedule> {
                           ),
                     const SizedBox(height: 10),
                     Text(
-                      "Duration: $durationTime",
+                      "${"Duration".tr()}: $durationTime",
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey,
@@ -481,7 +482,8 @@ class _MyScheduleState extends State<MySchedule> {
                                   showDangerToast(
                                       context: context,
                                       message:
-                                          "Failed to post interview please try again");
+                                          "Failed to post interview please try again"
+                                              .tr());
                                 }
                                 Navigator.pop(context);
                                 // print('Title: ${jobTitleController.text}');
