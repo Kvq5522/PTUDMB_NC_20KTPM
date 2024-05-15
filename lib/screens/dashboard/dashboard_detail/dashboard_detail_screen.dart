@@ -32,7 +32,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
   late UserInfoStore _userInfoStore;
   List<Map<String, dynamic>> proposals = [];
   List<Map<String, dynamic>> messages = [];
-  late Map<String, dynamic> project;
+  late Map<String, dynamic> project = {};
   Map<int, String> projectScopeFlagMap = {
     0: '<1',
     1: '1-3',
@@ -113,6 +113,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
+                        if (isLoading) return;
                         setState(() {
                           filter = "Proposals";
                         });
@@ -140,6 +141,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
+                        if (isLoading) return;
                         setState(() {
                           filter = "Detail";
                         });
@@ -164,6 +166,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
+                        if (isLoading) return;
                         setState(() {
                           filter = "Message";
                         });
@@ -190,6 +193,7 @@ class _DashboardDetailScreenState extends State<DashboardDetailScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
+                        if (isLoading) return;
                         setState(() {
                           filter = "Hired";
                         });

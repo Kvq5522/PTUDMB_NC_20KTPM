@@ -299,17 +299,18 @@ class _CompanyDashboardState extends State<CompanyDashboard> {
                               '/project-overview/$projectId/$title/$naviFilter');
                         },
                       ),
-                      ListTile(
-                        leading: const Icon(Icons.edit),
-                        title: Text('Edit Project'.tr()),
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => EditProjectDialog(
-                                projectInfo: project, token: token),
-                          );
-                        },
-                      ),
+                      if (project["typeFlag"] != 2) // Add this line
+                        ListTile(
+                          leading: const Icon(Icons.edit),
+                          title: Text('Edit Project'.tr()),
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => EditProjectDialog(
+                                  projectInfo: project, token: token),
+                            );
+                          },
+                        ),
                       ListTile(
                         leading: const Icon(Icons.delete),
                         title: Text('Remove Project'.tr()),

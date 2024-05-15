@@ -114,8 +114,7 @@ class _LoginFormState extends State<LoginForm> {
               validator: (String? value) {
                 if (value!.isEmpty) {
                   return 'Email is required';
-                } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                    .hasMatch(value)) {
+                } else if (!RegExp('@').hasMatch(value)) {
                   return 'Please enter a valid email address';
                 } else {
                   return null;

@@ -241,7 +241,21 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                         ),
 
                                         Text(
-                                          list[index]["project"]["title"],
+                                          status == 2 &&
+                                                  list[index]["project"]
+                                                          ["typeFlag"] ==
+                                                      2
+                                              ? (list[index]["project"]
+                                                          ["status"] ==
+                                                      1
+                                                  ? list[index]["project"]
+                                                          ["title"] +
+                                                      " ${"(Success)".tr()}"
+                                                  : list[index]["project"]
+                                                          ["title"] +
+                                                      " ${"(Failed)".tr()}")
+                                              : list[index]["project"]["title"],
+                                          // list[index]["project"]["title"],
                                           style: const TextStyle(
                                             color: Color(0xFF008ABD),
                                             fontWeight: FontWeight.bold,

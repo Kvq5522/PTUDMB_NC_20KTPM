@@ -235,7 +235,7 @@ class _MultiSelectChipImplState extends State<_MultiSelectChipImpl> {
                               ? widget.itemList[0]
                               : "",
                           label: Text(widget.labelField != ""
-                              ? capitalize(widget.labelField)
+                              ? capitalize(widget.labelField.tr())
                               : "Select item".tr()),
                           dropdownMenuEntries: widget.itemList
                               .map<DropdownMenuEntry<dynamic>>((item) {

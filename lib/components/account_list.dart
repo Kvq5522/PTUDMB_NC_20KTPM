@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studenthub/stores/user_info/user_info.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AccountList extends StatefulWidget {
   final List accountList;
@@ -133,7 +134,7 @@ class _AccountListState extends State<AccountList> {
 
                   // Display role
                   Text(
-                    account['userType'],
+                    "${account['userType']}".tr(),
                     style: const TextStyle(fontSize: 15),
                     overflow: TextOverflow.ellipsis,
                   ),

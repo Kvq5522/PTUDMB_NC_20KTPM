@@ -70,8 +70,7 @@ class ScheduleItem extends StatelessWidget {
     DateFormat format = DateFormat("dd/MM/yyyy HH:mm");
     DateTime start = format.parse("$date $timeMeeting", true).toUtc();
     DateTime end = format.parse("$endDate $endTimeMeeting", true).toUtc();
-    bool inTime =
-        !(current.isAfter(start) == true && !current.isAfter(end) == true);
+    bool inTime = current.isAfter(start) && current.isBefore(end);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -956,7 +955,7 @@ class _ScheduleModalState extends State<ScheduleModal> {
                       }
                     },
                     child: Text(
-                      'Send invite'.tr(),
+                      'Save'.tr(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,

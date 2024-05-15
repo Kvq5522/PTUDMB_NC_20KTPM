@@ -807,7 +807,7 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                         const SizedBox(height: 20),
 
                         // Project name
-                        const Text("Project name"),
+                        Text("Project name".tr()),
                         const SizedBox(height: 10),
                         TextFormField(
                           controller: projectNameController,
@@ -1532,7 +1532,8 @@ class _StudentProfileSettingState extends State<StudentProfileSetting> {
                             if (mounted) {
                               showDangerToast(
                                   context: context,
-                                  message: "Fail to update CV and Transcript".tr());
+                                  message:
+                                      "Fail to update CV and Transcript".tr());
                             }
                           } finally {
                             if (mounted) {

@@ -158,8 +158,7 @@ class _SignUpFormState extends State<SignUpForm> {
               validator: (String? value) {
                 if (value == null || value.isEmpty) {
                   return "Email is required".tr();
-                } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                    .hasMatch(value)) {
+                } else if (!RegExp('@').hasMatch(value)) {
                   return 'Please enter a valid email address';
                 } else {
                   return null;
@@ -271,7 +270,8 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             if (_errorMessage != null)
               Text(
-                "Can't sign up, please choose different email and try again.".tr(),
+                "Can't sign up, please choose different email and try again."
+                    .tr(),
                 style: TextStyle(color: Colors.red, fontSize: 16),
               ),
             const SizedBox(height: 20.0),

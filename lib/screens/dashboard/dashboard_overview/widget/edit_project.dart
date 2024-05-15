@@ -133,6 +133,8 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the number of students'.tr();
+                  } else if (int.tryParse(value) == null) {
+                    return 'Please enter a valid number'.tr();
                   }
                   return null;
                 },
@@ -168,42 +170,6 @@ class _EditProjectDialogState extends State<EditProjectDialog> {
                 },
               ),
               SizedBox(height: 16.0),
-              DropdownButtonFormField<int>(
-                value: _typeFlag,
-                // value: _projectScopeFlag,
-                decoration: InputDecoration(
-                  labelText: 'Project status'.tr(),
-                  labelStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                  ),
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select project status'.tr();
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _typeFlag = value!;
-                },
-
-                onChanged: (value) {
-                  setState(() {
-                    _typeFlag = value!;
-                  });
-                },
-                items: [
-                  DropdownMenuItem<int>(
-                    value: 0,
-                    child: Text('Working'.tr()),
-                  ),
-                  DropdownMenuItem<int>(
-                    value: 1,
-                    child: Text('Archived'.tr()),
-                  ),
-                ],
-              ),
             ],
           ),
         ),
